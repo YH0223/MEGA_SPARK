@@ -6,17 +6,18 @@
 
 .auth-left {
   flex: 1 1 50%;
-  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); /* 시원한 느낌의 다크 그라데이션 */
+  background: linear-gradient(to bottom, #4facfe, #00f2fe); /* 더 세련된 그라데이션 */
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 4rem;
-  font-family: "Poppins", sans-serif; /* 현대적이고 세련된 폰트 */
-  font-weight: bold;
-  letter-spacing: 1.5px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 5rem; /* 글자 크기 조정 */
+  font-family: "Poppins", sans-serif; /* 세련된 폰트 */
+  font-weight: 800; /* 더 굵게 */
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 추가 */
+  letter-spacing: 2px; /* 글자 간격 조정 */
 }
+
 
 .auth-right {
   flex: 1 1 50%;

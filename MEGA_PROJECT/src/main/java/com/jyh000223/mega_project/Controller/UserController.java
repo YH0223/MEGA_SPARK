@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/insert")
+    @PostMapping("/register")
     public ResponseEntity<String> insertUser(@RequestBody UserDTO userdto) {
         if (userdto.getUser_id() == null || userdto.getUser_id().isEmpty()) {
             return ResponseEntity.badRequest().body("User ID is required.");
