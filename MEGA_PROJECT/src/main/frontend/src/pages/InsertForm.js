@@ -2,70 +2,76 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const InsertForm = () => {
-  const [formData, setFormData] = useState({ id: "", password: "", username:"",email:""});
+  const [formData, setFormData] = useState({
+    user_id: "",
+    user_name: "",
+    password: "",
+    email_address: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/insert", formData);
-      if (response.status === 200) {
-        alert("Data inserted successfully!");
-        setFormData({ name: "", age: "" });
-      }
+      // axios를 사용하여 POST 요청 보내기
+      const response = await axios.post("http://localhost:8080/api/insert", formData, {
+        headers: {
+          "Content-Type": "application/json", // 요청 헤더 설정
+        },
+      });
+
+      console.log("Response:", response.data); // 서버의 응답 처리
     } catch (error) {
-      console.error("Error inserting data:", error);
-      alert("Failed to insert data.");
+      console.error("Error submitting form:", error); // 에러 처리
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>ID:</label>
+        <label>User ID</label>
         <input
           type="text"
-          name="name"
-          value={formData.name}
+          name="user_id"
+          value={formData.user_id}
           onChange={handleChange}
-          required
         />
       </div>
       <div>
-        <label>PW:</label>
+        <label>User Name</label>
+        <input
+          type="text"
+          name="user_name"
+          value={formData.user_name}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label>Password</label>
         <input
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
-          required
         />
       </div>
       <div>
-        <label>Username:</label>
-        <input
-          type="text"
-          name="username"
-          value={formData.age}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Email:</label>
+        <label>Email Address</label>
         <input
           type="email"
-          name="email"
-          value={formData.age}
+          name="email_address"
+          value={formData.email_address}
           onChange={handleChange}
-          required
         />
       </div>
-      <button type="submit">Insert</button>
+      <button type="submit">Submit</button>
     </form>
   );
 };

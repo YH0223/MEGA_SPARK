@@ -4,15 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "USER_TABLE_M5")
+@Table(name = "USER_TABLE")
 @Getter
 @Setter
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="USER_ID")
     private String user_id;
+    @Column(name="PASSWORD")
     private String password;
+    @Column(name="USER_NAME")
     private String user_name;
+    @Column(name="EMAIL_ADDRESS")
     private String email_address;
-
 }
