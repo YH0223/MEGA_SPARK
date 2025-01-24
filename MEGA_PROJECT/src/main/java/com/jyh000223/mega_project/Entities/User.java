@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 public class User {
     @Id
-    @Column(name="USER_ID")
+    @Column(name="user_id")
     private String user_id;
-    @Column(name="PASSWORD")
+    @Column(name="password")
     private String password;
-    @Column(name="USER_NAME")
-    private String user_name;
-    @Column(name="EMAIL_ADDRESS")
+    @Column(name="user_name")
+    private String userName;
+    @Column(name="email_address")
     private String email_address;
 }

@@ -23,12 +23,14 @@ public class UserController {
 
         User user = new User();
         user.setUser_id(userdto.getUser_id());
-        user.setUser_name(userdto.getUser_name());
+        user.setUserName(userdto.getUser_name());
         user.setPassword(userdto.getPassword());
         user.setEmail_address(userdto.getEmail_address());
 
         userRepository.save(user);
         return ResponseEntity.ok("User inserted successfully!");
     }
+
+
 }
 
