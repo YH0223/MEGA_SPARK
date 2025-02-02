@@ -13,11 +13,11 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [projects, setProjects] = useState<Project[]>([]);
 
-  useEffect(() => {
-    axios.get<Project[]>("/api/calander_project")
-        .then(response => setProjects(response.data))
-        .catch(error => console.error("프로젝트 데이터를 불러오는 중 오류 발생:", error));
-  }, []);
+    useEffect(() => {
+        axios.get<Project[]>("/api/calendar_project")
+            .then(response => setProjects(response.data))
+            .catch(error => console.error("프로젝트 데이터를 불러오는 중 오류 발생:", error));
+    }, []);
 
   const daysInWeek = ["일", "월", "화", "수", "목", "금", "토"];
 

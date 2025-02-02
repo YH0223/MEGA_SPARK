@@ -11,5 +11,5 @@ public interface TeammateRepository extends JpaRepository<Teammate, Integer> {
     Teammate findByProjectId(int projectId);
 
     Teammate findByUserIdAndProjectId(String userId, int projectId);
-    List<Teammate> findAllByProjectId(int projectId);
+    List<Teammate> findAllByUserId(String userId);
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
-import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../api"; // ✅ api.ts에서 설정한 axios 인스턴스를 가져옴
+import "./Login.css";
 
 interface FormData {
     user_id: string;
@@ -25,19 +25,37 @@ const Login: React.FC = () => {
         e.preventDefault();
 
         try {
-            console.log("Sending data:", formData); // 디버깅용 출력
+            console.log("📡 로그인 요청 전송:", formData);
 
-            const response = await axios.post("/api/login", formData); // 로그인 API 요청
-            console.log("Success:", response.data);
-            alert("Login Successful!");
-            navigate("/dashboard"); // 로그인 성공 시 대시보드로 리다이렉트
+            // ✅ axios 인스턴스를 사용하여 요청을 보냄
+            const response = await api.post("/api/login", formData, {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                withCredentials: true, // ✅ 세션 유지
+            });
+
+            console.log("✅ 로그인 성공:", response.data);
+            alert("로그인 성공!");
+            navigate("/dashboard");
+
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.error("Axios error:", error.response?.data || error.message);
-                setError(error.response?.data?.message || "Login Failed!");
+            if (error.response) {
+                console.error("❌ 로그인 실패 - 상태 코드:", error.response.status);
+                console.error("서버 응답:", error.response.data);
+
+                if (error.response.status === 400) {
+                    setError("아이디 또는 비밀번호가 잘못되었습니다.");
+                } else if (error.response.status === 404) {
+                    setError("서버를 찾을 수 없습니다. 백엔드를 실행했는지 확인하세요.");
+                } else if (error.response.status === 500) {
+                    setError("서버 오류가 발생했습니다. 나중에 다시 시도하세요.");
+                } else {
+                    setError(error.response.data?.message || "로그인 실패!");
+                }
             } else {
-                console.error("Unexpected error:", error);
-                setError("An unexpected error occurred!");
+                console.error("❌ 예상치 못한 오류:", error);
+                setError("예기치 않은 오류가 발생했습니다!");
             }
         }
     };

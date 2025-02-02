@@ -27,5 +27,4 @@ public class Teammate {
     @Column(name = "project_manager")
     private String projectManager;
 
-
 }

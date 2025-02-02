@@ -10,7 +10,7 @@ import lombok.Setter;
 public class User {
     @Id
     @Column(name="user_id")
-    private String user_id;
+    private String userId;
     @Column(name="password")
     private String password;
     @Column(name="user_name")

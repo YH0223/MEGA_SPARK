@@ -43,10 +43,7 @@ const NewProject = () => {
             <input type="text" value={projectName} onChange={(e) => setProjectName(e.target.value)} required />
           </label>
 
-          <label>
-            프로젝트 관리자:
-            <input type="text" value={projectManager} onChange={(e) => setProjectManager(e.target.value)} required />
-          </label>
+
 
           <label>
             시작 날짜:

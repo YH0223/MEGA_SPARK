@@ -40,14 +40,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> insertUser(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);  // 기존 세션을 가져옴, 없으면 null 반환
-        if (session != null) {
-            session.invalidate();  // 세션 무효화
-        }
-        return ResponseEntity.ok("200");
-    }
+
 
 }
 
