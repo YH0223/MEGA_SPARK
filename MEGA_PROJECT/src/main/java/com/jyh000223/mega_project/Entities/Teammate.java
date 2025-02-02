@@ -13,14 +13,19 @@ import java.time.LocalDate;
 public class Teammate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
+    @Column(name="index_team")
+    private int indexTeam;
+
     @Column(name="project_id")
-    private int project_id;
-    @Column(name="project_name")
-    private String projectName;
-    @Column(name="project_manager")
-    private String projectManager;
+    private int projectId;
+    @Column(name="user_id")
+    private String userId;
     @Column(name="startdate")
     private LocalDate startdate;
     @Column(name="deadline")
     private LocalDate deadline;
+    @Column(name = "project_manager")
+    private String projectManager;
+
+
 }

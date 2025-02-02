@@ -8,6 +8,10 @@ import Sidebar from './components/Sidebar/Sidebar';
 import Header from './components/Header/Header';
 import ProjectCard from './components/ProjectCard/ProjectCard';
 import './App.css';
+import Dashboard from "./pages/Dashboard";
+import Project from "./pages/Project"
+import Calendar from "./pages/Calendar"
+import NewProject from "./pages/NewProject"
 
 // 데이터 타입 정의
 interface Post {
@@ -15,7 +19,7 @@ interface Post {
   title: string;
 }
 
-const Dashboard = () => {
+const App = () => {
   const [data, setData] = useState<Post[]>([]);
 
   useEffect(() => {
@@ -31,30 +35,6 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="dashboard">
-      <Sidebar />
-      <div className="main-content">
-        <Header />
-        <div className="project-container">
-          {data.slice(0, 5).map((post) => ( // 상위 5개 게시물만 표시
-            <ProjectCard
-            key={post.id}
-            projectName="JAVA SPRING" // 예시 값
-            projectManager="Jane Doe" // 예시 값
-            email="janedoe@example.com" // 예시 값
-            className="Web Development" // 예시 값
-            status="In Progress" // 예시 값
-            period="Jan 2025 - Jun 2025" // 예시 값
-          />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const App = () => {
-  return (
     <Router>
       <Routes>
         {/* 인증 관련 페이지 */}
@@ -63,6 +43,9 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* 대시보드 페이지 */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/Project" element={<Project />} />
+        <Route path="/Calendar" element={<Calendar />} />
+        <Route path="/NewProject" element={<NewProject />} />
       </Routes>
     </Router>
   );

@@ -7,20 +7,16 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "PROJECT")
+@Table(name = "NOTICE")
 @Getter
 @Setter
-public class Project {
+public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
+    @Column(name="notice_id")
+    private int noticeId;
     @Column(name="project_id")
     private int projectId;
-    @Column(name="project_name")
-    private String projectName;
-    @Column(name="project_manager")
-    private String projectManager;
-    @Column(name="startdate")
-    private LocalDate startdate;
-    @Column(name="deadline")
-    private LocalDate deadline;
+    @Column(name="context_notice")
+    private String contextNotice;
 }

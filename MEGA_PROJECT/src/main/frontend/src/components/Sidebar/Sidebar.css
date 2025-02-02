@@ -1,7 +1,7 @@
 .sidebar {
     width: 200px !important;;
-    background-color: #2c3e50;
-    color: white;
+    background-color: #fdfdfd !important;;
+    color: rgb(0, 0, 0) !important;
     padding: 20px;
     position: fixed; /* 고정 위치 */
     top: 0;
@@ -9,15 +9,9 @@
     z-index: 1; /* sidebar를 header보다 아래로 배치 */
   }
 
-  .sidebar h1 {
+  .sidebar h3 {
     margin-top: 0; 
     margin-bottom: 10px;
-    font-size: 2.5rem;
-  }
-  
-  .sidebar h2 {
-    margin-bottom: 20px;
-    font-size: 2rem;  
   }
   
   .sidebar ul {
@@ -36,4 +30,9 @@
     background-color: #9dcff7;
     padding: 10px;
     border-radius: 4px; /* 버튼 모서리 둥글게 */
+  }
+
+  .from-spark {
+    font-size: 0.3em;
+    color: gary;
   }

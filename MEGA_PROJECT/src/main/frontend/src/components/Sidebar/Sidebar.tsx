@@ -5,8 +5,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
 
-      <h1> PMS </h1>
-      <h2>Dashboard</h2>
+      <h3> Dashboard <span className="from-spark">from Spark</span> </h3>
       <ul>
         <li>Dashboard</li>
         <li>Projects</li>

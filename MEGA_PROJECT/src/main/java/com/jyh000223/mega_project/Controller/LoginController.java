@@ -28,7 +28,7 @@ public class LoginController {
             session.setAttribute("user", user_id);  // 세션에 사용자 ID를 속성으로 저장
             return ResponseEntity.ok("200");
         }else{
-            return ResponseEntity.ok("400");
+            return ResponseEntity.status(400).body("Unauthorized: You are not allowed to delete this project.");
         }
     }
 
@@ -48,5 +48,6 @@ public class LoginController {
         }
         return ResponseEntity.ok("200");
     }
+
 }
 

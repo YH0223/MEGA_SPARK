@@ -1,0 +1,104 @@
+/* 전체 컨테이너 */
+.calendar-container {
+  width: 400px;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+
+/* 헤더 스타일 */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendar-header button {
+  background: #005eff;
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.calendar-header button:hover {
+  background: #003bb3;
+}
+
+/* 요일 헤더 */
+.calendar-day-header {
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  background: #f0f0f0;
+}
+
+/* 달력 날짜 그리드 */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+/* 날짜 스타일 */
+.calendar-day {
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: 0.2s;
+  position: relative; /* 줄을 추가할 수 있는 공간 확보 */
+}
+
+/* 현재 달이 아닌 날짜 스타일 */
+.other-month {
+  color: #aaa;
+}
+
+/* 선택된 날짜 스타일 */
+.selected {
+  background: #005eff;
+  color: white;
+  font-weight: bold;
+}
+
+/* 프로젝트 기간을 표시하는 줄(바) */
+.bars-container {
+  position: absolute;
+  bottom: 5px; /* 셀의 하단에 줄을 배치 */
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+
+/* 줄(바) 스타일 */
+.bar {
+  height: 4px;
+  width: 70%; /* 바 너비 조정 */
+  border-radius: 5px;
+  background-color: #2196F3; /* 기본 색상 */
+}
+
+/* 각 프로젝트마다 다른 색상 적용 */
+.bar-1 {
+  background-color: #4CAF50; /* 초록색 */
+}
+
+.bar-2 {
+  background-color: #FF9800; /* 주황색 */
+}
+
+.bar-3 {
+  background-color: #FF5722; /* 빨간색 */
+}
