@@ -1,5 +1,7 @@
 .project-container {
-  max-width: 1200px;
+  transform: scale(0.8); /* 80% 크기로 축소 */
+  transform-origin: top; /* 축소 기준점 설정 */
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f8f9fa;
@@ -23,7 +25,6 @@
   font-size: 2rem;
   font-weight: 700;
   color: #333;
-  margin-bottom: 10px;
 }
 
 .project-info {

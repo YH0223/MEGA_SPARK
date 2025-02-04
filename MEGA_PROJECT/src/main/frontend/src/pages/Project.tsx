@@ -97,9 +97,9 @@ const ProjectDetails = () => {
       <div className="header">
         <Bell className="icon" size={24} />
         <h1 className="title">{projectData.Project}</h1>
-        <p className="project-info"> {projectManager} {email} | {period} </p>
-      </div>
-
+        </div>
+      <p className="project-info"> {projectManager} | {email} | {period} </p>
+      
       <div className="quote-box">
         <p className="quote">"성공이란 당신의 능력을 최대한 발휘해 원하는 대상을 획득하는 것이다." - 존 맥스웰</p>
       </div>
@@ -117,7 +117,7 @@ const ProjectDetails = () => {
           </tr>
         </thead>
         <tbody>
-          {[...Array(4)].map((_, index) => (
+          {[...Array(2)].map((_, index) => (
             <tr key={index}>
               <td>
                 <FileText className="file-icon" size={18} /> 프로젝트 관련 공지 {index + 1}
@@ -134,34 +134,6 @@ const ProjectDetails = () => {
           ))}
         </tbody>
       </table>
-      <div className="team-section">
-        <h2>팀원 목록</h2>
-        <div className="team-input">
-          <input
-            type="text"
-            placeholder="새 팀원 추가..."
-            value={newMember}
-            onChange={(e) => setNewMember(e.target.value)}
-          />
-          <button onClick={addTeamMember}><UserPlus size={18} /> 추가</button>
-        </div>
-        <ul className="team-list">
-          {teamMembers.map((member, index) => (
-            <li key={index}>
-              {member} <button onClick={() => removeTeamMember(index)}>❌</button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="file-upload-section">
-        <h2>자료 업로드</h2>
-        <input type="file" multiple onChange={handleFileUpload} />
-        <ul>
-          {files.map((file, index) => (
-            <li key={index}>{file.name}</li>
-          ))}
-        </ul>
-      </div>
       <div className="checklist-section">
         <h2>체크리스트</h2>
         <div className="checklist-input">
@@ -187,6 +159,34 @@ const ProjectDetails = () => {
             </div>
           ))}
         </div>
+      </div>
+      <div className="file-upload-section">
+        <h2>자료 업로드</h2>
+        <input type="file" multiple onChange={handleFileUpload} />
+        <ul>
+          {files.map((file, index) => (
+            <li key={index}>{file.name}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="team-section">
+        <h2>팀원 목록</h2>
+        <div className="team-input">
+          <input
+            type="text"
+            placeholder="새 팀원 추가..."
+            value={newMember}
+            onChange={(e) => setNewMember(e.target.value)}
+          />
+          <button onClick={addTeamMember}><UserPlus size={18} /> 추가</button>
+        </div>
+        <ul className="team-list">
+          {teamMembers.map((member, index) => (
+            <li key={index}>
+              {member} <button onClick={() => removeTeamMember(index)}>❌</button>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="project-actions">
