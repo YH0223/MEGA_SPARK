@@ -25,11 +25,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 25px; /* 패딩 증가 */
+  padding: 25px;
   background-color: white;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  font-size: 1.4rem; /* 글자 크기 키움 */
+  font-size: 1.4rem;
 }
 
 /* 📝 공지사항 */
@@ -37,19 +37,25 @@
 .checklist-section { grid-area: checklist; }
 .file-upload-section { grid-area: upload; }
 .team-section { grid-area: team; }
-.project-actions { grid-area: actions; }
+.project-actions {
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px; /* 버튼 간격 조정 */
+}
 
 /* ✅ 체크리스트 버튼 위치 조정 */
 .checklist-input {
   display: flex;
   align-items: center;
-  gap: 15px; /* 기존보다 더 여유 있게 조정 */
+  gap: 15px;
 }
 
 .checklist-input input {
   flex-grow: 1;
   padding: 14px;
-  font-size: 1.2rem; /* 글자 크기 확대 */
+  font-size: 1.2rem;
   border-radius: 8px;
   border: 1px solid #ddd;
 }
@@ -62,26 +68,28 @@
   border: none;
   cursor: pointer;
   font-weight: 600;
-  min-width: 90px; /* 버튼 크기 조정 */
+  min-width: 90px;
   height: 100%;
 }
 
 /* 🎯 프로젝트 수정 버튼 정렬 */
 .project-actions {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 12px; /* 버튼 사이 거리 조정 */
+  flex-direction: column; /* 버튼을 세로 정렬 */
+  align-items: flex-start;
+  gap: 10px; /* 버튼 사이 거리 조정 */
+  position: relative; /* 버튼이 자연스럽게 정렬되도록 */
 }
 
+/* 프로젝트 수정 버튼 크기 조정 */
 .update-button, .delete-button {
   padding: 14px 22px;
-  font-size: 1.1rem; /* 버튼 글자 키움 */
+  font-size: 1.1rem;
   border-radius: 10px;
   border: none;
   cursor: pointer;
   font-weight: 600;
-  min-width: 130px; /* 버튼 크기 동일하게 유지 */
+  min-width: 160px; /* 버튼 크기 통일 */
   text-align: center;
 }
 
@@ -102,6 +110,14 @@
   transform: scale(1.1);
   background: linear-gradient(135deg, #ff5c7b 0%, #ff6ea5 100%);
   box-shadow: 0 6px 12px rgba(255, 87, 87, 0.3);
+}
+
+/* 수정/삭제 버튼 컨테이너 */
+.action-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
 }
 
 /* 🖥️ 반응형 개선 */
