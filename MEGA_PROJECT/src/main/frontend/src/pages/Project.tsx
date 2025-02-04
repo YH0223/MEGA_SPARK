@@ -28,8 +28,9 @@ const ProjectDetails = () => {
   const [period, setPeriod] = useState(projectData.Period);
   const [status, setStatus] = useState(projectData.Status);
   const [checklist, setChecklist] = useState<{ id: number; text: string; completed: boolean }[]>([
-    { id: 1, text: "프로젝트 계획정의서 및 작동기능서 작성하기", completed: false },
-    { id: 2, text: "프로젝트 계획서 작성", completed: false },
+
+    // 체크리스트 부분
+
   ]);
   const [newItem, setNewItem] = useState("");
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
@@ -96,6 +97,7 @@ const ProjectDetails = () => {
       <div className="header">
         <Bell className="icon" size={24} />
         <h1 className="title">{projectData.Project}</h1>
+        <p className="project-info"> {projectManager} {email} | {period} </p>
       </div>
 
       <div className="quote-box">
