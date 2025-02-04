@@ -13,6 +13,8 @@ import Dashboard from "./pages/Dashboard";
 import Project from "./pages/Project"
 import Calendar from "./pages/Calendar"
 import NewProject from "./pages/NewProject"
+import NoticeComponent from "./pages/NoticeComponent";
+import NoticeDetail from "./pages/NoticeDetail";
 
 // 데이터 타입 정의
 interface Post {
@@ -48,6 +50,8 @@ const App = () => {
         <Route path="/Calendar" element={<Calendar />} />
         <Route path="/NewProject" element={<NewProject />} />
         <Route path="/task/:projectId" element={<TaskPage />} />
+        <Route path="/notice/:projectId" element={<NoticePage />} />pm
+        <Route path="/notice/detail/:noticeId" element={<NoticeDetail />} />
       </Routes>
     </Router>
   );
@@ -58,6 +62,13 @@ const TaskPage = () => {
   if (!projectId) return <p>잘못된 요청입니다.</p>;
 
   return <TaskComponent projectId={parseInt(projectId, 10)} />;
+};
+
+const NoticePage = () => {
+  const { projectId } = useParams<{ projectId: string }>();
+  if (!projectId) return <p>잘못된 요청입니다.</p>;
+
+  return <NoticeComponent projectId={parseInt(projectId, 10)} />;
 };
 
 export default App;
