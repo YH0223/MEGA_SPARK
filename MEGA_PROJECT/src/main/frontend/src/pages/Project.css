@@ -4,14 +4,39 @@
   margin: 40px auto;
   padding: 40px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3열 배치 */
+  grid-template-columns: repeat(3, 1fr); /* 3열 */
+  grid-template-rows: auto auto; /* 2개의 행 */
   gap: 20px;
+  grid-auto-flow: dense; /* 카드 크기가 다를 경우 균형을 맞춤 */
+  grid-template-areas: 
+    "header header header"
+    "notice notice checklist"
+    "upload team actions"; /* 위 2개, 아래 3개 */
   justify-content: center;
   align-items: center;
-  background: #f4f7fc;
+  background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
+
+.header {
+  grid-area: header; /* header를 최상단으로 고정 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+
+.notice-box { grid-area: notice; }
+.checklist-section { grid-area: checklist; }
+.file-upload-section { grid-area: upload; }
+.team-section { grid-area: team; }
+.project-actions { grid-area: actions; }
+
 
 /* 🟦 데이터 카드 스타일 */
 .data-card {

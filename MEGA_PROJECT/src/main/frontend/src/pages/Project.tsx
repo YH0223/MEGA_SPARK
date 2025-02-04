@@ -82,15 +82,11 @@ const ProjectDetails = () => {
       <div className="header">
         <Bell className="icon" size={26} />
         <h1 className="title">{projectName}</h1>
+        <p className="project-info">{projectManager} | {email} | {period}</p>
       </div>
-      <p className="project-info">{projectManager} | {email} | {period}</p>
-
       {/* 📢 공지사항 */}
       <div className="notice-box">
         <h2 className="notice-title">📢 공지사항</h2>
-      </div>
-
-      {/* 📅 일정 테이블 */}
       <table className="project-table">
         <thead>
           <tr>
@@ -109,7 +105,7 @@ const ProjectDetails = () => {
           ))}
         </tbody>
       </table>
-
+      </div>
       {/* ✅ 체크리스트 */}
       <div className="checklist-section">
         <h2>체크리스트</h2>
