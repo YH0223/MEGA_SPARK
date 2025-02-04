@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useParams } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
+import TaskComponent from "./pages/Task";
 import Sidebar from './components/Sidebar/Sidebar';
 import Header from './components/Header/Header';
 import ProjectCard from './components/ProjectCard/ProjectCard';
@@ -46,9 +47,17 @@ const App = () => {
         <Route path="/Project" element={<Project />} />
         <Route path="/Calendar" element={<Calendar />} />
         <Route path="/NewProject" element={<NewProject />} />
+        <Route path="/task/:projectId" element={<TaskPage />} />
       </Routes>
     </Router>
   );
+};
+
+const TaskPage = () => {
+  const { projectId } = useParams<{ projectId: string }>(); // URL에서 projectId 가져오기
+  if (!projectId) return <p>잘못된 요청입니다.</p>;
+
+  return <TaskComponent projectId={parseInt(projectId, 10)} />;
 };
 
 export default App;
