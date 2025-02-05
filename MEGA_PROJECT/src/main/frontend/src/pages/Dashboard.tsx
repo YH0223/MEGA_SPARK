@@ -74,9 +74,36 @@ const Dashboard = () => {
                 <td>Web Development</td>
                 <td>janedoe@example.com</td>
                 <td>Jan 2025 - Jun 2025</td>
-                <td className="status-active">In Progress</td>
+                <td>
+                  <div className="progress-container">
+                    <div className="progress-bar progress-in-progress">In Progress</div>
+                  </div>
+                </td>
               </tr>
-              {/* 다른 데이터 추가 */}
+              <tr>
+                <td>React Native</td>
+                <td>John Smith</td>
+                <td>Mobile Development</td>
+                <td>johnsmith@example.com</td>
+                <td>Feb 2025 - Aug 2025</td>
+                <td>
+                  <div className="progress-container">
+                    <div className="progress-bar progress-completed">Completed</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>AI Model Training</td>
+                <td>Lisa Kim</td>
+                <td>Machine Learning</td>
+                <td>lisakim@example.com</td>
+                <td>Mar 2025 - Sep 2025</td>
+                <td>
+                  <div className="progress-container">
+                    <div className="progress-bar progress-pending">Pending</div>
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </table>
         </section>
