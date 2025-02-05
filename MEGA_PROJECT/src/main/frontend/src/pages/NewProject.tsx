@@ -1,10 +1,10 @@
+
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api"; // ✅ api.tsx에서 설정한 axios 인스턴스를 가져옴
 import "./NewProject.css";
 
 const NewProject = () => {
   const [projectName, setProjectName] = useState("");
-  const [projectManager, setProjectManager] = useState("");
   const [startDate, setStartDate] = useState("");
   const [deadline, setDeadline] = useState("");
 
@@ -13,20 +13,18 @@ const NewProject = () => {
 
     const newProject = {
       projectName,
-      projectManager,
-      startdate: startDate, // Spring에서 받는 필드명과 맞춤
+      startdate: startDate,
       deadline,
     };
 
     try {
-      const response = await axios.post("/api/createproject", newProject, {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      });
-
+      // ✅ "/createproject"만 적어도 api.ts에서 baseURL 자동 적용됨!
+      const response = await api.post("/api/createproject", newProject);
       alert("프로젝트가 생성되었습니다!");
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      // @ts-ignore
+      if (error.response) {
+        // @ts-ignore
         alert(`프로젝트 생성 실패: ${error.response.data}`);
       } else {
         alert("프로젝트 생성 중 오류가 발생했습니다.");

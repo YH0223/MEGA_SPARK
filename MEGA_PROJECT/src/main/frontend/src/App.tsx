@@ -1,54 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
-import Sidebar from './components/Sidebar/Sidebar';
-import Header from './components/Header/Header';
-import ProjectCard from './components/ProjectCard/ProjectCard';
-import './App.css';
 import Dashboard from "./pages/Dashboard";
-import Project from "./pages/Project"
-import Calendar from "./pages/Calendar"
-import NewProject from "./pages/NewProject"
+import Project from "./pages/Project";
+import Calendar from "./pages/Calendar";
+import NewProject from "./pages/NewProject";
 
-// 데이터 타입 정의
-interface Post {
-  id: number;
-  title: string;
+// 🔥 전역 로그인 상태를 관리할 Context 생성
+interface AuthContextType {
+    isAuthenticated: boolean;
+    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export const AuthContext = createContext<AuthContextType | null>(null); // ✅ Context export
+
+// 🔥 로그인 여부에 따라 보호된 페이지를 가로채는 컴포넌트
+const PrivateRoute = ({ element }: { element: React.ReactElement }) => {
+    const auth = useContext(AuthContext);
+    return auth?.isAuthenticated ? element : <Navigate to="/" />;
+};
+
 const App = () => {
-  const [data, setData] = useState<Post[]>([]);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get("https://jsonplaceholder.typicode.com/posts") // 샘플 API
-      .then((response) => {
-        console.log("Data fetched:", response.data);
-        setData(response.data); // 데이터 상태 업데이트
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/session", {
+            withCredentials: true
+        })
+            .then(response => {
+                console.log("✅ 로그인 유지됨. 사용자:", response.data);
+                setIsAuthenticated(true);
+            })
+            .catch(() => {
+                console.log("❌ 로그인 세션 없음");
+                setIsAuthenticated(false);
+            });
+    }, [setIsAuthenticated]);
 
-  return (
-    <Router>
-      <Routes>
-        {/* 인증 관련 페이지 */}
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        {/* 대시보드 페이지 */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/Project" element={<Project />} />
-        <Route path="/Calendar" element={<Calendar />} />
-        <Route path="/NewProject" element={<NewProject />} />
-      </Routes>
-    </Router>
-  );
+    return (
+        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+            <Router>
+                <Routes>
+                    {/* 인증 관련 페이지 */}
+                    <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+
+                    {/* 보호된 페이지: 로그인한 사용자만 접근 가능 */}
+                    <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+                    <Route path="/Project" element={<PrivateRoute element={<Project />} />} />
+                    <Route path="/Calendar" element={<PrivateRoute element={<Calendar />} />} />
+                    <Route path="/NewProject" element={<PrivateRoute element={<NewProject />} />} />
+                </Routes>
+            </Router>
+        </AuthContext.Provider>
+    );
 };
 
 export default App;

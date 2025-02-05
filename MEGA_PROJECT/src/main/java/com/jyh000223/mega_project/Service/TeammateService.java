@@ -28,8 +28,6 @@ public class TeammateService {
         Teammate teammate = new Teammate();
         teammate.setUserId(user_id);
         teammate.setProjectId(project_id);
-        teammate.setDeadline(project.getDeadline());
-        teammate.setStartdate(project.getStartdate());
         teammate.setProjectManager(project.getProjectManager());
 
         // 저장

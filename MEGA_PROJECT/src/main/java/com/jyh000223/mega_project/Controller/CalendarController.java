@@ -30,30 +30,34 @@ public class CalendarController {
 
     @GetMapping("/calendar_project")
     public ResponseEntity<List<ProjectCalendarDTO>> getCalendar(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("user_id");  // 세션에서 user_id 가져오기
+        System.out.println("📌 /api/calendar_project API 요청 받음!"); // 콘솔에 로그 추가
 
-        if (userId == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing in session.");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user_id") == null) {
+            System.out.println("❌ 세션 없음! 401 반환");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
         }
 
-        // 1️⃣ userId 기준으로 Teammate 리스트 조회
-        List<Teammate> teammates = teammateRepository.findAllByUserId(userId);
+        String userId = (String) session.getAttribute("user_id");
+        System.out.println("✅ API 요청한 user_id: " + userId);
 
-        // 2️⃣ Teammate 리스트에서 Project ID 목록 추출
+        List<Teammate> teammates = teammateRepository.findAllByUserId(userId);
+        System.out.println("✅ 사용자가 속한 팀원 수: " + teammates.size());
+
         List<Integer> projectIds = teammates.stream()
                 .map(Teammate::getProjectId)
-                .distinct()  // 중복 제거
+                .distinct()
                 .toList();
+        System.out.println("✅ 사용자가 속한 프로젝트 ID 리스트: " + projectIds);
 
         if (projectIds.isEmpty()) {
+            System.out.println("⚠️ 프로젝트가 없음. 빈 배열 반환");
             return ResponseEntity.ok(Collections.emptyList());
         }
 
-        // 3️⃣ Project 테이블에서 projectId 목록으로 프로젝트 조회
         List<Project> projects = projectRepository.findAllByProjectIdIn(projectIds);
+        System.out.println("✅ 조회된 프로젝트 개수: " + projects.size());
 
-        // 4️⃣ 조회된 프로젝트 리스트를 DTO로 변환
         List<ProjectCalendarDTO> calendarData = projects.stream()
                 .map(project -> new ProjectCalendarDTO(
                         project.getProjectId(),
@@ -63,9 +67,11 @@ public class CalendarController {
                 ))
                 .toList();
 
-        // 5️⃣ 변환된 DTO 리스트를 반환
-        return ResponseEntity.ok(calendarData);
+        System.out.println("📌 최종 반환할 데이터 개수: " + calendarData.size());
+        return ResponseEntity.ok().header("Content-Type", "application/json").body(calendarData);
     }
+
+
 
 
 }

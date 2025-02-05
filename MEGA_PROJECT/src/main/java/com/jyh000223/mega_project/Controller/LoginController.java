@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
 
     @Autowired
@@ -18,19 +17,23 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<String> insertUser(HttpServletRequest request, @RequestBody UserDTO userdto) {
+        String password = userdto.getPassword();
+        String user_id = userdto.getUser_id();
 
-        String password=userdto.getPassword();
-        String user_id=userdto.getUser_id();
-        // 사용자 인증 로직
-        boolean isAuthenticated = authenticate(user_id,password);  // 사용자 인증을 수행하는 메서드 호출
+        boolean isAuthenticated = authenticate(user_id, password);
         if (isAuthenticated) {
-            HttpSession session = request.getSession();  // 세션을 생성하거나 기존 세션을 가져옴
-            session.setAttribute("user", user_id);  // 세션에 사용자 ID를 속성으로 저장
+            HttpSession session = request.getSession(true); // 기존 세션이 있으면 가져오고, 없으면 새로 생성
+            session.setAttribute("user_id", user_id);  // 세션에 사용자 ID 저장
+
+            System.out.println("✅ 로그인 성공! 세션 ID: " + session.getId());
+            System.out.println("✅ 세션에 저장된 user_id: " + session.getAttribute("user_id"));
+
             return ResponseEntity.ok("200");
-        }else{
-            return ResponseEntity.status(400).body("Unauthorized: You are not allowed to delete this project.");
+        } else {
+            return ResponseEntity.status(400).body("Unauthorized");
         }
     }
+
 
     // 사용자 인증을 수행하는 메서드 (임시로 비밀번호 비교만)
     private boolean authenticate(String user_id, String password) {

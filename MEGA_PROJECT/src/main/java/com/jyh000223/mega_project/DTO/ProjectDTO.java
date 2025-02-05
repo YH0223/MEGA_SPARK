@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class ProjectDTO {
     private int project_id;
-    private String project_name;
+    private String projectName;
     private String project_manager;
     private LocalDate startdate;
     private LocalDate deadline;
@@ -15,11 +15,11 @@ public class ProjectDTO {
     public int getProject_id() {
         return project_id;
     }
-    public void setProject_name(String project_name) {
-        this.project_name = project_name;
+    public void setProject_name(String projectName) {
+        this.projectName = projectName;
     }
-    public String getProject_name() {
-        return project_name;
+    public String getProjectName() {
+        return projectName;
     }
     public void setProject_manager(String project_manager) {
         this.project_manager = project_manager;

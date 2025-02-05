@@ -20,10 +20,6 @@ public class Teammate {
     private int projectId;
     @Column(name="user_id")
     private String userId;
-    @Column(name="startdate")
-    private LocalDate startdate;
-    @Column(name="deadline")
-    private LocalDate deadline;
     @Column(name = "project_manager")
     private String projectManager;
 

@@ -7,6 +7,7 @@ public class TeammateDTO {
 
     private int projectId;
     private String userId;
+    private String projectManager;
 
     public int getIndexTeam() {
         return indexTeam;
@@ -25,6 +26,12 @@ public class TeammateDTO {
     }
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+    public void setProjectManager(String projectManager) {
+        this.projectManager = projectManager;
+    }
+    public String getProjectManager() {
+        return projectManager;
     }
 
 }

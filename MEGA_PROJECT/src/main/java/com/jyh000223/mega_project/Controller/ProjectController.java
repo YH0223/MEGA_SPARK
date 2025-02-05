@@ -5,6 +5,7 @@ import com.jyh000223.mega_project.Entities.Project;
 import com.jyh000223.mega_project.Repository.ProjectRepository;
 import com.jyh000223.mega_project.Repository.TeammateRepository;
 import com.jyh000223.mega_project.Service.ProjectService;
+import com.jyh000223.mega_project.Service.TeammateService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +17,28 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
+
 public class ProjectController {
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
-    private HttpSession httpSession;
-    @Autowired
     private ProjectService projectService;
+    @Autowired
+    private TeammateService teammateService;
     @Autowired
     private TeammateRepository teammateRepository;
 
     @PostMapping("/createproject")
-    public ResponseEntity<String> createProject(@RequestBody ProjectDTO projectdto, HttpSession httpSession) {
+    public ResponseEntity<String> createProject(@RequestBody ProjectDTO projectdto, HttpServletRequest request) {
         // 유효성 검사: 세션에서 사용자 정보 가져오기
-        String projectManager = (String) httpSession.getAttribute("user");
+        HttpSession httpSession=request.getSession();
+        String projectManager = (String) httpSession.getAttribute("user_id");
         if (projectManager == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 없습니다.");
         }
 
         // 유효성 검사: 프로젝트 이름 확인
-        String projectName = projectdto.getProject_name();
+        String projectName = projectdto.getProjectName();
         if (projectName == null || projectName.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("프로젝트 이름이 유효하지 않습니다.");
         }
@@ -61,6 +63,11 @@ public class ProjectController {
         project.setDeadline(deadline);
         projectRepository.save(project);
 
+
+        String result = teammateService.addTeammate(projectManager, project.getProjectId());
+        if (!"200".equals(result)) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로젝트 생성 성공, 그러나 팀원 등록 실패");
+        }
         return ResponseEntity.ok("프로젝트 생성 성공");
     }
 
@@ -72,11 +79,11 @@ public class ProjectController {
 
     @PostMapping("/deleteproject")
     public ResponseEntity<String> deleteProject(HttpServletRequest request, @RequestBody ProjectDTO projectdto) {
-        String projectName = projectdto.getProject_name();
+        String projectName = projectdto.getProjectName();
 
         // 세션에서 project_manager 가져오기
         HttpSession session = request.getSession();
-        String sessionManager = (String) session.getAttribute("user");
+        String sessionManager = (String) session.getAttribute("user_id");
 
         if (sessionManager == null) {
             return ResponseEntity.status(403).body("Unauthorized: No session manager found.");

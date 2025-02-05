@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
 public class TeammateController {
 
     private final TeammateService teammateService;
@@ -21,7 +20,7 @@ public class TeammateController {
     @PostMapping("/addteammate")
     public ResponseEntity<String> addTeammate(@RequestBody TeammateDTO teammateDTO, HttpSession httpSession) {
         // 세션에서 사용자 정보 가져오기
-        String currentUser = (String) httpSession.getAttribute("user");
+        String currentUser = (String) httpSession.getAttribute("user_id");
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 없습니다.");
         }
@@ -47,7 +46,7 @@ public class TeammateController {
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteTeammate(@RequestBody TeammateDTO teammateDTO, HttpSession httpSession) {
         // 세션에서 사용자 정보 가져오기
-        String currentUser = (String) httpSession.getAttribute("user");
+        String currentUser = (String) httpSession.getAttribute("user_id");
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 없습니다.");
         }
