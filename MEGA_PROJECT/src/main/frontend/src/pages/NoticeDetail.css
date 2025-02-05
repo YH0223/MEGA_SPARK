@@ -1,0 +1,90 @@
+.notice-detail-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.notice-detail-container h2 {
+    text-align: center;
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.notice-detail-container h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.notice-detail-container p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    white-space: pre-line; /* 개행 문자 유지 */
+}
+
+.notice-detail-container small {
+    display: block;
+    margin-top: 10px;
+    color: #6c757d;
+}
+
+.notice-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.list-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.notice-actions button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.notice-actions button:first-child {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.notice-actions button:first-child:hover {
+    background-color: #e0a800;
+}
+
+.notice-actions button:last-child {
+    background-color: #dc3545;
+    color: white;
+}
+
+.notice-actions button:last-child:hover {
+    background-color: #c82333;
+}
+
+.notice-edit-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.notice-edit-textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    height: 100px;
+    resize: none;
+    margin-bottom: 10px;
+}

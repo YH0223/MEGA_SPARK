@@ -1,0 +1,97 @@
+.notice-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.notice-container h2 {
+    text-align: center;
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.notice-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.notice-input input,
+.notice-input textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.notice-input textarea {
+    height: 100px;
+    resize: none;
+}
+
+.notice-input button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.right-align-button {
+    margin-left: auto; /* 오른쪽 끝으로 정렬 */
+    display: block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.right-align-button:hover {
+    background-color: #0056b3;
+}
+
+.notice-input button:hover {
+    background-color: #0056b3;
+}
+
+.notice-list {
+    list-style: none;
+    padding: 0;
+}
+
+.notice-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    transition: background 0.3s;
+    cursor: pointer;
+}
+
+.notice-list li:hover {
+    background: #f1f1f1;
+}
+
+.notice-list span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.notice-list small {
+    color: #6c757d;
+}

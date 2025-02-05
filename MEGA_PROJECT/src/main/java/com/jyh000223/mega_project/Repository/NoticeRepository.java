@@ -1,7 +1,10 @@
 package com.jyh000223.mega_project.Repository;
 
-import com.jyh000223.mega_project.Entities.Project;
+import com.jyh000223.mega_project.Entities.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface NoticeRepository extends JpaRepository<Project, Integer> {
+import java.util.List;
+
+public interface NoticeRepository extends JpaRepository<Notice, Integer> {
+    List<Notice> findByProject_ProjectId(int projectId);
 }

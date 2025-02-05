@@ -1,63 +1,74 @@
-import React, { useEffect, useState, createContext, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useParams } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
+import TaskComponent from "./pages/Task";
+import Sidebar from './components/Sidebar/Sidebar';
+import Header from './components/Header/Header';
+import ProjectCard from './components/ProjectCard/ProjectCard';
+import './App.css';
 import Dashboard from "./pages/Dashboard";
-import Project from "./pages/Project";
-import Calendar from "./pages/Calendar";
-import NewProject from "./pages/NewProject";
+import Project from "./pages/Project"
+import Calendar from "./pages/Calendar"
+import NewProject from "./pages/NewProject"
+import NoticeComponent from "./pages/NoticeComponent";
+import NoticeDetail from "./pages/NoticeDetail";
 
-// 🔥 전역 로그인 상태를 관리할 Context 생성
-interface AuthContextType {
-    isAuthenticated: boolean;
-    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+// 데이터 타입 정의
+interface Post {
+  id: number;
+  title: string;
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null); // ✅ Context export
+const App = () => {
+  const [data, setData] = useState<Post[]>([]);
 
-// 🔥 로그인 여부에 따라 보호된 페이지를 가로채는 컴포넌트
-const PrivateRoute = ({ element }: { element: React.ReactElement }) => {
-    const auth = useContext(AuthContext);
-    return auth?.isAuthenticated ? element : <Navigate to="/" />;
+  useEffect(() => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/posts") // 샘플 API
+      .then((response) => {
+        console.log("Data fetched:", response.data);
+        setData(response.data); // 데이터 상태 업데이트
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  return (
+    <Router>
+      <Routes>
+        {/* 인증 관련 페이지 */}
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        {/* 대시보드 페이지 */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/Project" element={<Project />} />
+        <Route path="/Calendar" element={<Calendar />} />
+        <Route path="/NewProject" element={<NewProject />} />
+        <Route path="/task/:projectId" element={<TaskPage />} />
+        <Route path="/notice/:projectId" element={<NoticePage />} />pm
+        <Route path="/notice/detail/:noticeId" element={<NoticeDetail />} />
+      </Routes>
+    </Router>
+  );
 };
 
-const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+const TaskPage = () => {
+  const { projectId } = useParams<{ projectId: string }>(); // URL에서 projectId 가져오기
+  if (!projectId) return <p>잘못된 요청입니다.</p>;
 
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/session", {
-            withCredentials: true
-        })
-            .then(response => {
-                console.log("✅ 로그인 유지됨. 사용자:", response.data);
-                setIsAuthenticated(true);
-            })
-            .catch(() => {
-                console.log("❌ 로그인 세션 없음");
-                setIsAuthenticated(false);
-            });
-    }, [setIsAuthenticated]);
+  return <TaskComponent projectId={parseInt(projectId, 10)} />;
+};
 
-    return (
-        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-            <Router>
-                <Routes>
-                    {/* 인증 관련 페이지 */}
-                    <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
+const NoticePage = () => {
+  const { projectId } = useParams<{ projectId: string }>();
+  if (!projectId) return <p>잘못된 요청입니다.</p>;
 
-                    {/* 보호된 페이지: 로그인한 사용자만 접근 가능 */}
-                    <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
-                    <Route path="/Project" element={<PrivateRoute element={<Project />} />} />
-                    <Route path="/Calendar" element={<PrivateRoute element={<Calendar />} />} />
-                    <Route path="/NewProject" element={<PrivateRoute element={<NewProject />} />} />
-                </Routes>
-            </Router>
-        </AuthContext.Provider>
-    );
+  return <NoticeComponent projectId={parseInt(projectId, 10)} />;
 };
 
 export default App;
