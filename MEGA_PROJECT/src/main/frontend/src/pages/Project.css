@@ -1,170 +1,155 @@
+/* 🌟 프로젝트 전체 컨테이너 확대 */
 .project-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 1800px; /* 기존보다 확대 */
+  margin: 40px auto;
+  padding: 50px; /* 내부 패딩 증가 */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3열 유지 */
+  grid-template-rows: auto auto;
+  gap: 20px;
+  grid-auto-flow: dense;
+  grid-template-areas:
+    "header header header"
+    "notice notice checklist"
+    "upload team actions";
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
+/* 🔔 헤더 스타일 */
 .header {
+  grid-area: header;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-
-.icon {
-  margin-right: 10px;
-  color: #007bff;
-}
-
-.title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
-}
-
-.quote-box {
-  text-align: center;
-  font-style: italic;
-  margin: 20px 0;
-  background-color: #e9ecef;
-  padding: 20px;
+  justify-content: space-between;
+  padding: 25px;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  font-size: 1.4rem;
 }
 
-.notice-box {
-  margin: 20px 0;
+/* 📝 공지사항 */
+.notice-box { grid-area: notice; }
+.checklist-section { grid-area: checklist; }
+.file-upload-section { grid-area: upload; }
+.team-section { grid-area: team; }
+.project-actions {
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px; /* 버튼 간격 조정 */
 }
 
-.notice-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #007bff;
-  margin-bottom: 15px;
-}
-
-.project-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-.project-table th, .project-table td {
-  padding: 12px;
-  text-align: left;
-}
-
-.project-table th {
-  background-color: #007bff;
-  color: white;
-}
-
-.checklist-section {
-  background-color: #ffffff;
-  padding: 20px;
-  margin: 30px 0;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
+/* ✅ 체크리스트 버튼 위치 조정 */
 .checklist-input {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.checklist-input input {
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  width: 100%;
-}
-
-.checklist-input button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.checklist-container {
-  margin-top: 20px;
-  text-align: left;
-}
-
-.checklist-item {
-  display: flex;
   align-items: center;
-  margin-bottom: 10px;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.checkbox-label input {
-  margin: 0;
-  cursor: pointer;
-}
-
-.completed {
-  text-decoration: line-through;
-  color: #6c757d;
-}
-
-.project-actions {
-  margin-top: 40px;
-}
-
-.update-project-form {
-  display: grid;
   gap: 15px;
 }
 
-.update-project-form label {
-  font-weight: 600;
-}
-
-.update-project-form input, .update-project-form select {
-  padding: 10px;
-  font-size: 1rem;
+.checklist-input input {
+  flex-grow: 1;
+  padding: 14px;
+  font-size: 1.2rem;
   border-radius: 8px;
   border: 1px solid #ddd;
 }
 
-.action-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.update-button, .delete-button {
-  padding: 12px 20px;
-  font-size: 1rem;
+.checklist-input button {
+  padding: 12px 18px;
+  background-color: #007bff;
+  color: white;
   border-radius: 8px;
   border: none;
   cursor: pointer;
+  font-weight: 600;
+  min-width: 90px;
+  height: 100%;
 }
 
+/* 🎯 프로젝트 수정 버튼 정렬 */
+.project-actions {
+  display: flex;
+  flex-direction: column; /* 버튼을 세로 정렬 */
+  align-items: flex-start;
+  gap: 10px; /* 버튼 사이 거리 조정 */
+  position: relative; /* 버튼이 자연스럽게 정렬되도록 */
+}
+
+/* 프로젝트 수정 버튼 크기 조정 */
+.update-button, .delete-button {
+  padding: 14px 22px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  min-width: 160px; /* 버튼 크기 통일 */
+  text-align: center;
+}
+
+/* ✅ 수정 버튼 스타일 */
 .update-button {
-  background-color: #28a745;
+  background: linear-gradient(135deg, #56ccf2 0%, #2f80ed 100%);
   color: white;
 }
 
+/* ❌ 삭제 버튼 스타일 & 애니메이션 */
 .delete-button {
-  background-color: #dc3545;
+  background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
   color: white;
+  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
 }
 
-.edit-button {
-  background-color: #28a745;
-  color: white;
+.delete-button:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #ff5c7b 0%, #ff6ea5 100%);
+  box-shadow: 0 6px 12px rgba(255, 87, 87, 0.3);
+}
+
+/* 수정/삭제 버튼 컨테이너 */
+.action-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+/* 🖥️ 반응형 개선 */
+@media (max-width: 992px) {
+  .project-container {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "header header"
+      "notice checklist"
+      "upload team"
+      "actions actions";
+  }
+}
+
+@media (max-width: 600px) {
+  .project-container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "notice"
+      "checklist"
+      "upload"
+      "team"
+      "actions";
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .update-button, .delete-button {
+    width: 100%;
+  }
 }
