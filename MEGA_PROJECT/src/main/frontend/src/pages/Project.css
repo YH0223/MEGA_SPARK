@@ -1,4 +1,3 @@
-/* 🌟 프로젝트 전체 컨테이너 확대 */
 .project-container {
   max-width: 100%; /* 기존보다 확대 */
   margin: 20px 40px;
@@ -17,6 +16,10 @@
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  body {
+    zoom: 0.9; /* 90% 크기로 줄이기 */
+  }
+  
 }
 
 /* 🔔 헤더 스타일 */

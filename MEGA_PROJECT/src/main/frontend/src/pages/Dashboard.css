@@ -1,3 +1,7 @@
+body {
+  zoom: 0.9; /* 90% 크기로 줄이기 */
+}
+
 .dashboard-container {
   display: flex;
   height: 100vh;
@@ -284,4 +288,4 @@ table th {
 .progress-pending {
   width: 25%;
   background-color: #f44336; /* 빨간색 */
-}
+} 

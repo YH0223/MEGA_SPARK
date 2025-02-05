@@ -10,6 +10,8 @@ import Project from "./pages/Project";
 import Calendar from "./pages/Calendar";
 import NewProject from "./pages/NewProject";
 import Team from "./pages/Team";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 // 데이터 타입 정의
 interface Post {
@@ -45,6 +47,8 @@ const App = () => {
         <Route path="/Calendar" element={<Calendar />} />
         <Route path="/NewProject" element={<NewProject />} />
         <Route path="/Team" element={<Team />} />
+        <Route path="/Profile" element={<Profile />} />
+        <Route path="/Settings" element={<Settings />} />
       </Routes>
     </Router>
   );

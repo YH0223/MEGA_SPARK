@@ -12,8 +12,8 @@ const Dashboard = () => {
           <li><Link to="/newproject">New Project</Link></li>
           <li><Link to="/team">Team</Link></li>
           <li><Link to="/calendar">Calendar</Link></li>
-          <li>Promote</li>
-          <li>Help</li>
+          <li><Link to="/Profile">Profile</Link></li>
+          <li><Link to="/Settings">Settings</Link></li>
         </ul>
         <div className="sidebar-footer">
           <button className="upgrade-button">Upgrade Spark Trial !!!</button>
