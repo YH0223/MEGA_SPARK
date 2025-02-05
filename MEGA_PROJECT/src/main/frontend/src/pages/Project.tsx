@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Bell, FileText, CheckCircle, XCircle, UserPlus, Upload } from "lucide-react";
+import { Bell, FileText, CheckCircle, XCircle, UserPlus, Upload, Plus } from "lucide-react";
 import "./Project.css";
 
 interface NoticeData {
@@ -33,6 +33,10 @@ const ProjectDetails = () => {
   const [newMember, setNewMember] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+  const handleAddNotice = () => {
+    console.log("공지사항 추가");
+    alert("공지사항이 추가되었습니다!");
+  };
 
   const addTeamMember = () => {
     if (newMember.trim() !== "") {
@@ -62,7 +66,7 @@ const ProjectDetails = () => {
       alert("프로젝트가 삭제되었습니다!");
     }
   };
-
+  
   const addChecklistItem = () => {
     if (newItem.trim() !== "") {
       setChecklist([...checklist, { id: Date.now(), text: newItem, completed: false }]);
@@ -86,32 +90,37 @@ const ProjectDetails = () => {
       </div>
       {/* 📢 공지사항 */}
       <div className="notice-box">
-        <h2 className="notice-title">📢 공지사항</h2>
-      <table className="project-table">
-        <thead>
-          <tr>
-            <th>📄 제목</th>
-            <th>📌 태그</th>
-            <th>🕒 등록일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {[...Array(2)].map((_, index) => (
-            <tr key={index}>
-              <td><FileText size={18} /> 프로젝트 관련 공지 {index + 1}</td>
-              <td>{index % 2 === 0 ? <CheckCircle className="status-active" size={18} /> : <XCircle className="status-inactive" size={18} />}</td>
-              <td>2024-01-{10 + index}</td>
+        <div className="notice-header">
+          <h2 className="notice-title">📢 공지사항</h2>
+          <button className="add-notice-button" onClick={handleAddNotice}>
+            <Plus size={18} /> 추가하기
+          </button>
+        </div>
+        <table className="project-table">
+          <thead>
+            <tr>
+              <th>📄 제목</th>
+              <th>📌 태그</th>
+              <th>🕒 등록일</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {[...Array(2)].map((_, index) => (
+              <tr key={index}>
+                <td><FileText size={18} /> 프로젝트 관련 공지 {index + 1}</td>
+                <td>{index % 2 === 0 ? <CheckCircle className="status-active" size={18} /> : <XCircle className="status-inactive" size={18} />}</td>
+                <td>2024-01-{10 + index}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       {/* ✅ 체크리스트 */}
       <div className="checklist-section">
         <h2>체크리스트</h2>
         <div className="checklist-input">
           <input type="text" placeholder="새 체크리스트 추가..." value={newItem} onChange={(e) => setNewItem(e.target.value)} />
-          <button onClick={addChecklistItem}>추가</button>
+          <button className="add-checklist-button" onClick={addChecklistItem}>추가</button>
         </div>
         <div className="checklist-container">
           {checklist.map((item) => (

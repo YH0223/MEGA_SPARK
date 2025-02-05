@@ -1,17 +1,17 @@
 /* 🌟 프로젝트 전체 컨테이너 확대 */
 .project-container {
-  max-width: 1800px; /* 기존보다 확대 */
-  margin: 40px auto;
-  padding: 50px; /* 내부 패딩 증가 */
+  max-width: 100%; /* 기존보다 확대 */
+  margin: 20px 40px;
+  padding: 20px; /* 내부 패딩 증가 */
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3열 유지 */
   grid-template-rows: auto auto;
   gap: 20px;
   grid-auto-flow: dense;
   grid-template-areas:
-    "header header header"
-    "notice notice checklist"
-    "upload team actions";
+    "header header header header"
+    "notice notice notice checklist"
+    "upload team actions checklist";
   justify-content: center;
   align-items: center;
   background: #ffffff;
@@ -45,12 +45,61 @@
   gap: 15px; /* 버튼 간격 조정 */
 }
 
+.notice-box,
+.checklist-section,
+.file-upload-section,
+.team-section,
+.project-actions {
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 섹션별로 그림자 추가 */
+  border-radius: 10px; /* 둥근 모서리로 디자인 개선 */
+  padding: 20px;
+  background: rgb(248, 248, 248); /* 배경색 추가 */
+}
+
+.notice-header {
+  display: flex;
+  justify-content: space-between; /* 제목과 버튼을 양쪽 끝으로 정렬 */
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.add-notice-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-notice-button:hover {
+  background-color: #0056b3;
+}
+
+.checklist-section {
+  grid-area: checklist;
+  height: auto;
+  max-height: 500px; /* 원하는 최대 높이 설정 */
+  min-height: 500px;
+  overflow-y: auto; /* 스크롤 가능하도록 설정 */
+  min-width: 400px;
+}
+
+
 /* ✅ 체크리스트 버튼 위치 조정 */
 .checklist-input {
   display: flex;
-  align-items: center;
-  gap: 15px;
+  flex-direction: row; /* 세로 정렬 */
+  align-items: start; /* 왼쪽 정렬 */
+  gap: 10px; /* 버튼과 입력창 사이 간격 */
+  min-height: auto; /* 높이 제한 해제 */
 }
+
 
 .checklist-input input {
   flex-grow: 1;
@@ -58,6 +107,7 @@
   font-size: 1.2rem;
   border-radius: 8px;
   border: 1px solid #ddd;
+  width: auto;
 }
 
 .checklist-input button {

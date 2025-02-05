@@ -4,15 +4,11 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
-import Sidebar from './components/Sidebar/Sidebar';
-import Header from './components/Header/Header';
-import ProjectCard from './components/ProjectCard/ProjectCard';
 import './App.css';
 import Dashboard from "./pages/Dashboard";
 import Project from "./pages/Project";
 import Calendar from "./pages/Calendar";
 import NewProject from "./pages/NewProject";
-import NoticeDetail from "./pages/NoticeDetail";
 import Team from "./pages/Team";
 
 // 데이터 타입 정의
@@ -48,7 +44,6 @@ const App = () => {
         <Route path="/Project" element={<Project />} />
         <Route path="/Calendar" element={<Calendar />} />
         <Route path="/NewProject" element={<NewProject />} />
-        <Route path="/NoticeDetail" element={<NoticeDetail />} />
         <Route path="/Team" element={<Team />} />
       </Routes>
     </Router>
