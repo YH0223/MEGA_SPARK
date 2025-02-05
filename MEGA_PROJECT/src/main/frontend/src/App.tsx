@@ -18,6 +18,7 @@ axios.defaults.withCredentials = true;
 // 🔥 전역 로그인 상태를 관리할 Context 생성
 interface AuthContextType {
     isAuthenticated: boolean;
+    isLoading: boolean;
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -26,11 +27,20 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 // 🔥 로그인 여부에 따라 보호된 페이지를 가로채는 컴포넌트
 const PrivateRoute = ({ element }: { element: React.ReactElement }) => {
     const auth = useContext(AuthContext);
-    return auth?.isAuthenticated ? element : <Navigate to="/" />;
+
+    if (!auth) return <p>AuthContext가 없습니다.</p>;
+
+    // ✅ 세션 확인이 완료되지 않았으면 아무것도 렌더링하지 않음
+    if (auth.isLoading) {
+        return <p>세션 확인 중...</p>;
+    }
+
+    return auth.isAuthenticated ? element : <Navigate to="/" />;
 };
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // ✅ 로딩 상태 추가
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/session")
@@ -41,15 +51,18 @@ const App = () => {
             .catch(() => {
                 console.log("❌ 로그인 세션 없음");
                 setIsAuthenticated(false);
+            })
+            .finally(() => {
+                setIsLoading(false); // ✅ 세션 확인 완료
             });
     }, []);
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+        <AuthContext.Provider value={{ isAuthenticated, isLoading, setIsAuthenticated }}>
             <Router>
                 <Routes>
                     {/* 인증 관련 페이지 */}
-                    <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
+                    <Route path="/" element={isLoading ? <p>세션 확인 중...</p> : (isAuthenticated ? <Navigate to="/dashboard" /> : <Login />)} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
 

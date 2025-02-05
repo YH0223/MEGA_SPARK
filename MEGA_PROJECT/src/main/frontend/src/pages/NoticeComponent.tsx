@@ -4,6 +4,9 @@ import axios from "axios";
 import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
 import "./NoticeComponent.css";
 
+// ✅ Axios 기본 설정: 세션 유지
+axios.defaults.withCredentials = true;
+
 interface Notice {
     noticeId: number;
     noticeTitle: string;
@@ -16,11 +19,11 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
     const [newContext, setNewContext] = useState("");
     const [isWriting, setIsWriting] = useState(false);
     const navigate = useNavigate();
-    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!; // ✅ 인증 상태 가져오기
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!;
 
     /** ✅ 세션 유지 확인 */
     useEffect(() => {
-        axios.get("http://localhost:8080/api/session", { withCredentials: true })
+        axios.get("http://localhost:8080/api/session")
             .then(response => {
                 console.log("✅ 로그인 유지됨. 사용자:", response.data);
                 setIsAuthenticated(true);
@@ -41,9 +44,7 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
 
     const fetchNotices = async () => {
         try {
-            const response = await axios.get(`/notice/${projectId}`, {
-                withCredentials: true // ✅ 세션 유지
-            });
+            const response = await axios.get(`http://localhost:8080/notice/${projectId}`);
             console.log("📜 공지 목록 API 응답:", response.data);
             setNotices(response.data);
         } catch (error) {
@@ -71,9 +72,7 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
                 projectId: projectId
             };
 
-            await axios.post("http://localhost:8080/notice/create", requestBody, {
-                withCredentials: true // ✅ 세션 유지
-            });
+            await axios.post("http://localhost:8080/notice/create", requestBody);
 
             alert("공지사항이 작성되었습니다.");
             setNewTitle("");

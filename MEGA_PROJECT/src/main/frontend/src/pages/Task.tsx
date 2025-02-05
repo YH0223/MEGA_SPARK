@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
 import "./Task.css";
+import api from "../api";
+// ✅ Axios 기본 설정: 세션 유지
+axios.defaults.withCredentials = true;
 
 interface Task {
     taskId: number;
@@ -11,58 +16,77 @@ interface Task {
 const TaskComponent = ({ projectId }: { projectId: number }) => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [newTask, setNewTask] = useState("");
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!;
+    const navigate = useNavigate();
 
+    /** ✅ 세션 유지 확인 */
     useEffect(() => {
-        fetchTasks();
-    }, []);
+        axios.get("http://localhost:8080/api/session")
+            .then(response => {
+                console.log("✅ 로그인 유지됨. 사용자:", response.data);
+                setIsAuthenticated(true);
+            })
+            .catch(() => {
+                console.log("❌ 로그인 세션 없음");
+                setIsAuthenticated(false);
+                navigate("/"); // 미로그인 시 로그인 페이지로 이동
+            });
+    }, [setIsAuthenticated, navigate]);
+
+    /** ✅ Task 목록 불러오기 */
+    useEffect(() => {
+        if (isAuthenticated) {
+            fetchTasks();
+        }
+    }, [isAuthenticated]);
 
     const fetchTasks = async () => {
         try {
             const response = await axios.get(`/task/${projectId}`);
-            console.log("API 응답 데이터:", response.data); // ✅ 데이터가 올바르게 오는지 확인
+            console.log("API 응답 데이터:", response.data);
             setTasks(response.data);
         } catch (error) {
             console.error("Task 데이터를 불러오는 중 오류 발생:", error);
         }
     };
 
+    /** ✅ Task 추가 */
     const addTask = async () => {
         if (!newTask.trim()) return;
 
         try {
             const requestBody = {
-                taskName: newTask,  // ✅ 서버가 기대하는 필드명
+                taskName: newTask,
                 checking: false,
                 projectId: projectId
             };
 
-            console.log("🔵 추가 요청 데이터:", requestBody); // ✅ Task 추가 요청 로그 확인
-
+            console.log("🔵 추가 요청 데이터:", requestBody);
             await axios.post(`/task/create`, requestBody);
 
-            console.log("🟢 Task 추가 성공!"); // ✅ Task가 성공적으로 추가되었는지 확인
-            setNewTask(""); // 입력창 초기화
-
+            console.log("🟢 Task 추가 성공!");
+            setNewTask("");
             fetchTasks(); // ✅ 추가 후 목록 새로고침
         } catch (error) {
             console.error("🛑 Task 추가 중 오류 발생:", error);
         }
     };
 
+    /** ✅ Task 삭제 */
     const deleteTask = async (taskId: number) => {
         try {
-            console.log(`🗑️ 삭제 요청: Task ID ${taskId}`); // ✅ 삭제 요청 로그 확인
+            console.log(`🗑️ 삭제 요청: Task ID ${taskId}`);
 
             await axios.delete(`/task/delete/${taskId}`);
 
-            console.log(`✅ 삭제 완료: Task ID ${taskId}`); // ✅ 삭제 성공 로그 확인
-
-            setTasks((prevTasks) => prevTasks.filter((task) => task.taskId !== taskId)); // ✅ UI 즉시 반영
+            console.log(`✅ 삭제 완료: Task ID ${taskId}`);
+            setTasks(prevTasks => prevTasks.filter(task => task.taskId !== taskId));
         } catch (error) {
             console.error(`🛑 삭제 실패: Task ID ${taskId}`, error);
         }
     };
 
+    /** ✅ Task 상태 변경 (체크박스) */
     const toggleTask = async (taskId: number) => {
         try {
             console.log(`🔄 체크 상태 변경 요청: Task ID ${taskId}`);
@@ -70,13 +94,11 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
             await axios.put(`/task/toggle/${taskId}`);
 
             console.log(`✅ 체크 상태 변경 완료: Task ID ${taskId}`);
-
-            fetchTasks(); // ✅ 목록 새로고침 (UI 업데이트)
+            fetchTasks(); // ✅ 목록 새로고침
         } catch (error) {
             console.error(`🛑 체크 상태 변경 실패: Task ID ${taskId}`, error);
         }
     };
-
 
     return (
         <div className="task-container">
@@ -91,16 +113,13 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
                 <button onClick={addTask}>추가</button>
             </div>
             <ul className="task-list">
-                {tasks.map((task) => {
-                    console.log("개별 Task 데이터:", task); // ✅ 개별 Task 데이터 확인
-                    return (
-                        <li key={task.taskId} className={task.checking ? "completed" : ""}>
-                            <input type="checkbox" checked={task.checking} onChange={() => toggleTask(task.taskId)} />
-                            <span>{task.taskName}</span> {/* ✅ 여기서 값이 있는지 확인 */}
-                            <button onClick={() => deleteTask(task.taskId)}>삭제</button>
-                        </li>
-                    );
-                })}
+                {tasks.map(task => (
+                    <li key={task.taskId} className={task.checking ? "completed" : ""}>
+                        <input type="checkbox" checked={task.checking} onChange={() => toggleTask(task.taskId)} />
+                        <span>{task.taskName}</span>
+                        <button onClick={() => deleteTask(task.taskId)}>삭제</button>
+                    </li>
+                ))}
             </ul>
         </div>
     );

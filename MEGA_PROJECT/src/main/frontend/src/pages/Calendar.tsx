@@ -5,8 +5,8 @@ import "./Calendar.css";
 interface Project {
     projectId: number;
     projectName: string;
-    startdate: string; // "YYYY-MM-DD"
-    deadline: string;  // "YYYY-MM-DD"
+    startDate: string;
+    deadline: string;
 }
 
 const Calendar = () => {
@@ -44,13 +44,11 @@ const Calendar = () => {
         daysArray.push(new Date(lastDayOfMonth.getFullYear(), lastDayOfMonth.getMonth() + 1, i));
     }
 
-    console.log("📌 Days in Calendar:", daysArray.map(d => d.toISOString().split("T")[0]));
-
     const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
 
     const getColorForProject = (projectId: number) => {
-        const colors = ["#ff4d4d", "#4da6ff", "#4dff4d", "#ffcc00", "#cc66ff"];
+        const colors = ["#ff4d4d", "#4da6ff", "#094333", "#ffcc00", "#cc66ff"];
         return colors[projectId % colors.length];
     };
 
@@ -65,37 +63,30 @@ const Calendar = () => {
                 {daysInWeek.map((day, index) => (
                     <div key={index} className="calendar-day-header">{day}</div>
                 ))}
-                {daysArray.map((day, index) => (
-                    <div key={index} className={`calendar-day ${day.getMonth() !== currentDate.getMonth() ? "calendar-other-month" : ""}`}>
-                        {day.getDate()}
-                    </div>
-                ))}
+                {daysArray.map((day, index) => {
+                    const formattedDate = day.toISOString().split("T")[0];
 
-                {projects.map(project => {
-                    const start = new Date(project.startdate);
-                    const end = new Date(project.deadline);
-                    const startDateStr = start.toISOString().split("T")[0];
-                    const endDateStr = end.toISOString().split("T")[0];
-
-                    console.log(`📌 프로젝트: ${project.projectName}, 시작: ${startDateStr}, 종료: ${endDateStr}`);
-
-                    const startIndex = daysArray.findIndex(d => d.toISOString().split("T")[0] === startDateStr);
-                    const endIndex = daysArray.findIndex(d => d.toISOString().split("T")[0] === endDateStr);
-
-                    console.log(`📌 찾은 Start Index: ${startIndex}, End Index: ${endIndex}`);
-
-                    if (startIndex === -1 || endIndex === -1) return null;
+                    // ✅ 날짜 비교 시 로컬 기준으로 맞추기 위해 startDate를 조정
+                    const projectsForDay = projects.filter(project => {
+                        const start = new Date(project.startDate + "T00:00:00");  // ✅ 하루 밀리는 문제 해결
+                        const end = new Date(project.deadline + "T23:59:59");
+                        return day >= start && day <= end;
+                    });
 
                     return (
-                        <div
-                            key={project.projectId}
-                            className="calendar-project-bar"
-                            style={{
-                                gridColumn: `${startIndex + 1} / ${endIndex + 2}`,
-                                backgroundColor: getColorForProject(project.projectId)
-                            }}
-                        >
-                            {project.projectName}
+                        <div key={index} className={`calendar-day ${day.getMonth() !== currentDate.getMonth() ? "calendar-other-month" : ""}`}>
+                            {day.getDate()}
+                            <div className="project-bars">
+                                {projectsForDay.map((project) => (
+                                    <div
+                                        key={project.projectId}
+                                        className="calendar-project-bar"
+                                        style={{backgroundColor: getColorForProject(project.projectId)}}
+                                    >
+                                        {project.projectName}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     );
                 })}

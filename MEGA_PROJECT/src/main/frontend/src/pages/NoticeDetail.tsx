@@ -10,7 +10,8 @@ interface Notice {
     noticeContext: string;
     noticeCreatedAt: string;
 }
-
+// ✅ Axios 기본 설정: 세션 유지
+axios.defaults.withCredentials = true;
 const NoticeDetail = () => {
     const { noticeId } = useParams<{ noticeId: string }>();
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const NoticeDetail = () => {
 
     /** ✅ 세션 유지 확인 */
     useEffect(() => {
-        axios.get("http://localhost:8080/api/session", { withCredentials: true })
+        axios.get("http://localhost:8080/api/session")
             .then(response => {
                 console.log("✅ 로그인 유지됨. 사용자:", response.data);
                 setIsAuthenticated(true);
@@ -43,25 +44,28 @@ const NoticeDetail = () => {
 
     const fetchNotice = async () => {
         try {
+            console.log(`🔍 요청할 공지사항 ID: ${noticeId}`);
             const response = await axios.get(`http://localhost:8080/notice/detail/${noticeId}`, {
-                withCredentials: true // ✅ 세션 유지
+                withCredentials: true
             });
+
+            console.log("✅ 공지사항 불러오기 성공:", response.data);
             setNotice(response.data);
             setEditTitle(response.data.noticeTitle);
             setEditContext(response.data.noticeContext);
         } catch (error) {
-            console.error("공지사항 불러오기 오류:", error);
+            console.error("❌ 공지사항 불러오기 오류:", error);
         }
     };
 
-    const goToList = () => {
-        navigate(-1); // 이전 페이지로 이동 (공지 목록)
-    };
 
+    const goToList = () => {
+        navigate(-1); // 🔥 이전 페이지로 이동
+    };
     /** ✅ 공지 수정 */
     const updateNotice = async () => {
         try {
-            await axios.put(`/update/${noticeId}`, {
+            await axios.put(`http://localhost:8080/notice/update/${noticeId}`, {
                 noticeTitle: editTitle,
                 noticeContext: editContext
             }, { withCredentials: true });
@@ -79,7 +83,7 @@ const NoticeDetail = () => {
         if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
         try {
-            await axios.delete(`/notice/delete/${noticeId}`, { withCredentials: true });
+            await axios.delete(`http://localhost:8080/notice/delete/${noticeId}`, { withCredentials: true });
             alert("공지사항이 삭제되었습니다.");
             navigate(-1);
         } catch (error) {

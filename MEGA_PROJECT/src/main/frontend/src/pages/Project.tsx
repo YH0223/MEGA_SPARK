@@ -22,7 +22,8 @@ const projectData: NoticeData = {
   Period: "2024-01-01 ~ 2024-12-31",
   Status: "Active",
 };
-
+// ✅ Axios 기본 설정: 세션 유지
+axios.defaults.withCredentials = true;
 const ProjectDetails = () => {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const ProjectDetails = () => {
     }
 
     axios
-        .get("http://localhost:8080/api/session", { withCredentials: true })
+        .get("http://localhost:8080/api/session")
         .then(response => {
           console.log("✅ 로그인 유지됨. 사용자:", response.data);
           authContext.setIsAuthenticated(true);
