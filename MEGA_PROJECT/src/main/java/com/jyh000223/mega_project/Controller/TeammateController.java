@@ -1,14 +1,18 @@
 package com.jyh000223.mega_project.Controller;
 
 import com.jyh000223.mega_project.DTO.TeammateDTO;
+import com.jyh000223.mega_project.Entities.Teammate;
 import com.jyh000223.mega_project.Service.TeammateService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class TeammateController {
 
     private final TeammateService teammateService;
@@ -17,25 +21,30 @@ public class TeammateController {
         this.teammateService = teammateService;
     }
 
+    /** ✅ 프로젝트 ID 기준으로 팀원 목록 검색 */
+    @GetMapping("/team/{projectId}")
+    public ResponseEntity<List<Teammate>> getTeammatesByProject(@PathVariable int projectId, HttpSession session) {
+        // 세션 확인
+        String currentUser = (String) session.getAttribute("user_id");
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        List<Teammate> teammates = teammateService.getTeammatesByProject(projectId);
+        return ResponseEntity.ok(teammates);
+    }
+
+    /** ✅ 팀원 추가 */
     @PostMapping("/addteammate")
-    public ResponseEntity<String> addTeammate(@RequestBody TeammateDTO teammateDTO, HttpSession httpSession) {
-        // 세션에서 사용자 정보 가져오기
-        String currentUser = (String) httpSession.getAttribute("user_id");
+    public ResponseEntity<String> addTeammate(@RequestBody TeammateDTO teammateDTO, HttpSession session) {
+        String currentUser = (String) session.getAttribute("user_id");
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 없습니다.");
         }
 
-        // 요청 데이터 검증
-        if (teammateDTO.getUserId() == null || teammateDTO.getProjectId() == 0) {
-            return ResponseEntity.badRequest().body("잘못된 요청 데이터입니다.");
-        }
-
-        // 서비스 호출하여 팀원 추가 처리
         String result = teammateService.addTeammate(teammateDTO.getUserId(), teammateDTO.getProjectId());
         if ("200".equals(result)) {
             return ResponseEntity.ok("팀원 추가 성공");
-        } else if ("403".equals(result)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
         } else if ("404".equals(result)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("프로젝트가 존재하지 않습니다.");
         }
@@ -43,25 +52,17 @@ public class TeammateController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("팀원 추가 중 오류 발생");
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteTeammate(@RequestBody TeammateDTO teammateDTO, HttpSession httpSession) {
-        // 세션에서 사용자 정보 가져오기
-        String currentUser = (String) httpSession.getAttribute("user_id");
+    /** ✅ 팀원 삭제 */
+    @DeleteMapping("/deleteteammate")
+    public ResponseEntity<String> deleteTeammate(@RequestParam String userId, @RequestParam int projectId, HttpSession session) {
+        String currentUser = (String) session.getAttribute("user_id");
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 없습니다.");
         }
 
-        // 요청 데이터 검증
-        if (teammateDTO.getUserId() == null || teammateDTO.getProjectId() == 0) {
-            return ResponseEntity.badRequest().body("잘못된 요청 데이터입니다.");
-        }
-
-        // 서비스 호출하여 팀원 삭제 처리
-        String result = teammateService.deleteTeammate(teammateDTO.getUserId(), teammateDTO.getProjectId(), currentUser);
+        String result = teammateService.deleteTeammate(userId, projectId, currentUser);
         if ("200".equals(result)) {
             return ResponseEntity.ok("팀원 삭제 성공");
-        } else if ("403".equals(result)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
         } else if ("404".equals(result)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("팀원 또는 프로젝트가 존재하지 않습니다.");
         }
@@ -69,4 +70,3 @@ public class TeammateController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("팀원 삭제 중 오류 발생");
     }
 }
-

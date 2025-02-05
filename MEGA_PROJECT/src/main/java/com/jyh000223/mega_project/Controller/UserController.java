@@ -3,16 +3,21 @@ package com.jyh000223.mega_project.Controller;
 import com.jyh000223.mega_project.DTO.UserDTO;
 import com.jyh000223.mega_project.Entities.User;
 import com.jyh000223.mega_project.Repository.UserRepository;
+import com.jyh000223.mega_project.Service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
-
+    @Autowired
+    private UserService userService;
     @Autowired
     private UserRepository userRepository;
 
@@ -35,6 +40,17 @@ public class UserController {
 
         userRepository.save(user);
         return ResponseEntity.ok("User inserted successfully!");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> searchUsers(@RequestParam String search, HttpSession session) {
+        String currentUser = (String) session.getAttribute("user_id");
+        if (currentUser == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        List<User> users = userService.searchUsersByName(search);
+        return ResponseEntity.ok(users);
     }
 
 

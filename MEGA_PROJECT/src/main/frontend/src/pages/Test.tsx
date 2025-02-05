@@ -13,7 +13,7 @@ const ProjectManagement = () => {
   const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const API_URL = "http://localhost:8080/api";  // Change this URL to your backend API
+  const API_URL = "http://localhost:8080";  // Change this URL to your backend API
 
   // 프로젝트 생성 함수
   const createProject = async (e: React.FormEvent) => {

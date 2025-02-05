@@ -11,7 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Project from "./pages/Project";
 import Calendar from "./pages/Calendar";
 import NewProject from "./pages/NewProject";
-
+import Team from "./pages/Team"
 // Axios 기본 설정 (세션 유지)
 axios.defaults.withCredentials = true;
 
@@ -76,6 +76,7 @@ const App = () => {
                     <Route path="/task/:projectId" element={<PrivateRoute element={<TaskPage />} />} />
                     <Route path="/notice/:projectId" element={<PrivateRoute element={<NoticePage />} />} />
                     <Route path="/notice/detail/:noticeId" element={<PrivateRoute element={<NoticeDetail />} />} />
+                    <Route path="/Team" element={<PrivateRoute element={<Team />}/>} />
                 </Routes>
             </Router>
         </AuthContext.Provider>
