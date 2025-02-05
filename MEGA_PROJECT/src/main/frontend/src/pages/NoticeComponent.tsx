@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
 import "./NoticeComponent.css";
 
 interface Notice {
@@ -15,14 +16,34 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
     const [newContext, setNewContext] = useState("");
     const [isWriting, setIsWriting] = useState(false);
     const navigate = useNavigate();
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!; // ✅ 인증 상태 가져오기
 
+    /** ✅ 세션 유지 확인 */
     useEffect(() => {
-        fetchNotices();
-    }, []);
+        axios.get("http://localhost:8080/api/session", { withCredentials: true })
+            .then(response => {
+                console.log("✅ 로그인 유지됨. 사용자:", response.data);
+                setIsAuthenticated(true);
+            })
+            .catch(() => {
+                console.log("❌ 로그인 세션 없음");
+                setIsAuthenticated(false);
+                navigate("/"); // 미로그인 시 로그인 페이지로 이동
+            });
+    }, [setIsAuthenticated, navigate]);
+
+    /** ✅ 공지 목록 불러오기 */
+    useEffect(() => {
+        if (isAuthenticated) {
+            fetchNotices();
+        }
+    }, [isAuthenticated]);
 
     const fetchNotices = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/notice/${projectId}`);
+            const response = await axios.get(`/notice/${projectId}`, {
+                withCredentials: true // ✅ 세션 유지
+            });
             console.log("📜 공지 목록 API 응답:", response.data);
             setNotices(response.data);
         } catch (error) {
@@ -36,7 +57,7 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
         navigate(`/notice/detail/${noticeId}`);
     };
 
-    /** ✅ 공지 작성 함수 */
+    /** ✅ 공지 작성 */
     const addNotice = async () => {
         if (!newTitle.trim() || !newContext.trim()) {
             alert("제목과 내용을 입력해주세요.");
@@ -50,7 +71,10 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
                 projectId: projectId
             };
 
-            await axios.post("http://localhost:8080/notice/create", requestBody);
+            await axios.post("http://localhost:8080/notice/create", requestBody, {
+                withCredentials: true // ✅ 세션 유지
+            });
+
             alert("공지사항이 작성되었습니다.");
             setNewTitle("");
             setNewContext("");
@@ -60,6 +84,8 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
             console.error("📜 공지 추가 중 오류 발생:", error);
         }
     };
+
+    if (!isAuthenticated) return <p>세션 확인 중...</p>;
 
     return (
         <div className="notice-container">

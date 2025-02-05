@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import api from "../api"; // ✅ axios 인스턴스
+import api from "../api";
 import "./Calendar.css";
 
 interface Project {
     projectId: number;
     projectName: string;
-    startdate: string;
-    deadline: string;
+    startdate: string; // "YYYY-MM-DD"
+    deadline: string;  // "YYYY-MM-DD"
 }
 
 const Calendar = () => {
@@ -14,10 +14,11 @@ const Calendar = () => {
     const [projects, setProjects] = useState<Project[]>([]);
 
     useEffect(() => {
-        api.get("/calendar_project")
+        api.get("/api/calendar_project")
             .then(response => {
                 if (Array.isArray(response.data)) {
                     setProjects(response.data);
+                    console.log("✅ 프로젝트 데이터 받아옴:", response.data);
                 } else {
                     console.error("❌ API response is not an array:", response.data);
                 }
@@ -43,13 +44,14 @@ const Calendar = () => {
         daysArray.push(new Date(lastDayOfMonth.getFullYear(), lastDayOfMonth.getMonth() + 1, i));
     }
 
+    console.log("📌 Days in Calendar:", daysArray.map(d => d.toISOString().split("T")[0]));
+
     const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
 
-    // ✅ 프로젝트별 색상 지정
     const getColorForProject = (projectId: number) => {
         const colors = ["#ff4d4d", "#4da6ff", "#4dff4d", "#ffcc00", "#cc66ff"];
-        return colors[projectId % colors.length]; // 프로젝트 ID에 따라 색상을 순환적으로 할당
+        return colors[projectId % colors.length];
     };
 
     return (
@@ -63,20 +65,25 @@ const Calendar = () => {
                 {daysInWeek.map((day, index) => (
                     <div key={index} className="calendar-day-header">{day}</div>
                 ))}
-                {daysArray.map((day, index) => {
-                    const formattedDate = day.toISOString().split("T")[0];
-                    return (
-                        <div key={index} className={`calendar-day ${day.getMonth() !== currentDate.getMonth() ? "calendar-other-month" : ""}`}>
-                            {day.getDate()}
-                        </div>
-                    );
-                })}
+                {daysArray.map((day, index) => (
+                    <div key={index} className={`calendar-day ${day.getMonth() !== currentDate.getMonth() ? "calendar-other-month" : ""}`}>
+                        {day.getDate()}
+                    </div>
+                ))}
 
                 {projects.map(project => {
-                    const start = new Date(`${project.startdate}T00:00:00`);
-                    const end = new Date(`${project.deadline}T23:59:59`);
-                    const startIndex = daysArray.findIndex(d => d.toISOString().split("T")[0] === project.startdate);
-                    const endIndex = daysArray.findIndex(d => d.toISOString().split("T")[0] === project.deadline);
+                    const start = new Date(project.startdate);
+                    const end = new Date(project.deadline);
+                    const startDateStr = start.toISOString().split("T")[0];
+                    const endDateStr = end.toISOString().split("T")[0];
+
+                    console.log(`📌 프로젝트: ${project.projectName}, 시작: ${startDateStr}, 종료: ${endDateStr}`);
+
+                    const startIndex = daysArray.findIndex(d => d.toISOString().split("T")[0] === startDateStr);
+                    const endIndex = daysArray.findIndex(d => d.toISOString().split("T")[0] === endDateStr);
+
+                    console.log(`📌 찾은 Start Index: ${startIndex}, End Index: ${endIndex}`);
+
                     if (startIndex === -1 || endIndex === -1) return null;
 
                     return (
@@ -84,7 +91,7 @@ const Calendar = () => {
                             key={project.projectId}
                             className="calendar-project-bar"
                             style={{
-                                gridColumn: `${startIndex + 1} / ${endIndex + 2}`, // ✅ 프로젝트 시작일부터 종료일까지 바 표시
+                                gridColumn: `${startIndex + 1} / ${endIndex + 2}`,
                                 backgroundColor: getColorForProject(project.projectId)
                             }}
                         >

@@ -18,7 +18,7 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
 
     const fetchTasks = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/task/${projectId}`);
+            const response = await axios.get(`/task/${projectId}`);
             console.log("API 응답 데이터:", response.data); // ✅ 데이터가 올바르게 오는지 확인
             setTasks(response.data);
         } catch (error) {
@@ -38,7 +38,7 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
 
             console.log("🔵 추가 요청 데이터:", requestBody); // ✅ Task 추가 요청 로그 확인
 
-            await axios.post(`http://localhost:8080/task/create`, requestBody);
+            await axios.post(`/task/create`, requestBody);
 
             console.log("🟢 Task 추가 성공!"); // ✅ Task가 성공적으로 추가되었는지 확인
             setNewTask(""); // 입력창 초기화
@@ -53,7 +53,7 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
         try {
             console.log(`🗑️ 삭제 요청: Task ID ${taskId}`); // ✅ 삭제 요청 로그 확인
 
-            await axios.delete(`http://localhost:8080/task/delete/${taskId}`);
+            await axios.delete(`/task/delete/${taskId}`);
 
             console.log(`✅ 삭제 완료: Task ID ${taskId}`); // ✅ 삭제 성공 로그 확인
 
@@ -67,7 +67,7 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
         try {
             console.log(`🔄 체크 상태 변경 요청: Task ID ${taskId}`);
 
-            await axios.put(`http://localhost:8080/task/toggle/${taskId}`);
+            await axios.put(`/task/toggle/${taskId}`);
 
             console.log(`✅ 체크 상태 변경 완료: Task ID ${taskId}`);
 

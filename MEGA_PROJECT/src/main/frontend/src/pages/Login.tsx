@@ -25,7 +25,7 @@ const Login: React.FC = () => {
         try {
             console.log("📡 로그인 요청 전송:", formData);
 
-            const response = await axios.post("http://localhost:8080/api/login", formData, {
+            const response = await axios.post("/api/login", formData, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true, // ✅ 세션 유지
             });
