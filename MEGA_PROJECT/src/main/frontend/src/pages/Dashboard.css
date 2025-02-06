@@ -1,3 +1,6 @@
+.body {
+  zoom: 0.9 /* 90% 크기로 줄이기 */
+}
 .dashboard-container {
   display: flex;
   height: 100vh;
@@ -154,6 +157,7 @@ table td {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  cursor:pointer;
 }
 
 table th {
@@ -247,12 +251,6 @@ table th {
 .user-info span {
   font-size: 0.9rem;
   color: #aaa;
-}
-
-.dashboard-container {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 20px;
 }
 
 /* 📌 테이블 스타일 유지 */
