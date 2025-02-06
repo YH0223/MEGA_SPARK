@@ -2,6 +2,7 @@ package com.jyh000223.mega_project.Repository;
 
 import com.jyh000223.mega_project.Entities.Teammate;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface TeammateRepository extends JpaRepository<Teammate, Integer> {
     List<Teammate> findAllByUserId(String userId);
 
     List<Teammate> findAllByProjectId(int projectId);
+
+    boolean existsByUserIdAndProjectId(String userId, int projectId);
+
+
 }

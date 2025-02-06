@@ -18,6 +18,10 @@ public class TeammateService {
         this.projectRepository = projectRepository;
     }
 
+    public boolean isTeammateExists(String userId, int projectId) {
+        return teammateRepository.existsByUserIdAndProjectId(userId, projectId);
+    }
+
     /** ✅ 특정 프로젝트의 팀원 목록 조회 */
     public List<Teammate> getTeammatesByProject(int projectId) {
         return teammateRepository.findAllByProjectId(projectId);

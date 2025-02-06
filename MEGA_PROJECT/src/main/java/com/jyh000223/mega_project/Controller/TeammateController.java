@@ -42,6 +42,12 @@ public class TeammateController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 없습니다.");
         }
 
+        // ✅ 이미 추가된 팀원인지 확인
+        boolean alreadyExists = teammateService.isTeammateExists(teammateDTO.getUserId(), teammateDTO.getProjectId());
+        if (alreadyExists) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 추가된 팀원입니다.");
+        }
+
         String result = teammateService.addTeammate(teammateDTO.getUserId(), teammateDTO.getProjectId());
         if ("200".equals(result)) {
             return ResponseEntity.ok("팀원 추가 성공");
