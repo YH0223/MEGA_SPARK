@@ -42,6 +42,12 @@ public class UserController {
         return ResponseEntity.ok("User inserted successfully!");
     }
 
+    @GetMapping("/searchUsers")
+    public ResponseEntity<List<User>> searchUsers(@RequestParam String query) {
+        List<User> users = userRepository.findByUserIdContaining(query);
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping
     public ResponseEntity<List<User>> searchUsers(@RequestParam String search, HttpSession session) {
         String currentUser = (String) session.getAttribute("user_id");
