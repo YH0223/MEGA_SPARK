@@ -1,0 +1,61 @@
+/* 설정 페이지 컨테이너 */
+.settings-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 폼 그룹 스타일 */
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: auto; /* 텍스트를 왼쪽으로 붙이기 */
+}
+
+/* 다크 모드 토글 (기본 체크박스 스타일) */
+.form-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #1f387e; /* 체크박스 색상 */
+}
+
+/* 다크 모드 스타일 */
+body.dark-mode {
+    background: #1e1e1e;
+    color: white;
+}
+
+body.dark-mode .settings-container {
+    background: #333;
+    color: white;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* 로그아웃 버튼 */
+.logout-button {
+    width: 100%;
+    padding: 10px;
+    background: #d32f2f;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.logout-button:hover {
+    background: #b71c1c;
+}

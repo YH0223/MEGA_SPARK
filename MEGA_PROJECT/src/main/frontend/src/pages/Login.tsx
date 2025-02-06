@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
-
+import "./Login.css"
 interface FormData {
     user_id: string;
     password: string;
@@ -44,22 +44,45 @@ const Login: React.FC = () => {
 
     return (
         <div className="auth-container">
-            <div className="auth-left">
-                <h1>Spark</h1>
+            {/* 🎥 배경 비디오 추가 */}
+            <div className="video-wrapper">
+                <video autoPlay loop muted playsInline className="background-video">
+                    <source src="/videos/Spark_main.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
             </div>
-            <div className="auth-right">
-                <h2>Welcome Back!</h2>
-                <p>Login to your account</p>
-                <form onSubmit={handleSubmit}>
-                    <input type="text" name="user_id" placeholder="USERID" value={formData.user_id} onChange={handleChange} />
-                    <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
-                    <button type="submit">Login</button>
-                </form>
-                {error && <p style={{ color: "red" }}>{error}</p>}
-                <Link to="/forgot-password">Forgot Password?</Link>
-                <Link to="/register">
-                    <button className="register-button">Register</button>
-                </Link>
+
+            <div className="auth-content">
+                <div className="auth-left">
+                    <h1>Spark</h1>
+                </div>
+
+                <div className="auth-right">
+                    <h2>Welcome Back!</h2>
+                    <p>Login to your account</p>
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            name="user_id"
+                            placeholder="ID"
+                            value={formData.user_id}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={handleChange}
+                        />
+                        <button type="submit">Login</button>
+                    </form>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    <Link to="/forgot-password">Forgot Password?</Link>
+                    <Link to="/register">
+                        <button className="register-button">Register</button>
+                    </Link>
+                </div>
             </div>
         </div>
     );

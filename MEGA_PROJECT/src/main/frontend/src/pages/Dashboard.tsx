@@ -25,31 +25,36 @@ const Dashboard = () => {
     }
   }, [isAuthenticated]);
 
+
   return (
       <div className="dashboard-container">
         <nav className="sidebar">
           <h2>from Spark</h2>
           <ul>
             <li className="active">Dashboard</li>
-            <li><Link to="/newproject">Projects</Link></li>
-            <li>Team</li>
+            <li><Link to="/newproject">New Project</Link></li>
+            <li><Link to="/team">Team</Link></li>
             <li><Link to="/calendar">Calendar</Link></li>
-            <li>Promote</li>
-            <li>Help</li>
+            <li><Link to="/Profile">Profile</Link></li>
+            <li><Link to="/Settings">Settings</Link></li>
           </ul>
           <div className="sidebar-footer">
             <button className="upgrade-button">Upgrade Spark Trial !!!</button>
             <div className="user-info">
-              <img src="https://via.placeholder.com/40" alt="그림" style={{ borderRadius: "50%" }} />
-              {/* ✅ 로그인한 사용자 ID 표시 */}
-              {userId ? <span>{userId}</span> : <span>Guest</span>}
+              <img
+                  src="https://via.placeholder.com/40"
+                  alt="그림"
+                  style={{ borderRadius: "50%" }}
+              />
+              ID
+              Project Spark
             </div>
           </div>
         </nav>
 
         <main className="dashboard-main">
           <header className="dashboard-header">
-            <h1>Hello {userId || "Guest"} 👋</h1> {/* ✅ 로그인한 사용자 ID 표시 */}
+            <h1>Hello ID 👋</h1>
           </header>
 
           <section className="stats-container">
@@ -92,7 +97,35 @@ const Dashboard = () => {
                 <td>Web Development</td>
                 <td>janedoe@example.com</td>
                 <td>Jan 2025 - Jun 2025</td>
-                <td className="status-active">In Progress</td>
+                <td>
+                  <div className="progress-container">
+                    <div className="progress-bar progress-in-progress">In Progress</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>React Native</td>
+                <td>John Smith</td>
+                <td>Mobile Development</td>
+                <td>johnsmith@example.com</td>
+                <td>Feb 2025 - Aug 2025</td>
+                <td>
+                  <div className="progress-container">
+                    <div className="progress-bar progress-completed">Completed</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>AI Model Training</td>
+                <td>Lisa Kim</td>
+                <td>Machine Learning</td>
+                <td>lisakim@example.com</td>
+                <td>Mar 2025 - Sep 2025</td>
+                <td>
+                  <div className="progress-container">
+                    <div className="progress-bar progress-pending">Pending</div>
+                  </div>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -109,5 +142,4 @@ const Dashboard = () => {
       </div>
   );
 };
-
 export default Dashboard;

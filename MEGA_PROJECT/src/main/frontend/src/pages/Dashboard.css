@@ -1,3 +1,7 @@
+body {
+  zoom: 0.9; /* 90% 크기로 줄이기 */
+}
+
 .dashboard-container {
   display: flex;
   height: 100vh;
@@ -123,7 +127,7 @@
   border-radius: 10px;
   padding: 1.5rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  
+
 }
 
 .table-container h3 {
@@ -248,3 +252,40 @@ table th {
   font-size: 0.9rem;
   color: #aaa;
 }
+
+/* 진행도 막대 스타일 */
+.progress-container {
+  width: 100px;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  text-align: center;
+  line-height: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  border-radius: 10px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* 진행 상태별 색상 */
+.progress-in-progress {
+  width: 50%;
+  background-color: #ff9800; /* 주황색 */
+}
+
+.progress-completed {
+  width: 100%;
+  background-color: #4caf50; /* 초록색 */
+}
+
+.progress-pending {
+  width: 25%;
+  background-color: #f44336; /* 빨간색 */
+} 
