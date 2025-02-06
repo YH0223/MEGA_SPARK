@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import  React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
@@ -89,7 +89,7 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
     return (
         <div className="notice-container">
             <div className="notice-header">
-                <h2>공지 목록</h2>
+                <h2>프로젝트 게시판</h2>
                 <button className="right-align-button" onClick={() => setIsWriting(!isWriting)}>
                     {isWriting ? "취소" : "작성"}
                 </button>

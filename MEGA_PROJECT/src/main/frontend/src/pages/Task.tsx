@@ -102,13 +102,13 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
 
     return (
         <div className="task-container">
-            <h2>Task 목록</h2>
+            <h2>체크리스트 목록</h2>
             <div className="task-input">
                 <input
                     type="text"
                     value={newTask}
                     onChange={(e) => setNewTask(e.target.value)}
-                    placeholder="새 Task 추가..."
+                    placeholder="체크리스트 작성"
                 />
                 <button onClick={addTask}>추가</button>
             </div>

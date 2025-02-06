@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Bell, FileText, CheckCircle, XCircle, UserPlus, Upload, Plus } from "lucide-react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import TaskComponent from "./Task"; // ✅ TaskComponent 추가
+import NoticeComponent from "./NoticeComponent";
 import "./Project.css";
 
 // ✅ 프로젝트 데이터 타입 정의
@@ -61,61 +63,12 @@ const ProjectDetails = () => {
           </div>
         </div>
 
-        {/* 📢 공지사항 */}
-        <div className="notice-box">
-          <div className="notice-header">
-            <h2 className="notice-title">📢 공지사항</h2>
-            <button className="add-notice-button" onClick={handleAddNotice}>
-              <Plus size={18} /> 추가하기
-            </button>
-          </div>
-          <table className="project-table">
-            <thead>
-            <tr>
-              <th>📄 제목</th>
-              <th>📌 태그</th>
-              <th>🕒 등록일</th>
-            </tr>
-            </thead>
-            <tbody>
-            {[...Array(2)].map((_, index) => (
-                <tr key={index}>
-                  <td><FileText size={18} /> 프로젝트 관련 공지 {index + 1}</td>
-                  <td>{index % 2 === 0 ? <CheckCircle className="status-active" size={18} /> : <XCircle className="status-inactive" size={18} />}</td>
-                  <td>2024-01-{10 + index}</td>
-                </tr>
-            ))}
-            </tbody>
-          </table>
-        </div>
+        {/* ✅ Notice 기능 가져오기 */}
+        <NoticeComponent projectId={Number(projectId)} />
 
-        {/* ✅ 체크리스트 */}
-        <div className="checklist-section">
-          <h2>체크리스트</h2>
-          <div className="checklist-input">
-            <input type="text" placeholder="새 체크리스트 추가..." value={newItem} onChange={(e) => setNewItem(e.target.value)} />
-            <button className="add-checklist-button" onClick={() => {
-              if (newItem.trim() !== "") {
-                setChecklist([...checklist, { id: Date.now(), text: newItem, completed: false }]);
-                setNewItem("");
-              }
-            }}>추가</button>
-          </div>
-          <div className="checklist-container">
-            {checklist.map((item) => (
-                <div key={item.id} className="checklist-item">
-                  <label className="checkbox-label">
-                    <input type="checkbox" checked={item.completed} onChange={() =>
-                        setChecklist((prev) =>
-                            prev.map((check) => check.id === item.id ? { ...check, completed: !check.completed } : check)
-                        )
-                    } />
-                    <span className={item.completed ? "completed" : ""}>{item.text}</span>
-                  </label>
-                </div>
-            ))}
-          </div>
-        </div>
+        {/* ✅ Task 가져오기 */}
+        <TaskComponent projectId={Number(projectId)} />
+
 
         {/* 📂 파일 업로드 */}
         <div className="file-upload-section">
