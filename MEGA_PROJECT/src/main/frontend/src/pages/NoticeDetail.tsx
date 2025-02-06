@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+    import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../App"; // ✅ AuthContext 가져오기

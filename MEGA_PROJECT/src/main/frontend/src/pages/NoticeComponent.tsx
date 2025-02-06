@@ -118,6 +118,9 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
                 {notices.map((notice) => (
                     <li key={notice.noticeId} onClick={() => handleNoticeClick(notice.noticeId)}>
                         <span>{notice.noticeTitle}</span>
+                        <span className="notice-date">
+                            🕒 {new Date(notice.noticeCreatedAt).toLocaleDateString()} {/* ✅ 등록일 출력 */}
+                        </span>
                     </li>
                 ))}
             </ul>
