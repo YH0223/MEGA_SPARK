@@ -4,6 +4,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import TaskComponent from "./Task"; // ✅ TaskComponent 추가
 import NoticeComponent from "./NoticeComponent";
+import TeamManagement from "./Team";  // ✅ 팀원 관리 컴포넌트 가져오기
+
 import "./Project.css";
 
 // ✅ 프로젝트 데이터 타입 정의
@@ -19,9 +21,7 @@ const ProjectDetails = () => {
   const { projectId } = useParams<{ projectId: string }>(); // ✅ URL에서 projectId 가져오기
   const [project, setProject] = useState<Project | null>(null);
 
-  // ✅ 추가 UI 상태들
-  const [checklist, setChecklist] = useState<{ id: number; text: string; completed: boolean }[]>([]);
-  const [newItem, setNewItem] = useState("");
+
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
   const [newMember, setNewMember] = useState("");
   const [files, setFiles] = useState<File[]>([]);
@@ -46,11 +46,7 @@ const ProjectDetails = () => {
   // ✅ 데이터가 로딩 중일 때 메시지 표시
   if (!project) return <p>⏳ 데이터를 불러오는 중...</p>;
 
-  // ✅ 공지사항 추가 버튼 핸들러
-  const handleAddNotice = () => {
-    console.log("📢 공지사항 추가 버튼 클릭됨");
-    alert("📢 공지사항이 추가되었습니다!");
-  };
+
 
   return (
       <div className="project-container">
@@ -69,6 +65,7 @@ const ProjectDetails = () => {
         {/* ✅ Task 가져오기 */}
         <TaskComponent projectId={Number(projectId)} />
 
+          <TeamManagement projectId={parseInt(projectId!)} /> {/* ✅ 팀원 관리 추가 */}
 
         {/* 📂 파일 업로드 */}
         <div className="file-upload-section">
@@ -81,24 +78,10 @@ const ProjectDetails = () => {
           <ul>{files.map((file, index) => (<li key={index}>{file.name}</li>))}</ul>
         </div>
 
-        {/* 👥 팀원 관리 */}
-        <div className="team-section">
-          <h2>팀원 목록</h2>
-          <div className="team-input">
-            <input type="text" placeholder="새 팀원 추가..." value={newMember} onChange={(e) => setNewMember(e.target.value)} />
-            <button onClick={() => {
-              if (newMember.trim() !== "") {
-                setTeamMembers([...teamMembers, newMember]);
-                setNewMember("");
-              }
-            }}><UserPlus size={18} /> 추가</button>
-          </div>
-          <ul className="team-list">
-            {teamMembers.map((member, index) => (
-                <li key={index}>{member} <button onClick={() => setTeamMembers(teamMembers.filter((_, i) => i !== index))}>❌</button></li>
-            ))}
-          </ul>
-        </div>
+
+
+
+
 
         {/* 🎯 프로젝트 수정/삭제 */}
         <div className="project-actions">
