@@ -6,11 +6,12 @@ import com.jyh000223.mega_project.Service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/task")
-@CrossOrigin(origins = "http://localhost:3000")
 public class TaskController {
     private final TaskService taskService;
 
@@ -39,4 +40,20 @@ public class TaskController {
         taskService.toggleTaskChecking(taskId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/progress/{projectId}")
+    public ResponseEntity<Map<String, Object>> getTaskProgress(@PathVariable int projectId) {
+        List<Task> tasks = taskService.getTasksByProjectId(projectId);
+        int totalTasks = tasks.size();
+        int completedTasks = (int) tasks.stream().filter(Task::isChecking).count();
+
+        double completionPercentage = totalTasks == 0 ? 0 : ((double) completedTasks / totalTasks) * 100;
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("percentage", completionPercentage);
+
+        return ResponseEntity.ok(response);
+    }
+
+
 }

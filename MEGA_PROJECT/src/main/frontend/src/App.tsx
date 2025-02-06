@@ -81,6 +81,8 @@ const App = () => {
                     <Route path="/Team" element={<PrivateRoute element={<Team />}/>} />
                     <Route path="/Profile" element={<PrivateRoute element={<Profile  />} />} />
                     <Route path="/Settings" element={<PrivateRoute element={<Settings  />} />} />
+                    <Route path="/project/:projectId" element={<PrivateRoute element={<Project />} />} />
+
                 </Routes>
             </Router>
         </AuthContext.Provider>

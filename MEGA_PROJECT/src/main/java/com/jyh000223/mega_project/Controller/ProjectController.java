@@ -2,8 +2,10 @@ package com.jyh000223.mega_project.Controller;
 
 import com.jyh000223.mega_project.DTO.ProjectDTO;
 import com.jyh000223.mega_project.Entities.Project;
+import com.jyh000223.mega_project.Entities.User;
 import com.jyh000223.mega_project.Repository.ProjectRepository;
 import com.jyh000223.mega_project.Repository.TeammateRepository;
+import com.jyh000223.mega_project.Repository.UserRepository;
 import com.jyh000223.mega_project.Service.ProjectService;
 import com.jyh000223.mega_project.Service.TeammateService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,11 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Optional;
 
 import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000")
 
 public class ProjectController {
     @Autowired
@@ -27,11 +32,14 @@ public class ProjectController {
     private TeammateService teammateService;
     @Autowired
     private TeammateRepository teammateRepository;
+    @Autowired
+    private UserRepository userRepository;
+
 
     @PostMapping("/createproject")
     public ResponseEntity<String> createProject(@RequestBody ProjectDTO projectdto, HttpServletRequest request) {
         // 유효성 검사: 세션에서 사용자 정보 가져오기
-        HttpSession httpSession=request.getSession();
+        HttpSession httpSession = request.getSession();
         String projectManager = (String) httpSession.getAttribute("user_id");
         if (projectManager == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 없습니다.");
@@ -76,7 +84,6 @@ public class ProjectController {
     }
 
 
-
     @PostMapping("/deleteproject")
     public ResponseEntity<String> deleteProject(HttpServletRequest request, @RequestBody ProjectDTO projectdto) {
         String projectName = projectdto.getProjectName();
@@ -109,4 +116,45 @@ public class ProjectController {
         return ResponseEntity.ok("200");
     }
 
+
+    /**
+     * ✅ 로그인된 사용자의 프로젝트 목록 가져오기
+     */
+    @GetMapping("/user")
+    public ResponseEntity<?> getUserProjects(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user_id") == null) {
+            return ResponseEntity.status(401).body("세션이 만료되었습니다. 다시 로그인하세요.");
+        }
+
+        String userId = (String) session.getAttribute("user_id");
+
+        // user_id 기반으로 User 객체 조회
+        Optional<User> userOpt = userRepository.findById(Integer.valueOf(userId));
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(404).body("사용자를 찾을 수 없습니다.");
+        }
+
+        User user = userOpt.get();
+        List<Project> projects =
+                projectRepository.findByProjectManager(user.getUserName());
+
+        // 프로젝트 정보 + 이메일 반환
+        return ResponseEntity.ok(projects.stream().map(project -> new ProjectDTO(
+                project.getProjectId(),
+                project.getProjectName(),
+                project.getProjectManager(),
+                project.getStartdate(),
+                project.getDeadline()
+        )).toList());
+    }
+
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<Object> getProjectById(@PathVariable int projectId) {
+        Optional<Project> project = projectRepository.findById(projectId);
+
+        return project.<ResponseEntity<Object>>map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(404).body("해당 프로젝트를 찾을 수 없습니다."));
+
+    }
 }
