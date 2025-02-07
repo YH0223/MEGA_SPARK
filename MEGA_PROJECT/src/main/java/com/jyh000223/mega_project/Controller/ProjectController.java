@@ -137,7 +137,7 @@ public class ProjectController {
 
         User user = userOpt.get();
         List<Project> projects =
-                projectRepository.findByProjectManager(user.getUserName());
+                projectRepository.findByProjectManager(user.getUserId());
 
         // 프로젝트 정보 + 이메일 반환
         return ResponseEntity.ok(projects.stream().map(project -> new ProjectDTO(
