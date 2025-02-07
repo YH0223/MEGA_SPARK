@@ -4,6 +4,11 @@ body {
   font-family: 'Arial', sans-serif;
   background-color: #f4f4f4;
 }
+/* 🌙 다크 모드 적용 */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
 
 .auth-container {
   display: flex;
