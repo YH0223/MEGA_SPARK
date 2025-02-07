@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
-public class UserController {
+public class        UserController {
     @Autowired
     private UserService userService;
     @Autowired
@@ -40,6 +40,12 @@ public class UserController {
 
         userRepository.save(user);
         return ResponseEntity.ok("User inserted successfully!");
+    }
+
+    @GetMapping("/searchUsers")
+    public ResponseEntity<List<User>> searchUsers(@RequestParam String query) {
+        List<User> users = userRepository.findByUserIdContaining(query);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/users")
