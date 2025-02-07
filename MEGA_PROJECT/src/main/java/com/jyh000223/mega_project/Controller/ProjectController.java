@@ -2,10 +2,9 @@ package com.jyh000223.mega_project.Controller;
 
 import com.jyh000223.mega_project.DTO.ProjectDTO;
 import com.jyh000223.mega_project.Entities.Project;
+import com.jyh000223.mega_project.Entities.Task;
 import com.jyh000223.mega_project.Entities.User;
-import com.jyh000223.mega_project.Repository.ProjectRepository;
-import com.jyh000223.mega_project.Repository.TeammateRepository;
-import com.jyh000223.mega_project.Repository.UserRepository;
+import com.jyh000223.mega_project.Repository.*;
 import com.jyh000223.mega_project.Service.ProjectService;
 import com.jyh000223.mega_project.Service.TeammateService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,10 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Optional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import com.jyh000223.mega_project.Entities.Teammate;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -34,6 +37,8 @@ public class ProjectController {
     private TeammateRepository teammateRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
 
     @PostMapping("/createproject")
@@ -122,24 +127,46 @@ public class ProjectController {
      */
     @GetMapping("/user")
     public ResponseEntity<?> getUserProjects(HttpServletRequest request) {
+        System.out.println("📌 /api/user API 요청 받음!");
+
+        // 세션 확인
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user_id") == null) {
+            System.out.println("❌ 세션 없음! 401 반환");
             return ResponseEntity.status(401).body("세션이 만료되었습니다. 다시 로그인하세요.");
         }
 
         String userId = (String) session.getAttribute("user_id");
+        System.out.println("✅ API 요청한 user_id: " + userId);
 
         // user_id 기반으로 User 객체 조회
         Optional<User> userOpt = userRepository.findByUserId(userId);
         if (userOpt.isEmpty()) {
+            System.out.println("❌ 사용자 없음! 404 반환");
             return ResponseEntity.status(404).body("사용자를 찾을 수 없습니다.");
         }
 
         User user = userOpt.get();
-        List<Project> projects =
-                projectRepository.findByProjectManager(user.getUserId());
 
-        // 프로젝트 정보 + 이메일 반환
+        // 사용자가 속한 프로젝트 ID 목록 가져오기
+        List<Integer> projectIds = teammateRepository.findAllByUserId(userId)
+                .stream()
+                .map(Teammate::getProjectId)
+                .distinct()
+                .collect(Collectors.toList());
+
+        System.out.println("✅ 사용자가 속한 프로젝트 개수: " + projectIds.size());
+
+        if (projectIds.isEmpty()) {
+            System.out.println("⚠️ 사용자가 참여 중인 프로젝트 없음.");
+            return ResponseEntity.ok(List.of());
+        }
+
+        // 해당 프로젝트 ID로 프로젝트 목록 조회
+        List<Project> projects = projectRepository.findAllByProjectIdIn(projectIds);
+        System.out.println("✅ 조회된 프로젝트 개수: " + projects.size());
+
+        // 프로젝트 정보를 DTO로 변환하여 반환
         return ResponseEntity.ok(projects.stream().map(project -> new ProjectDTO(
                 project.getProjectId(),
                 project.getProjectName(),
@@ -149,12 +176,64 @@ public class ProjectController {
         )).toList());
     }
 
-
-    @GetMapping("/{projectId}")
+    @GetMapping("project/{projectId}")
     public ResponseEntity<Object> getProjectById(@PathVariable int projectId) {
         Optional<Project> project = projectRepository.findById(projectId);
 
         return project.<ResponseEntity<Object>>map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(404).body("해당 프로젝트를 찾을 수 없습니다."));
 
+    }
+    @GetMapping("/projects/status")
+    public ResponseEntity<Map<String, Integer>> getProjectStatus(HttpSession session) {
+        System.out.println("📌 /api/projects/status API 요청 받음!");
+
+        // 현재 로그인된 사용자 확인
+        String userId = (String) session.getAttribute("user_id");
+        if (userId == null) {
+            System.out.println("❌ 세션 없음! 401 반환");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        System.out.println("✅ API 요청한 user_id: " + userId);
+
+        // 사용자가 속한 프로젝트 ID 가져오기
+        List<Integer> projectIds = teammateRepository.findAllByUserId(userId)
+                .stream()
+                .map(Teammate::getProjectId)
+                .distinct()
+                .collect(Collectors.toList());
+
+        System.out.println("✅ 사용자가 속한 프로젝트 개수: " + projectIds.size());
+
+        if (projectIds.isEmpty()) {
+            System.out.println("⚠️ 프로젝트가 없음. 빈 데이터 반환");
+            return ResponseEntity.ok(Map.of("totalProjects", 0, "completedProjects", 0, "inProgressProjects", 0));
+        }
+
+        // 사용자가 속한 프로젝트 목록 가져오기
+        List<Project> projects = projectRepository.findAllByProjectIdIn(projectIds);
+        System.out.println("✅ 조회된 프로젝트 개수: " + projects.size());
+
+        // 프로젝트 상태 계산
+        int totalProjects = projects.size();
+        int completedProjects = 0;
+
+        for (Project project : projects) {
+            List<Task> tasks = taskRepository.findByProject_ProjectId(project.getProjectId());
+            if (!tasks.isEmpty() && tasks.stream().allMatch(Task::isChecking)) {
+                completedProjects++;
+            }
+        }
+
+        int inProgressProjects = totalProjects - completedProjects;
+
+        // 결과 반환
+        Map<String, Integer> result = new HashMap<>();
+        result.put("totalProjects", totalProjects);
+        result.put("completedProjects", completedProjects);
+        result.put("inProgressProjects", inProgressProjects);
+
+        System.out.println("📌 최종 반환 데이터: " + result);
+        return ResponseEntity.ok(result);
     }
 }

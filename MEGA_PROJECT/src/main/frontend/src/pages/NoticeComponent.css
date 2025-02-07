@@ -134,3 +134,34 @@
 .notice-submit-btn:hover {
     background-color: #0056b3;
 }
+/* 📜 공지사항 테이블을 스크롤 가능하도록 개선 */
+.notice-table-container {
+    max-height: 300px; /* ✅ 원하는 높이 지정 */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* 📝 모달 내부 스타일 개선 */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+/* ✅ 모달 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}

@@ -1,22 +1,20 @@
-/* 🌟 프로젝트 전체 컨테이너 확대 */
+/* 🌟 프로젝트 전체 컨테이너 */
 .project-container {
-  max-width: 1800px; /* 기존보다 확대 */
+  max-width: 1600px; /* 가로 크기 줄이기 */
   margin: 40px auto;
-  padding: 50px; /* 내부 패딩 증가 */
+  padding: 40px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3열 유지 */
+  grid-template-columns: repeat(3, 1fr); /* 3열 배치 */
   grid-template-rows: auto auto;
   gap: 20px;
   grid-auto-flow: dense;
   grid-template-areas:
     "header header header"
-    "notice notice checklist"
+    "notice checklist checklist"
     "upload team actions";
-  justify-content: center;
-  align-items: center;
   background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* 🔔 헤더 스타일 */
@@ -25,11 +23,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 25px;
+  padding: 20px;
   background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   font-size: 1.4rem;
+  font-weight: bold;
 }
 
 /* 📝 공지사항 */
@@ -42,72 +41,77 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 15px; /* 버튼 간격 조정 */
+  gap: 15px;
 }
 
-/* ✅ 체크리스트 버튼 위치 조정 */
+/* ✅ 체크리스트 입력 폼 */
 .checklist-input {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .checklist-input input {
   flex-grow: 1;
-  padding: 14px;
-  font-size: 1.2rem;
+  padding: 12px;
+  font-size: 1.1rem;
   border-radius: 8px;
   border: 1px solid #ddd;
 }
 
 .checklist-input button {
-  padding: 12px 18px;
+  padding: 12px 20px;
   background-color: #007bff;
   color: white;
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  font-weight: 600;
-  min-width: 90px;
-  height: 100%;
+  font-weight: bold;
+  transition: background 0.2s ease-in-out;
 }
 
-/* 🎯 프로젝트 수정 버튼 정렬 */
+.checklist-input button:hover {
+  background-color: #0056b3;
+}
+
+/* 🎯 프로젝트 수정/삭제 버튼 */
 .project-actions {
   display: flex;
-  flex-direction: column; /* 버튼을 세로 정렬 */
+  flex-direction: column;
   align-items: flex-start;
-  gap: 10px; /* 버튼 사이 거리 조정 */
-  position: relative; /* 버튼이 자연스럽게 정렬되도록 */
+  gap: 12px;
 }
 
-/* 프로젝트 수정 버튼 크기 조정 */
+/* 프로젝트 버튼 스타일 */
 .update-button, .delete-button {
   padding: 14px 22px;
-  font-size: 1.1rem;
-  border-radius: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
-  font-weight: 600;
-  min-width: 160px; /* 버튼 크기 통일 */
+  font-weight: bold;
+  min-width: 140px;
   text-align: center;
+  transition: all 0.2s ease-in-out;
 }
 
-/* ✅ 수정 버튼 스타일 */
+/* ✅ 수정 버튼 */
 .update-button {
   background: linear-gradient(135deg, #56ccf2 0%, #2f80ed 100%);
   color: white;
 }
 
-/* ❌ 삭제 버튼 스타일 & 애니메이션 */
+.update-button:hover {
+  background: linear-gradient(135deg, #4aa3df 0%, #2a6ab9 100%);
+}
+
+/* ❌ 삭제 버튼 */
 .delete-button {
   background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
   color: white;
-  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
 }
 
 .delete-button:hover {
-  transform: scale(1.1);
   background: linear-gradient(135deg, #ff5c7b 0%, #ff6ea5 100%);
   box-shadow: 0 6px 12px rgba(255, 87, 87, 0.3);
 }
@@ -118,6 +122,43 @@
   flex-direction: row;
   gap: 12px;
   align-items: center;
+}
+
+/* 📊 프로젝트 개수 통계 스타일 */
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stat-box {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  color: black;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.stat-box.total {
+  background-color: #ffffff;
+  border-left: 5px solid #007bff;
+}
+
+.stat-box.completed {
+  background-color: #ffffff;
+  border-left: 5px solid #28a745;
+}
+
+.stat-box.in-progress {
+  background-color: #ffffff;
+  border-left: 5px solid #ffc107;
 }
 
 /* 🖥️ 반응형 개선 */
@@ -153,4 +194,3 @@
     width: 100%;
   }
 }
-

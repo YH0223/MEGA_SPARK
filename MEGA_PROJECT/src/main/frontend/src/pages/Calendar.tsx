@@ -9,8 +9,10 @@ interface Project {
     startDate: string;
     deadline: string;
 }
-
-const Calendar = () => {
+interface CalendarProps {
+    onProjectSelect: (projectId: number) => void; // ✅ 프로젝트 선택 시 실행될 함수
+}
+const Calendar: React.FC<CalendarProps> = ({ onProjectSelect }) => {
     const navigate = useNavigate(); // ✅ 페이지 이동을 위한 useNavigate
     const [currentDate, setCurrentDate] = useState(new Date());
     const [projects, setProjects] = useState<Project[]>([]);
@@ -54,48 +56,39 @@ const Calendar = () => {
         return colors[projectId % colors.length];
     };
 
-    return (
-        <div className="calendar-container">
-            <div className="calendar-header">
-                <button onClick={prevMonth}>&lt;</button>
-                <h2>{currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월</h2>
-                <button onClick={nextMonth}>&gt;</button>
-            </div>
-            <div className="calendar-grid">
-                {daysInWeek.map((day, index) => (
-                    <div key={index} className="calendar-day-header">{day}</div>
-                ))}
-                {daysArray.map((day, index) => {
-                    const formattedDate = day.toISOString().split("T")[0];
 
-                    // ✅ 날짜 비교 시 로컬 기준으로 맞추기 위해 startDate를 조정
-                    const projectsForDay = projects.filter(project => {
-                        const start = new Date(project.startDate + "T00:00:00");  // ✅ 하루 밀리는 문제 해결
-                        const end = new Date(project.deadline + "T23:59:59");
-                        return day >= start && day <= end;
-                    });
+        return (
+            <div className="calendar-container">
+                <div className="calendar-header">
+                    <button onClick={prevMonth}>&lt;</button>
+                    <h2>{currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월</h2>
+                    <button onClick={nextMonth}>&gt;</button>
+                </div>
 
-                    return (
-                        <div key={index} className={`calendar-day ${day.getMonth() !== currentDate.getMonth() ? "calendar-other-month" : ""}`}>
-                            {day.getDate()}
-                            <div className="project-bars">
+                <div className="calendar-grid">
+                    {daysArray.map((day, index) => {
+                        const projectsForDay = projects.filter(project => {
+                            const start = new Date(project.startDate + "T00:00:00");
+                            const end = new Date(project.deadline + "T23:59:59");
+                            return day >= start && day <= end;
+                        });
+
+                        return (
+                            <div key={index} className="calendar-day">
+                                {day.getDate()}
                                 {projectsForDay.map((project) => (
-                                    <div
-                                        key={project.projectId}
-                                        className="calendar-project-bar"
-                                        style={{ backgroundColor: getColorForProject(project.projectId), cursor: "pointer" }} // ✅ 클릭 가능한 UI
-                                        onClick={() => navigate(`/project/${project.projectId}`)} // ✅ 클릭 시 이동
-                                    >
+                                    <div key={project.projectId} className="calendar-project-bar"
+                                         style={{ backgroundColor: getColorForProject(project.projectId), cursor: "pointer" }}
+                                         onClick={() => onProjectSelect(project.projectId)}> {/* ✅ 프로젝트 선택 시 실행 */}
                                         {project.projectName}
                                     </div>
                                 ))}
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    };
 
 export default Calendar;

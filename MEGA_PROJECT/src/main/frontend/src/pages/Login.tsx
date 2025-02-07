@@ -47,7 +47,7 @@ const Login: React.FC = () => {
             {/* 🎥 배경 비디오 추가 */}
             <div className="video-wrapper">
                 <video autoPlay loop muted playsInline className="background-video">
-                    <source src="/videos/Spark_main.mp4" type="video/mp4" />
+                    <source src="/videos/Spark_main_4k.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
             </div>
