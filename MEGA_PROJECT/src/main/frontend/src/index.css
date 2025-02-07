@@ -1,110 +1,144 @@
+/* 🌙 다크모드 지원 */
+[data-theme="dark"] {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --input-bg: #1e1e1e;
+    --input-border: #555;
+    --button-bg: #007bff;
+    --button-hover-bg: #0056b3;
+    --box-shadow: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] {
+    --background-color: #ffffff;
+    --text-color: #333;
+    --input-bg: #f8f9fa;
+    --input-border: #bbb;
+    --button-bg: #2a9d8f;
+    --button-hover-bg: #264653;
+    --box-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* 🌟 전체 컨테이너 */
 .auth-container {
-  display: flex;
-  height: 100vh;
-  background: linear-gradient(to right, #e0f7fa, #e0f4fc); /* 부드러운 배경 */
+    display: flex;
+    height: 100vh;
+    background: var(--background-color);
 }
 
+/* 왼쪽 영역 (로그인 소개) */
 .auth-left {
-  flex: 1 1 50%;
-  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); /* 시원한 느낌의 다크 그라데이션 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 4rem;
-  font-family: "Poppins", sans-serif; /* 현대적이고 세련된 폰트 */
-  font-weight: bold;
-  letter-spacing: 1.5px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    flex: 1 1 50%;
+    background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 4rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+/* 오른쪽 로그인 폼 */
 .auth-right {
-  flex: 1 1 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  background: white; /* 깨끗한 흰색 배경 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 */
-  border-radius: 10px;
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: var(--background-color);
+    color: var(--text-color);
+    box-shadow: 0px 4px 6px var(--box-shadow);
+    border-radius: 10px;
 }
 
+/* 제목 */
 .auth-right h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #264653;
-  font-family: "Poppins", sans-serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-family: "Poppins", sans-serif;
 }
 
+/* 설명 텍스트 */
 .auth-right p {
-  margin-bottom: 2rem;
-  color: #555;
-  font-family: "Roboto", sans-serif; /* 직관적인 서체 */
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    font-family: "Roboto", sans-serif;
 }
 
+/* 로그인 폼 */
 form {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
 }
 
+/* 입력 필드 */
 form input {
-  margin-bottom: 1rem;
-  padding: 0.8rem;
-  font-size: 1rem;
-  border: 1px solid #bbb;
-  border-radius: 5px;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
 form input:focus {
-  border: 1px solid #2a9d8f;
-  box-shadow: 0 0 5px rgba(42, 157, 143, 0.5);
-  outline: none;
+    border: 1px solid #2a9d8f;
+    box-shadow: 0 0 5px rgba(42, 157, 143, 0.5);
+    outline: none;
 }
 
+/* 버튼 */
 form button {
-  padding: 0.8rem;
-  font-size: 1rem;
-  color: white;
-  background-color: #2a9d8f;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: white;
+    background-color: var(--button-bg);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 form button:hover {
-  background-color: #264653;
-  transform: translateY(-2px); /* 버튼 클릭 시 약간 떠오르는 효과 */
+    background-color: var(--button-hover-bg);
+    transform: translateY(-2px);
 }
 
+/* 링크 */
 a {
-  margin-top: 1rem;
-  color: #007bff;
-  text-decoration: none;
-  transition: color 0.3s ease;
+    margin-top: 1rem;
+    color: var(--button-bg);
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 a:hover {
-  color: #0056b3;
+    color: var(--button-hover-bg);
 }
 
+/* 회원가입 버튼 */
 .register-button {
-  background-color: #e76f51;
-  color: white;
-  border: none;
-  padding: 0.6rem 2rem;
-  border-radius: 30px;
-  font-size: 1rem;
-  font-family: "Poppins", sans-serif;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+    background-color: #e76f51;
+    color: white;
+    border: none;
+    padding: 0.6rem 2rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .register-button:hover {
-  background-color: #f4a261;
-  transform: scale(1.05); /* 살짝 커지는 애니메이션 */
+    background-color: #f4a261;
+    transform: scale(1.05);
 }
