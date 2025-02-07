@@ -1,6 +1,6 @@
 /* 설정 페이지 컨테이너 */
 .settings-container {
-    max-width: 400px;
+    min-width: 450px;
     margin: 50px auto;
     padding: 20px;
     background: #fff;

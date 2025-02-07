@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Settings.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Settings: React.FC = () => {
     const [darkMode, setDarkMode] = useState(() => {
@@ -41,22 +42,35 @@ const Settings: React.FC = () => {
     };
 
     return (
-        <div className="settings-container">
-            <h1>설정 페이지</h1>
-            <div className="form-group">
-                <label htmlFor="darkMode">다크 모드:</label>
-                <input
-                    type="checkbox"
-                    id="darkMode"
-                    checked={darkMode}
-                    onChange={handleDarkModeToggle}
-                />
-            </div>
-            <button className="logout-button" onClick={handleLogout}>
-                로그아웃
-            </button>
-        </div>
-    );
-};
+        <div className="dashboard-container">
+            <nav className="sidebar">
+                <h2>from Spark</h2>
+                <ul>
+                    <li><Link to="/dashboard">Dashboard</Link></li>
+                    <li><Link to="/newproject">New Project</Link></li>
+                    <li><Link to="/calendar">Calendar</Link></li>
+                    <li><Link to="/Profile">Profile</Link></li>
+                    <li className="active">Settings</li>
+                </ul>
+            </nav>
 
-export default Settings;
+            <div className="settings-container">
+                <h1>설정 페이지</h1>
+                <div className="form-group">
+                    <label htmlFor="darkMode">다크 모드:</label>
+                    <input
+                        type="checkbox"
+                        id="darkMode"
+                        checked={darkMode}
+                        onChange={handleDarkModeToggle}
+                    />
+                </div>
+                <button className="logout-button" onClick={handleLogout}>
+                    로그아웃
+                </button>
+            </div>
+        </div>
+            );
+            };
+
+            export default Settings;

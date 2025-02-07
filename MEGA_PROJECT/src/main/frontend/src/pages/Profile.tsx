@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
 import "./Profile.css";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
     const [userName, setUserName] = useState("");
@@ -59,24 +60,37 @@ const Profile = () => {
     };
 
     return (
-        <div className="profile-container">
-            <h1>프로필 페이지</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>이름:</label>
-                    <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
-                </div>
-                <div className="form-group">
-                    <label>이메일:</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div className="form-group">
-                    <label>프로필 이미지:</label>
-                    <input type="file" accept="image/*" onChange={handleImageChange} />
-                    {profileImageUrl && <img src={profileImageUrl} alt="프로필" className="profile-preview" />}
-                </div>
-                <button type="submit">프로필 저장</button>
-            </form>
+        <div className="dashboard-container">
+            <nav className="sidebar">
+                <h2>from Spark</h2>
+                <ul>
+                    <li><Link to="/dashboard">Dashboard</Link></li>
+                    <li><Link to="/newproject">New Project</Link></li>
+                    <li><Link to="/calendar">Calendar</Link></li>
+                    <li className="active">Profile</li>
+                    <li><Link to="/Settings">Settings</Link></li>
+                </ul>
+            </nav>
+
+            <div className="profile-container">
+                <h1>프로필 페이지</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label>이름:</label>
+                        <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)}/>
+                    </div>
+                    <div className="form-group">
+                        <label>이메일:</label>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    </div>
+                    <div className="form-group">
+                        <label>프로필 이미지:</label>
+                        <input type="file" accept="image/*" onChange={handleImageChange}/>
+                        {profileImageUrl && <img src={profileImageUrl} alt="프로필" className="profile-preview"/>}
+                    </div>
+                    <button type="submit">프로필 저장</button>
+                </form>
+            </div>
         </div>
     );
 };

@@ -111,7 +111,6 @@ const Dashboard = () => {
           <ul>
             <li className="active">Dashboard</li>
             <li><Link to="/newproject">New Project</Link></li>
-            <li><Link to="/team">Team</Link></li>
             <li><Link to="/calendar">Calendar</Link></li>
             <li><Link to="/Profile">Profile</Link></li>
             <li><Link to="/Settings">Settings</Link></li>
