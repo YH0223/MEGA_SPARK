@@ -17,4 +17,7 @@ public class User {
     private String userName;
     @Column(name="email_address")
     private String email_address;
+    @Column(name="img_url")
+    private String img_url;
+
 }

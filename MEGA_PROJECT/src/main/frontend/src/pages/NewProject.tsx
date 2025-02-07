@@ -1,5 +1,5 @@
-
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api"; // ✅ api.tsx에서 설정한 axios 인스턴스를 가져옴
 import "./NewProject.css";
 
@@ -7,6 +7,8 @@ const NewProject = () => {
   const [projectName, setProjectName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [deadline, setDeadline] = useState("");
+
+  const navigate = useNavigate(); // ✅ 리다이렉트 함수
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,16 +20,18 @@ const NewProject = () => {
     };
 
     try {
-      // ✅ "/createproject"만 적어도 api.ts에서 baseURL 자동 적용됨!
       const response = await api.post("/api/createproject", newProject);
-      alert("프로젝트가 생성되었습니다!");
+      alert("✅ 프로젝트가 생성되었습니다!");
+
+      // ✅ 프로젝트 생성 성공 시 대시보드로 이동
+      navigate("/dashboard");
     } catch (error) {
       // @ts-ignore
       if (error.response) {
         // @ts-ignore
-        alert(`프로젝트 생성 실패: ${error.response.data}`);
+        alert(`❌ 프로젝트 생성 실패: ${error.response.data}`);
       } else {
-        alert("프로젝트 생성 중 오류가 발생했습니다.");
+        alert("❌ 프로젝트 생성 중 오류가 발생했습니다.");
       }
     }
   };
@@ -40,8 +44,6 @@ const NewProject = () => {
             프로젝트 이름:
             <input type="text" value={projectName} onChange={(e) => setProjectName(e.target.value)} required />
           </label>
-
-
 
           <label>
             시작 날짜:

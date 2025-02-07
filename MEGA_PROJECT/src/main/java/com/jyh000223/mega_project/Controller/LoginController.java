@@ -34,10 +34,19 @@ public class LoginController {
         }
     }
 
-
+    // ✅ 로그아웃 API 추가
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false); // 기존 세션이 없으면 null 반환
+        if (session != null) {
+            session.invalidate(); // ✅ 세션 무효화 (Redis에서도 삭제됨)
+            System.out.println("✅ 로그아웃 완료: 세션 삭제됨");
+        }
+        return ResponseEntity.ok("200");
+    }
     // 사용자 인증을 수행하는 메서드 (임시로 비밀번호 비교만)
     private boolean authenticate(String user_id, String password) {
-        User user = userRepository.findByUserName(user_id);
+        User user = userRepository.findByUserId(user_id);
         // 사용자가 존재하고 비밀번호가 일치하는지 확인
         return user != null && user.getPassword().equals(password);
     }

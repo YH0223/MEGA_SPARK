@@ -42,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok("User inserted successfully!");
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity<List<User>> searchUsers(@RequestParam String search, HttpSession session) {
         String currentUser = (String) session.getAttribute("user_id");
         if (currentUser == null) {

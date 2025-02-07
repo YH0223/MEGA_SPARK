@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Settings.css";
+import axios from "axios";
 
 const Settings: React.FC = () => {
     const [darkMode, setDarkMode] = useState(() => {
@@ -28,8 +29,15 @@ const Settings: React.FC = () => {
         }
     }, [darkMode]);
 
-    const handleLogout = () => {
-        alert("로그아웃 되었습니다..");
+
+    const handleLogout = async () => {
+        try {
+            await axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true });
+            alert("✅ 로그아웃 완료!");
+            window.location.href = "/"; // ✅ 홈으로 이동
+        } catch (error) {
+            console.error("🚨 로그아웃 실패:", error);
+        }
     };
 
     return (

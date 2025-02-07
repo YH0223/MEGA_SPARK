@@ -15,26 +15,30 @@ interface TaskProgress {
   percentage: number;
 }
 
+interface UserProfile {
+  userName: string;
+  img_url: string;
+}
+
 const Dashboard = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [taskProgress, setTaskProgress] = useState<{ [key: number]: TaskProgress }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const navigate = useNavigate();
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
-    fetchUserId();
+    fetchUserProfile();
     fetchProjects();
   }, []);
 
-  const fetchUserId = async () => {
+  const fetchUserProfile = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/session", { withCredentials: true });
-      console.log("✅ 로그인된 사용자 ID:", response.data);
-      setUserId(response.data);
+      const response = await axios.get("http://localhost:8080/api/user/profile", { withCredentials: true });
+      setUserProfile(response.data);
     } catch (error) {
-      console.error("🚨 사용자 ID 불러오기 오류:", error);
+      console.error("🚨 사용자 프로필 불러오기 오류:", error);
     }
   };
 
@@ -52,20 +56,15 @@ const Dashboard = () => {
     }
   };
 
-  const [, forceRender] = useState(0); // ✅ 강제 리렌더링 트리거
-
   const fetchTaskProgress = async (projectId: number) => {
-    console.log(`📢 요청 보냄: http://localhost:8080/task/progress/${projectId}`);
     try {
       const response = await axios.get(`http://localhost:8080/task/progress/${projectId}`, { withCredentials: true });
-      console.log(`✅ 응답 받음:`, response.data);
 
       if (typeof response.data.percentage === "number") {
-        setTaskProgress(prev => {
-          const updatedProgress = { ...prev, [projectId]: response.data.percentage };
-          forceRender((n) => n + 1);  // ✅ 상태 업데이트 후 강제 리렌더링
-          return updatedProgress;
-        });
+        setTaskProgress(prev => ({
+          ...prev,
+          [projectId]: response.data.percentage
+        }));
       } else {
         console.error(`🚨 잘못된 데이터 형식:`, response.data);
         setTaskProgress(prev => ({ ...prev, [projectId]: 0 }));
@@ -75,11 +74,6 @@ const Dashboard = () => {
       setTaskProgress(prev => ({ ...prev, [projectId]: 0 }));
     }
   };
-
-
-
-
-
 
   /** ✅ 상태 색상 결정 함수 */
   const getStatusColor = (percentage: number) => {
@@ -99,7 +93,20 @@ const Dashboard = () => {
 
   return (
       <div className="dashboard-container">
+        {/* ✅ 유저 프로필 추가 */}
         <nav className="sidebar">
+          <div className="user-profile">
+            {userProfile && (
+                <>
+                  <img
+                      src={userProfile.img_url ? `http://localhost:8080${userProfile.img_url}` : "/default_profile.png"}
+                      alt="Profile"
+                      className="user-avatar"
+                  />
+                  <span className="user-name">{userProfile.userName}</span>
+                </>
+            )}
+          </div>
           <h2>from Spark</h2>
           <ul>
             <li className="active">Dashboard</li>
@@ -113,7 +120,7 @@ const Dashboard = () => {
 
         <main className="dashboard-main">
           <header className="dashboard-header">
-            <h1>Hello {userId ? userId : "Guest"} 👋</h1>
+            <h1>Hello {userProfile ? userProfile.userName : "Guest"} 👋</h1>
           </header>
 
           <section className="table-container">
@@ -130,7 +137,7 @@ const Dashboard = () => {
               </thead>
               <tbody>
               {filteredProjects.map((project) => {
-                const completion = taskProgress[project.projectId] ?? 0;  // ✅ undefined 방지
+                const completion = taskProgress[project.projectId] ?? 0;
                 const statusColor = getStatusColor(completion);
 
                 return (
@@ -142,10 +149,7 @@ const Dashboard = () => {
                       <td>{new Date(project.deadline).toLocaleDateString()}</td>
                       <td>
                         <div className="progress-bar-container">
-                          {/* ✅ 중앙 정렬된 퍼센트 표시 */}
                           <span className="progress-text">{completion.toFixed(0)}%</span>
-
-                          {/* ✅ 진행 상태 바 */}
                           <div
                               className="progress-bar"
                               style={{width: `${completion}%`, backgroundColor: statusColor}}
@@ -155,7 +159,6 @@ const Dashboard = () => {
                     </tr>
                 );
               })}
-
               </tbody>
             </table>
           </section>

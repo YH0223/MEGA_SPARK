@@ -92,7 +92,7 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
 
     /** ✅ 팀원 추가 */
     const addTeamMember = async () => {
-        if (!newMember.userId || !newMember.projectManager || !newMember.projectName) {
+        if (!newMember.userId) {
             alert("추가할 팀원의 정보를 모두 입력해주세요.");
             return;
         }

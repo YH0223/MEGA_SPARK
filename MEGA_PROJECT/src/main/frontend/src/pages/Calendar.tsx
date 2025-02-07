@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ 네비게이션을 위해 추가
 import api from "../api";
 import "./Calendar.css";
 
@@ -10,6 +11,7 @@ interface Project {
 }
 
 const Calendar = () => {
+    const navigate = useNavigate(); // ✅ 페이지 이동을 위한 useNavigate
     const [currentDate, setCurrentDate] = useState(new Date());
     const [projects, setProjects] = useState<Project[]>([]);
 
@@ -81,7 +83,8 @@ const Calendar = () => {
                                     <div
                                         key={project.projectId}
                                         className="calendar-project-bar"
-                                        style={{backgroundColor: getColorForProject(project.projectId)}}
+                                        style={{ backgroundColor: getColorForProject(project.projectId), cursor: "pointer" }} // ✅ 클릭 가능한 UI
+                                        onClick={() => navigate(`/project/${project.projectId}`)} // ✅ 클릭 시 이동
                                     >
                                         {project.projectName}
                                     </div>
