@@ -1,97 +1,136 @@
-.notice-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f8f9fa;
+/* 📝 공지사항 컨테이너 */
+.notice-box {
+    grid-area: notice;
+    background-color: #ffffff;
+    padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
-.notice-container h2 {
-    text-align: center;
-    color: #333;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-}
-
-.notice-input {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.notice-input input,
-.notice-input textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-.notice-input textarea {
-    height: 100px;
-    resize: none;
-}
-
-.notice-input button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-}
-
-.right-align-button {
-    margin-left: auto; /* 오른쪽 끝으로 정렬 */
-    display: block;
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-.right-align-button:hover {
-    background-color: #0056b3;
-}
-
-.notice-input button:hover {
-    background-color: #0056b3;
-}
-
-.notice-list {
-    list-style: none;
-    padding: 0;
-}
-
-.notice-list li {
+/* 🔔 제목과 버튼 정렬 */
+.notice-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 15px;
+}
+
+.notice-header h2 {
+    font-size: 1.6rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ➕ 작성 버튼 */
+.add-notice-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.add-notice-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 📋 공지사항 테이블 */
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.notice-table th,
+.notice-table td {
+    text-align: left;
     padding: 12px;
-    border-radius: 8px;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    transition: background 0.3s;
+    border-bottom: 1px solid #ddd;
+}
+
+.notice-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.notice-table tr:hover {
+    background-color: #f1f1f1;
     cursor: pointer;
 }
 
-.notice-list li:hover {
-    background: #f1f1f1;
+/* 📝 공지 입력 필드 (제목 & 내용 크기 동일) */
+.notice-input {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    width: 100%; /* ✅ 전체 너비 맞추기 */
 }
 
-.notice-list span {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
+.notice-input-field,
+.notice-textarea {
+    width: 100%; /* ✅ 입력창 너비 동일하게 맞춤 */
+    padding: 14px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
-.notice-list small {
-    color: #6c757d;
+/* 📄 공지사항 내용 입력칸 (너비 고정, 자동 높이 조절) */
+.notice-textarea {
+    min-height: 120px;
+    max-height: 300px;
+    overflow-y: auto;
+    resize: none; /* ✅ 크기 조절 막음 */
+}
+
+/* 🔵 입력 필드 포커스 */
+.notice-input-field:focus,
+.notice-textarea:focus {
+    border-color: #007bff;
+    background: #ffffff;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+}
+
+
+/* 🔵 등록 버튼 (오른쪽 정렬 & 작게) */
+.notice-submit-container {
+    display: flex;
+    justify-content: flex-end; /* ✅ 버튼을 오른쪽으로 정렬 */
+    margin-top: 10px;
+}
+
+.notice-submit-btn {
+    padding: 8px 14px; /* ✅ 버튼 크기 줄이기 */
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem; /* ✅ 폰트 크기 살짝 줄이기 */
+    min-width: 80px; /* ✅ 버튼 너비 줄이기 */
+    transition: background 0.3s ease-in-out;
+}
+
+.notice-submit-btn:hover {
+    background-color: #0056b3;
+}
+
+
+.notice-submit-btn:hover {
+    background-color: #0056b3;
 }

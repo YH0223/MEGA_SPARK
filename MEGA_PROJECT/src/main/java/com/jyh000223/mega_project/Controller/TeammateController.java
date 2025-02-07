@@ -42,6 +42,18 @@ public class TeammateController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 없습니다.");
         }
 
+        // ✅ 유저 ID 존재 여부 확인
+        boolean userExists = teammateService.isUserExists(teammateDTO.getUserId());
+        if (!userExists) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 유저입니다.");
+        }
+
+        // ✅ 이미 추가된 팀원인지 확인
+        boolean alreadyExists = teammateService.isTeammateExists(teammateDTO.getUserId(), teammateDTO.getProjectId());
+        if (alreadyExists) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 추가된 팀원입니다.");
+        }
+
         String result = teammateService.addTeammate(teammateDTO.getUserId(), teammateDTO.getProjectId());
         if ("200".equals(result)) {
             return ResponseEntity.ok("팀원 추가 성공");

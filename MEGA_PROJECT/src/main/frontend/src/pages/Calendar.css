@@ -104,7 +104,7 @@
 }
 
 .calendar-container {
-  width: 90%;
+  width: 80%;
   margin: auto;
   font-family: Arial, sans-serif;
 }
@@ -130,7 +130,7 @@
 
 .calendar-day {
   position: relative;
-  min-height: 50px;
+  min-height: 80px;
   text-align: center;
   border: 1px solid #ddd;
   padding: 5px;

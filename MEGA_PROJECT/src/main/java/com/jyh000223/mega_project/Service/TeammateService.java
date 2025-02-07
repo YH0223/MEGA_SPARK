@@ -4,6 +4,7 @@ import com.jyh000223.mega_project.Entities.Project;
 import com.jyh000223.mega_project.Entities.Teammate;
 import com.jyh000223.mega_project.Repository.ProjectRepository;
 import com.jyh000223.mega_project.Repository.TeammateRepository;
+import com.jyh000223.mega_project.Repository.UserRepository; // ✅ 추가
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +13,21 @@ import java.util.List;
 public class TeammateService {
     private final TeammateRepository teammateRepository;
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository; // ✅ 추가
 
-    public TeammateService(TeammateRepository teammateRepository, ProjectRepository projectRepository) {
+    public TeammateService(TeammateRepository teammateRepository, ProjectRepository projectRepository, UserRepository userRepository) {
         this.teammateRepository = teammateRepository;
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository; // ✅ 초기화 추가
+    }
+    public boolean isUserExists(String userId) {
+        return userRepository.existsByUserId(userId);
+    }
+
+
+
+    public boolean isTeammateExists(String userId, int projectId) {
+        return teammateRepository.existsByUserIdAndProjectId(userId, projectId);
     }
 
     /** ✅ 특정 프로젝트의 팀원 목록 조회 */

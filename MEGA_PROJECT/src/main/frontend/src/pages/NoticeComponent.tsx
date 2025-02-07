@@ -1,10 +1,10 @@
-import  React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
+import { AuthContext } from "../App";
+import { Bell, Plus } from "lucide-react";
 import "./NoticeComponent.css";
 
-// ✅ Axios 기본 설정: 세션 유지
 axios.defaults.withCredentials = true;
 
 interface Notice {
@@ -21,21 +21,17 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
     const navigate = useNavigate();
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!;
 
-    /** ✅ 세션 유지 확인 */
     useEffect(() => {
         axios.get("http://localhost:8080/api/session")
             .then(response => {
-                console.log("✅ 로그인 유지됨. 사용자:", response.data);
                 setIsAuthenticated(true);
             })
             .catch(() => {
-                console.log("❌ 로그인 세션 없음");
                 setIsAuthenticated(false);
-                navigate("/"); // 미로그인 시 로그인 페이지로 이동
+                navigate("/");
             });
-    }, [setIsAuthenticated, navigate]);
+    }, [isAuthenticated]);
 
-    /** ✅ 공지 목록 불러오기 */
     useEffect(() => {
         if (isAuthenticated) {
             fetchNotices();
@@ -45,20 +41,16 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
     const fetchNotices = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/notice/${projectId}`);
-            console.log("📜 공지 목록 API 응답:", response.data);
             setNotices(response.data);
         } catch (error) {
             console.error("📜 공지 데이터를 불러오는 중 오류 발생:", error);
         }
     };
 
-    /** ✅ 공지 클릭 시 상세 페이지 이동 */
     const handleNoticeClick = (noticeId: number) => {
-        console.log(`📝 상세 페이지로 이동: /notice/detail/${noticeId}`);
         navigate(`/notice/detail/${noticeId}`);
     };
 
-    /** ✅ 공지 작성 */
     const addNotice = async () => {
         if (!newTitle.trim() || !newContext.trim()) {
             alert("제목과 내용을 입력해주세요.");
@@ -66,19 +58,17 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
         }
 
         try {
-            const requestBody = {
+            await axios.post("http://localhost:8080/notice/create", {
                 noticeTitle: newTitle,
                 noticeContext: newContext,
-                projectId: projectId
-            };
-
-            await axios.post("http://localhost:8080/notice/create", requestBody);
+                projectId
+            });
 
             alert("공지사항이 작성되었습니다.");
             setNewTitle("");
             setNewContext("");
             setIsWriting(false);
-            fetchNotices(); // 공지 추가 후 목록 새로고침
+            fetchNotices();
         } catch (error) {
             console.error("📜 공지 추가 중 오류 발생:", error);
         }
@@ -87,15 +77,16 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
     if (!isAuthenticated) return <p>세션 확인 중...</p>;
 
     return (
-        <div className="notice-container">
+        <div className="notice-box">
+            {/* 🔔 제목 + ➕작성 버튼 한 줄 정렬 */}
             <div className="notice-header">
-                <h2>프로젝트 게시판</h2>
-                <button className="right-align-button" onClick={() => setIsWriting(!isWriting)}>
-                    {isWriting ? "취소" : "작성"}
+                <h2><Bell size={20} /> 프로젝트 게시판</h2>
+                <button className="add-notice-btn" onClick={() => setIsWriting(!isWriting)}>
+                    {isWriting ? "취소" : <><Plus size={16} /> 작성</>}
                 </button>
             </div>
 
-            {/* 공지 작성 폼 */}
+            {/* 📝 공지 작성 폼 */}
             {isWriting && (
                 <div className="notice-input">
                     <input
@@ -103,27 +94,35 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
                         value={newTitle}
                         onChange={(e) => setNewTitle(e.target.value)}
                         placeholder="공지 제목 입력..."
+                        className="notice-input-field"
                     />
                     <textarea
                         value={newContext}
                         onChange={(e) => setNewContext(e.target.value)}
                         placeholder="공지 내용 입력..."
+                        className="notice-textarea"
                     />
-                    <button onClick={addNotice}>등록</button>
+                    <button className="notice-submit-btn" onClick={addNotice}>등록</button>
                 </div>
             )}
 
-            {/* 공지 목록 */}
-            <ul className="notice-list">
-                {notices.map((notice) => (
-                    <li key={notice.noticeId} onClick={() => handleNoticeClick(notice.noticeId)}>
-                        <span>{notice.noticeTitle}</span>
-                        <span className="notice-date">
-                            🕒 {new Date(notice.noticeCreatedAt).toLocaleDateString()} {/* ✅ 등록일 출력 */}
-                        </span>
-                    </li>
-                ))}
-            </ul>
+            {/* 📋 공지사항 테이블 */}
+            <table className="notice-table">
+                <thead>
+                    <tr>
+                        <th>📄 제목</th>
+                        <th>🕒 등록일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {notices.map((notice) => (
+                        <tr key={notice.noticeId} onClick={() => handleNoticeClick(notice.noticeId)}>
+                            <td>{notice.noticeTitle}</td>
+                            <td>{new Date(notice.noticeCreatedAt).toLocaleDateString()}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };

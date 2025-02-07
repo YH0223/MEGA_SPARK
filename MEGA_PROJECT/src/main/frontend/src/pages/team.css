@@ -25,24 +25,25 @@
     font-size: 16px;
 }
 
-/* 검색 결과 스타일 */
-.search-results, .team-list {
-    margin-top: 20px;
+.search-results {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
 }
 
-.search-results h2, .team-list h2 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.search-results div, .team-list div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.search-results li {
     padding: 10px;
-    border-bottom: 1px solid #eee;
+    cursor: pointer;
 }
+
+.search-results li:hover {
+    background: #f0f0f0;
+}
+
 
 /* 팀원 추가 버튼 */
 button {
