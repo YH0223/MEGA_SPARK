@@ -72,9 +72,16 @@ const Profile = () => {
                 </div>
                 <div className="form-group">
                     <label>프로필 이미지:</label>
-                    <input type="file" accept="image/*" onChange={handleImageChange} />
-                    {profileImageUrl && <img src={profileImageUrl} alt="프로필" className="profile-preview" />}
+                    <input type="file" accept="image/*" onChange={handleImageChange}/>
+
+                    {/* ✅ 이미지 미리보기: 파일 업로드 아래 배치 & 최대 크기 설정 */}
+                    {profileImageUrl && (
+                        <div className="profile-preview-container">
+                            <img src={profileImageUrl} alt="프로필" className="profile-preview"/>
+                        </div>
+                    )}
                 </div>
+
                 <button type="submit">프로필 저장</button>
             </form>
         </div>

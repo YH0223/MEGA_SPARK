@@ -99,10 +99,11 @@ const Dashboard = () => {
             {userProfile && (
                 <>
                   <img
-                      src={userProfile.img_url ? `http://localhost:8080${userProfile.img_url}` : "/default_profile.png"}
+                      src={userProfile?.img_url || "/default_profile.png"}
                       alt="Profile"
                       className="user-avatar"
                   />
+
                   <span className="user-name">{userProfile.userName}</span>
                 </>
             )}

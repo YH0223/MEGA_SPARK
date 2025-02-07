@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -33,7 +34,7 @@ public class ProfileController {
     private ProfileService profileService;
 
     // ✅ 파일 저장 경로 (`user_upload` 폴더)
-    private static final String STATIC_IMAGE_DIR = System.getProperty("user.dir") + "/user_upload/";
+    private static final String STATIC_IMAGE_DIR = System.getProperty("user.dir") + File.separator + "user_upload" + File.separator;
 
     /** ✅ 프로필 조회 */
     @GetMapping("/profile")
@@ -43,26 +44,31 @@ public class ProfileController {
             return ResponseEntity.status(401).build();
         }
 
-        // DB에서 사용자 정보 조회
-        Optional<User> user = profileService.getProfileByUserId(userId);
-        if (user.isEmpty()) {
+        Optional<User> userOpt = profileService.getProfileByUserId(userId);
+        if (userOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
+        User user = userOpt.get();
+
         // ✅ 프로필 데이터 응답
         Map<String, String> profileData = new HashMap<>();
-        profileData.put("userName", user.get().getUserName());
-        profileData.put("email", user.get().getEmail_address());
+        profileData.put("userName", user.getUserName());
+        profileData.put("email", user.getEmail_address());
 
-        // ✅ 저장된 프로필 이미지 URL 반환
-        if (user.get().getImg_url() != null && !user.get().getImg_url().isEmpty()) {
-            profileData.put("img_url", "/user_upload/" + user.get().getImg_url());
+        // ✅ 저장된 프로필 이미지 전체 URL 반환 (프론트에서 직접 접근 가능하게 설정)
+        String imageUrl;
+        if (user.getImg_url() != null && !user.getImg_url().isEmpty()) {
+            imageUrl = "http://localhost:8080/api/user/profile/image/" + user.getImg_url();
         } else {
-            profileData.put("img_url", "/default_profile.png"); // 기본 이미지
+            imageUrl = "http://localhost:8080/user_upload/default_profile.png"; // 기본 이미지
         }
+
+        profileData.put("img_url", imageUrl);
 
         return ResponseEntity.ok(profileData);
     }
+
 
     /** ✅ 프로필 저장 및 이미지 업로드 (POST) */
     @Transactional
@@ -94,7 +100,7 @@ public class ProfileController {
                 File uploadDir = new File(STATIC_IMAGE_DIR);
                 if (!uploadDir.exists()) uploadDir.mkdirs();
 
-                // 📌 기존 이미지 삭제
+                // 📌 기존 이미지 삭제 (파일 존재 시)
                 if (user.getImg_url() != null) {
                     File oldFile = new File(STATIC_IMAGE_DIR + user.getImg_url());
                     if (oldFile.exists()) {
@@ -102,10 +108,10 @@ public class ProfileController {
                     }
                 }
 
-                // 📌 새 파일 저장
-                String fileName = "profile_" + userId + "_" + profileImage.getOriginalFilename();
-                String filePath = STATIC_IMAGE_DIR + fileName;
-                profileImage.transferTo(new File(filePath));
+                // 📌 새 파일 저장 (파일명 충돌 방지)
+                String fileName = "profile_" + userId + "_" + System.nanoTime() + "_" + profileImage.getOriginalFilename();
+                File destinationFile = new File(STATIC_IMAGE_DIR + fileName);
+                profileImage.transferTo(destinationFile);
 
                 // 📌 DB에는 파일명만 저장
                 user.setImg_url(fileName);
@@ -125,13 +131,28 @@ public class ProfileController {
         Resource resource = new UrlResource(filePath.toUri());
 
         if (resource.exists() && resource.isReadable()) {
+            String contentType = "image/jpeg"; // 기본값 (JPG)
+            if (filename.endsWith(".png")) {
+                contentType = "image/png";
+            } else if (filename.endsWith(".gif")) {
+                contentType = "image/gif";
+            }
+
             return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_GIF)
-                    .contentType(MediaType.IMAGE_PNG)
+                    .contentType(MediaType.parseMediaType(contentType))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
                     .body(resource);
         } else {
-            return ResponseEntity.notFound().build();
+            // ✅ 기본 프로필 이미지 제공
+            try {
+                Resource defaultResource = new UrlResource(Paths.get(STATIC_IMAGE_DIR + "default_profile.png").toUri());
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_PNG)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"default_profile.png\"")
+                        .body(defaultResource);
+            } catch (MalformedURLException e) {
+                return ResponseEntity.notFound().build();
+            }
         }
     }
 }
