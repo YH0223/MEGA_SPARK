@@ -78,7 +78,7 @@ const App = () => {
                     <Route path="/task/:projectId" element={<PrivateRoute element={<TaskPage />} />} />
                     <Route path="/notice/:projectId" element={<PrivateRoute element={<NoticePage />} />} />
                     <Route path="/notice/detail/:noticeId" element={<PrivateRoute element={<NoticeDetail />} />} />
-                    <Route path="/Team" element={<PrivateRoute element={<Team />}/>} />
+                   /* <Route path="/Team" element={<PrivateRoute element={<Team />}/>} /> */
                     <Route path="/Profile" element={<PrivateRoute element={<Profile  />} />} />
                     <Route path="/Settings" element={<PrivateRoute element={<Settings  />} />} />
                     <Route path="/project/:projectId" element={<PrivateRoute element={<Project />} />} />
