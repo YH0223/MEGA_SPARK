@@ -130,7 +130,7 @@ public class ProjectController {
         String userId = (String) session.getAttribute("user_id");
 
         // user_id 기반으로 User 객체 조회
-        Optional<User> userOpt = userRepository.findById(Integer.valueOf(userId));
+        Optional<User> userOpt = userRepository.findByUserId(userId);
         if (userOpt.isEmpty()) {
             return ResponseEntity.status(404).body("사용자를 찾을 수 없습니다.");
         }

@@ -30,7 +30,7 @@ const Register: React.FC = () => {
 
     try {
       console.log("Sending data:", formData);
-      const response = await axios.post("/register", formData);
+      const response = await axios.post("/api/register", formData);
       console.log("Success:", response.data);
       alert("Registration Successful!");
       navigate("/"); // 회원가입 성공 시 로그인 페이지로 이동

@@ -45,10 +45,11 @@ public class LoginController {
         return ResponseEntity.ok("200");
     }
     // 사용자 인증을 수행하는 메서드 (임시로 비밀번호 비교만)
+    // 사용자 인증을 수행하는 메서드 (Optional 사용)
     private boolean authenticate(String user_id, String password) {
-        User user = userRepository.findByUserId(user_id);
-        // 사용자가 존재하고 비밀번호가 일치하는지 확인
-        return user != null && user.getPassword().equals(password);
+        return userRepository.findByUserId(user_id)
+                .map(user -> user.getPassword().equals(password)) // ✅ 비밀번호 비교
+                .orElse(false); // ✅ 사용자가 존재하지 않으면 false 반환
     }
 
 

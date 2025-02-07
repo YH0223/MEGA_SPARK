@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -25,14 +26,15 @@ public class ProfileService {
     public User updateProfile(String userId, String userName, String email, MultipartFile profileImage) throws IOException {
         System.out.println("🔍 업데이트할 userId: " + userId);
 
-        // ✅ Optional을 사용하지 않고 직접 조회
-        User user = userRepository.findByUserId(userId);
-        if (user == null) {
+        Optional<User> userOptional = userRepository.findByUserId(userId);
+        if (userOptional.isEmpty()) {
             throw new RuntimeException("유저를 찾을 수 없습니다.");
         }
 
+        User user = userOptional.get();
         user.setUserName(userName);
         user.setEmail_address(email);
+
         System.out.println("✅ 기존 사용자 이름: " + user.getUserName());
 
         if (profileImage != null && !profileImage.isEmpty()) {
@@ -53,9 +55,8 @@ public class ProfileService {
         return userRepository.save(user); // ✅ 기존 데이터를 업데이트
     }
 
-
     /** ✅ 프로필 조회 */
-    public User getProfileByUserId(String userId) {
+    public Optional<User> getProfileByUserId(String userId) {
         return userRepository.findByUserId(userId);
     }
 }

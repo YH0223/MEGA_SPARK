@@ -4,6 +4,7 @@ import com.jyh000223.mega_project.Entities.User;
 import com.jyh000223.mega_project.Repository.UserRepository;
 import com.jyh000223.mega_project.Service.ProfileService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -19,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -42,19 +44,19 @@ public class ProfileController {
         }
 
         // DB에서 사용자 정보 조회
-        User user = profileService.getProfileByUserId(userId);
-        if (user == null) { // ✅ Optional 제거로 인한 수정
+        Optional<User> user = profileService.getProfileByUserId(userId);
+        if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         // ✅ 프로필 데이터 응답
         Map<String, String> profileData = new HashMap<>();
-        profileData.put("userName", user.getUserName());
-        profileData.put("email", user.getEmail_address());
+        profileData.put("userName", user.get().getUserName());
+        profileData.put("email", user.get().getEmail_address());
 
         // ✅ 저장된 프로필 이미지 URL 반환
-        if (user.getImg_url() != null && !user.getImg_url().isEmpty()) {
-            profileData.put("img_url", "/user_upload/" + user.getImg_url());
+        if (user.get().getImg_url() != null && !user.get().getImg_url().isEmpty()) {
+            profileData.put("img_url", "/user_upload/" + user.get().getImg_url());
         } else {
             profileData.put("img_url", "/default_profile.png"); // 기본 이미지
         }
@@ -63,6 +65,7 @@ public class ProfileController {
     }
 
     /** ✅ 프로필 저장 및 이미지 업로드 (POST) */
+    @Transactional
     @PostMapping("/saveProfile")
     public ResponseEntity<?> saveProfile(
             HttpSession session,
@@ -75,11 +78,12 @@ public class ProfileController {
             return ResponseEntity.status(401).body("Unauthorized");
         }
 
-        User user = profileService.getProfileByUserId(userId);
-        if (user == null) { // ✅ Optional 제거로 인한 수정
+        Optional<User> userOpt = userRepository.findByUserId(userId);
+        if (userOpt.isEmpty()) {
             return ResponseEntity.status(404).body("User not found");
         }
 
+        User user = userOpt.get();
         user.setUserName(userName);
         user.setEmail_address(email);
 
@@ -121,28 +125,13 @@ public class ProfileController {
         Resource resource = new UrlResource(filePath.toUri());
 
         if (resource.exists() && resource.isReadable()) {
-            String contentType = "image/jpeg"; // 기본값 (JPG)
-            if (filename.endsWith(".png")) {
-                contentType = "image/png";
-            } else if (filename.endsWith(".gif")) {
-                contentType = "image/gif";
-            }
-
             return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
+                    .contentType(MediaType.IMAGE_GIF)
+                    .contentType(MediaType.IMAGE_PNG)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
                     .body(resource);
         } else {
-            // ✅ 기본 프로필 이미지 제공
-            try {
-                Resource defaultResource = new UrlResource(Paths.get(STATIC_IMAGE_DIR + "default_profile.png").toUri());
-                return ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_PNG)
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"default_profile.png\"")
-                        .body(defaultResource);
-            } catch (MalformedURLException e) {
-                return ResponseEntity.notFound().build();
-            }
+            return ResponseEntity.notFound().build();
         }
     }
 }

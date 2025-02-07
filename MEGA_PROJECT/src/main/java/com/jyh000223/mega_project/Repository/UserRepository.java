@@ -11,6 +11,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUserName(String userId);
 
     boolean existsByUserId(String userId);
-    User findByUserId(String userId);// ✅ user_id 기반으로 사용자 조회
+
+    Optional<User> findByUserId(String userId); // ✅ user_id 기반으로 사용자 조회
     List<User> findByUserNameContainingIgnoreCase(String searchQuery);
 }
