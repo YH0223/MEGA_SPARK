@@ -1,4 +1,4 @@
-    import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
@@ -10,16 +10,25 @@ interface Notice {
     noticeContext: string;
     noticeCreatedAt: string;
 }
+
 // ✅ Axios 기본 설정: 세션 유지
 axios.defaults.withCredentials = true;
+
 const NoticeDetail = () => {
     const { noticeId } = useParams<{ noticeId: string }>();
     const navigate = useNavigate();
-    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!; // ✅ 인증 상태 가져오기
+    const authContext = useContext(AuthContext);
+
+    if (!authContext) {
+        return <p>AuthContext를 찾을 수 없습니다.</p>;
+    }
+
+    const { isAuthenticated, setIsAuthenticated } = authContext;
     const [notice, setNotice] = useState<Notice | null>(null);
     const [editTitle, setEditTitle] = useState("");
     const [editContext, setEditContext] = useState("");
     const [isEditing, setIsEditing] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     /** ✅ 세션 유지 확인 */
     useEffect(() => {
@@ -55,13 +64,15 @@ const NoticeDetail = () => {
             setEditContext(response.data.noticeContext);
         } catch (error) {
             console.error("❌ 공지사항 불러오기 오류:", error);
+        } finally {
+            setLoading(false);
         }
     };
-
 
     const goToList = () => {
         navigate(-1); // 🔥 이전 페이지로 이동
     };
+
     /** ✅ 공지 수정 */
     const updateNotice = async () => {
         try {
@@ -91,17 +102,29 @@ const NoticeDetail = () => {
         }
     };
 
-    if (!isAuthenticated) return <p>세션 확인 중...</p>;
-    if (!notice) return <p>공지사항을 불러오는 중...</p>;
+    if (!isAuthenticated) return <p className="loading-text">세션 확인 중...</p>;
+    if (loading) return <p className="loading-text">공지사항을 불러오는 중...</p>;
+    if (!notice) return <p className="error-text">공지사항을 찾을 수 없습니다.</p>;
 
     return (
         <div className="notice-detail-container">
             {isEditing ? (
                 <>
-                    <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
-                    <textarea value={editContext} onChange={(e) => setEditContext(e.target.value)} />
-                    <button onClick={updateNotice}>저장</button>
-                    <button onClick={() => setIsEditing(false)}>취소</button>
+                    <input
+                        type="text"
+                        value={editTitle}
+                        onChange={(e) => setEditTitle(e.target.value)}
+                        className="notice-edit-input"
+                    />
+                    <textarea
+                        value={editContext}
+                        onChange={(e) => setEditContext(e.target.value)}
+                        className="notice-edit-textarea"
+                    />
+                    <div className="notice-actions">
+                        <button className="save-button" onClick={updateNotice}>저장</button>
+                        <button className="cancel-button" onClick={() => setIsEditing(false)}>취소</button>
+                    </div>
                 </>
             ) : (
                 <>
@@ -109,8 +132,8 @@ const NoticeDetail = () => {
                     <p>{notice.noticeContext}</p>
                     <div className="notice-actions">
                         <button className="list-button" onClick={goToList}>목록</button>
-                        <button onClick={() => setIsEditing(true)}>수정</button>
-                        <button onClick={deleteNotice}>삭제</button>
+                        <button className="edit-button" onClick={() => setIsEditing(true)}>수정</button>
+                        <button className="delete-button" onClick={deleteNotice}>삭제</button>
                     </div>
                 </>
             )}
