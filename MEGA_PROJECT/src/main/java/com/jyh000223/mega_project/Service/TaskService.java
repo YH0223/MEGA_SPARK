@@ -52,4 +52,8 @@ public class TaskService {
             taskRepository.save(task);
         }
     }
+    /** ✅ 프로젝트별 Task 개수 세기 */
+    public int countTasksByProjectId(int projectId) {
+        return taskRepository.countByProject_ProjectId(projectId);
+    }
 }

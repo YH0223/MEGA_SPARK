@@ -44,7 +44,7 @@ const Dashboard = () => {
     totalProjects: 0,
     completedProjects: 0,
     inProgressProjects: 0});
-
+  const [activeFilter, setActiveFilter] = useState<string>("all"); // ✅ 필터 상태 추가
   useEffect(() => {
     fetchUserProfile();
     fetchProjects();
@@ -98,11 +98,20 @@ const Dashboard = () => {
 
   useEffect(() => {
     setFilteredProjects(
-        projects.filter((project) =>
-            project.projectName.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        projects.filter((project) => {
+          const progress = taskProgress[project.projectId] ?? 0;
+
+          // ✅ 상태(activeFilter)에 따른 필터링 적용
+          if (activeFilter === "inProgress" && progress === 100) return false;
+          if (activeFilter === "completed" && progress < 100) return false;
+
+          // ✅ 검색어 필터 적용
+          return project.projectName.toLowerCase().includes(searchTerm.toLowerCase());
+        })
     );
-  }, [searchTerm, projects]);
+  }, [searchTerm, projects, activeFilter, taskProgress]); // ✅ activeFilter, taskProgress 추가
+
+
   useEffect(() => {
     fetchUserProfile();
     fetchProjects();
@@ -163,9 +172,6 @@ const Dashboard = () => {
             <li className={activeTab === "calendar" ? "active" : ""} onClick={() => setActiveModal("calendar")}>
               Calendar
             </li>
-            <li className={activeTab === "profile" ? "active" : ""} onClick={() => setActiveModal("profile")}>
-              Profile
-            </li>
             <li className={activeTab === "settings" ? "active" : ""} onClick={() => setActiveModal("settings")}>
               Settings
             </li>
@@ -177,21 +183,33 @@ const Dashboard = () => {
             <h1>Hello {userProfile ? userProfile.userName : "Guest"} 👋</h1>
           </header>
           {/* ✅ 프로젝트 개수 통계 추가 */}
-          {/* ✅ 프로젝트 개수 통계 추가 */}
+
           <div className="stats-container">
-            <div className="stat-box total">
-              <h2>전체 프로젝트</h2>
+            <div
+                className={`stats-card total ${activeFilter === "all" ? "active" : ""}`}
+                onClick={() => setActiveFilter("all")}
+            >
+              <h2>📊 전체 프로젝트</h2>
               <p>{status.totalProjects} 개</p>
             </div>
-            <div className="stat-box in-progress">
-              <h2>진행 중인 프로젝트</h2>
+
+            <div
+                className={`stats-card in-progress ${activeFilter === "inProgress" ? "active" : ""}`}
+                onClick={() => setActiveFilter("inProgress")}
+            >
+              <h2>🚀 진행 중</h2>
               <p>{status.inProgressProjects} 개</p>
             </div>
-            <div className="stat-box completed">
-              <h2>완료된 프로젝트</h2>
+
+            <div
+                className={`stats-card completed ${activeFilter === "completed" ? "active" : ""}`}
+                onClick={() => setActiveFilter("completed")}
+            >
+              <h2>✅ 완료</h2>
               <p>{status.completedProjects} 개</p>
             </div>
           </div>
+
           <section className="table-container">
 
             {selectedProjectId ? (

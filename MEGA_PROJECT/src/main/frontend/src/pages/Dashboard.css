@@ -81,32 +81,57 @@
   font-weight: bold;
   color: #333;
 }
-
 .stats-container {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
+  justify-content: center;
+  flex-wrap: wrap; /* 반응형 정렬 */
 }
 
 .stats-card {
   flex: 1;
+  min-width: 200px;
+  max-width: 300px;
   background-color: #fff;
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: transform 0.2s ease-in-out;
 }
 
 .stats-card h2 {
-  font-size: 1.2rem;
-  color: #666;
+  font-size: 1.3rem;
+  color: #444;
+  margin-bottom: 0.5rem;
 }
 
 .stats-card p {
   font-size: 2rem;
   font-weight: bold;
-  color: #333;
+  color: #222;
 }
+
+/* ✅ 프로젝트 상태별 색상 차별화 */
+.stats-card.total {
+  border-top: 5px solid #007bff; /* 파란색 */
+}
+
+.stats-card.in-progress {
+  border-top: 5px solid #ff9800; /* 주황색 */
+}
+
+.stats-card.completed {
+  border-top: 5px solid #4caf50; /* 녹색 */
+}
+
+/* ✅ 마우스 호버 효과 */
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
 
 .percentage {
   font-size: 0.9rem;
@@ -325,23 +350,39 @@ th {
   color:white;
   z-index: 2;
 }
+/* ✅ 프로필 컨테이너 (사이드바 내) */
 .user-profile {
   display: flex;
+  flex-direction: column; /* 유저 이름을 아래로 배치 */
   align-items: center;
-  padding: 10px;
+  padding: 20px;
+  cursor: pointer; /* 클릭 가능하도록 */
 }
 
+/* ✅ 프로필 이미지 (사이드바 90%) */
 .user-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+  width: 90%; /* 사이드바 너비의 90% */
+  max-width: 150px; /* 최대 크기 제한 */
+  aspect-ratio: 1 / 1; /* 정사각형 비율 유지 */
+  border-radius: 50%; /* 동그랗게 유지 */
+  object-fit: cover; /* 비율 깨짐 방지 */
+  transition: transform 0.2s ease-in-out;
 }
 
-.user-name {
-  font-size: 16px;
-  font-weight: bold;
+/* ✅ 호버 효과 */
+.user-avatar:hover {
+  transform: scale(1.05);
 }
+
+/* ✅ 유저 이름 스타일 */
+.user-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-top: 10px;
+}
+
 /* ✅ 모달 스타일 */
 .modal-overlay {
   position: fixed;

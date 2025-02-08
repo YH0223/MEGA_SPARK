@@ -54,6 +54,13 @@ public class TaskController {
 
         return ResponseEntity.ok(response);
     }
-
+    /** ✅ 프로젝트별 Task 개수 조회 */
+    @GetMapping("/count/{projectId}")
+    public ResponseEntity<Map<String, Integer>> getTaskCount(@PathVariable int projectId) {
+        int taskCount = taskService.countTasksByProjectId(projectId);
+        Map<String, Integer> response = new HashMap<>();
+        response.put("taskCount", taskCount);
+        return ResponseEntity.ok(response);
+    }
 
 }

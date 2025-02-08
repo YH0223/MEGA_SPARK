@@ -16,7 +16,7 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-
+!**/src/main/java/user_upload/
 ### IntelliJ IDEA ###
 .idea
 *.iws
