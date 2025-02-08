@@ -6,6 +6,7 @@ import com.jyh000223.mega_project.Entities.Task;
 import com.jyh000223.mega_project.Entities.User;
 import com.jyh000223.mega_project.Repository.*;
 import com.jyh000223.mega_project.Service.ProjectService;
+import com.jyh000223.mega_project.Service.TaskService;
 import com.jyh000223.mega_project.Service.TeammateService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -39,7 +40,8 @@ public class ProjectController {
     private UserRepository userRepository;
     @Autowired
     private TaskRepository taskRepository;
-
+    @Autowired
+    private NoticeRepository noticeRepository;
 
     @PostMapping("/createproject")
     public ResponseEntity<String> createProject(@RequestBody ProjectDTO projectdto, HttpServletRequest request) {
@@ -116,9 +118,68 @@ public class ProjectController {
             return ResponseEntity.status(403).body("Unauthorized: You are not allowed to delete this project.");
         }
 
-        // 삭제 처리
-        projectRepository.delete(project);
-        return ResponseEntity.ok("200");
+        // ✅ 삭제할 프로젝트 ID 가져오기
+        int projectId = project.getProjectId();
+
+        try {
+            // ✅ 1. teammate 테이블에서 해당 프로젝트의 모든 데이터 삭제
+            teammateRepository.deleteByProjectId(projectId);
+
+            // ✅ 2. task 테이블에서 해당 프로젝트의 모든 데이터 삭제
+            taskRepository.deleteByProjectId(projectId);
+
+            // ✅ 3. notice 테이블에서 해당 프로젝트의 모든 데이터 삭제
+            noticeRepository.deleteByProjectId(projectId);
+
+            // ✅ 4. 프로젝트 자체 삭제
+            projectRepository.delete(project);
+
+            return ResponseEntity.ok("200");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting project: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/updateproject/{projectId}")
+    public ResponseEntity<String> updateProject(HttpServletRequest request,
+                                                @PathVariable int projectId,
+                                                @RequestBody ProjectDTO projectdto) {
+        LocalDate startDate = projectdto.getStartdate();
+        LocalDate deadline = projectdto.getDeadline();
+
+        // ✅ 세션에서 user_id 가져오기
+        HttpSession session = request.getSession();
+        String sessionManager = (String) session.getAttribute("user_id");
+
+        if (sessionManager == null) {
+            return ResponseEntity.status(403).body("Unauthorized: No session manager found.");
+        }
+
+        // ✅ 프로젝트 조회 (projectId 기준)
+        Optional<Project> optionalProject = projectRepository.findById(projectId);
+        if (optionalProject.isEmpty()) {
+            return ResponseEntity.status(404).body("Project not found.");
+        }
+
+        Project project = optionalProject.get();
+
+        // ✅ 현재 세션 유저가 프로젝트 매니저인지 확인
+        if (!sessionManager.equals(project.getProjectManager())) {
+            return ResponseEntity.status(403).body("Unauthorized: You are not allowed to update this project.");
+        }
+
+        // ✅ 시작 날짜가 종료 날짜보다 이후이면 오류 반환
+        if (startDate.isAfter(deadline)) {
+            return ResponseEntity.status(400).body("Invalid date: Start date must be before the deadline.");
+        }
+
+        // ✅ 프로젝트 정보 업데이트
+        project.setProjectName(projectdto.getProjectName());
+        project.setStartdate(startDate);
+        project.setDeadline(deadline);
+        projectRepository.save(project);
+
+        return ResponseEntity.ok("✅ 프로젝트가 업데이트되었습니다.");
     }
 
 
@@ -236,4 +297,5 @@ public class ProjectController {
         System.out.println("📌 최종 반환 데이터: " + result);
         return ResponseEntity.ok(result);
     }
+
 }
