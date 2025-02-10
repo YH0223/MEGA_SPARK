@@ -58,6 +58,54 @@ button {
     gap: 5px;
 }
 
-button:hover {
+/* ✅ 팀원 추가 / 팀원 목록 간격 줄이기 */
+.add-member {
+    display: flex;
+    flex-direction: column; /* ✅ 버튼을 아래로 배치 */
+    align-items: center;
+}
+
+/* ✅ 팀원 추가 버튼 정렬 */
+.add-button {
+    flex-shrink: 0;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap; /* ✅ 버튼이 줄 바꿈되지 않도록 */
+}
+
+.add-button:hover {
     background: #0056b3;
+}
+
+/* ✅ 팀원 목록 스타일 */
+.team-list {
+    margin-top: 5px; /* ✅ 간격 줄이기 */
+}
+
+/* ✅ 팀원 목록 내 개별 팀원 정렬 */
+.team-member {
+    display: flex;
+    justify-content: space-between; /* ✅ 이름과 삭제 버튼을 좌우 배치 */
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* ✅ 삭제 버튼 정렬 */
+.remove-button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap; /* ✅ 버튼이 줄 바꿈되지 않도록 */
+}
+
+.remove-button:hover {
+    background: #d9534f;
 }

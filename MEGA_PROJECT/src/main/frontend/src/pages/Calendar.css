@@ -19,18 +19,19 @@
 }
 
 .calendar-header button {
-  background: #005eff;
+  background: linear-gradient(135deg, #000000, #333333); /* 검정색 */
   color: white;
   border: none;
-  padding: 5px 15px;
+  padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 18px;
-  transition: 0.3s;
+  transition: 0.3s ease-in-out;
 }
 
 .calendar-header button:hover {
-  background: #003bb3;
+  background: linear-gradient(135deg, #ffffff, #555555); /* 흰색으로 변경 */
+  transform: scale(1.1);
 }
 
 /* 요일 헤더 */
@@ -48,20 +49,15 @@
   gap: 5px;
 }
 
-/* 날짜 스타일 */
-.calendar-day {
-  padding: 15px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: 0.2s;
-  position: relative; /* 줄을 추가할 수 있는 공간 확보 */
+.calendar-day:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 255, 0.1);
 }
 
 /* 현재 달이 아닌 날짜 스타일 */
 .other-month {
-  color: #aaa;
+  color: gray;
+  opacity: 0.6;
 }
 
 /* 선택된 날짜 스타일 */
@@ -109,19 +105,6 @@
   font-family: Arial, sans-serif;
 }
 
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-}
-
 .calendar-day-header {
   text-align: center;
   font-weight: bold;
@@ -164,4 +147,18 @@
   display: flex; /* ✅ 텍스트를 중앙 정렬 */
   align-items: center; /* ✅ 세로 중앙 정렬 */
   justify-content: center; /* ✅ 가로 중앙 정렬 */
+}
+
+/* ✅ 일요일과 공휴일을 빨간색으로 표시 */
+.holiday {
+  color: red;
+  font-weight: bold;
+}
+
+/* ✅ 공휴일 이름 스타일 */
+.holiday-name {
+  display: block;
+  font-size: 12px;
+  color: red;
+  margin-top: 2px;
 }

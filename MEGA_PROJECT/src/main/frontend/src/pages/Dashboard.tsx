@@ -7,6 +7,7 @@ import NewProject from "./NewProject"; // ✅ New Project 페이지 컴포넌트
 import Profile from "./Profile"; // ✅ Profile 페이지 컴포넌트
 import Calendar from "./Calendar"; // ✅ Calendar 페이지 컴포넌트
 import Settings from "./Settings"; // ✅ Settings 페이지 컴포넌트
+import { FaPlus, FaCalendarAlt, FaCog, FaEnvelope } from "react-icons/fa"; // ✅ 아이콘 추가
 
 // ✅ 프로젝트 데이터 타입 정의
 interface Project {
@@ -49,6 +50,10 @@ const Dashboard = () => {
     fetchUserProfile();
     fetchProjects();
   }, []);
+
+  const handleNotificationsClick = () => {
+    setActiveModal("notifications");
+  };
 
   const fetchUserProfile = async () => {
     try {
@@ -181,6 +186,27 @@ const Dashboard = () => {
         <main className="dashboard-main">
           <header className="dashboard-header">
             <h1>Hello {userProfile ? userProfile.userName : "Guest"} 👋</h1>
+            <div className="header-right">
+              <div className="profile-section" onClick={() => setActiveModal("profile")}>
+                <img
+                    src={userProfile?.img_url || "/default_profile.png"}
+                    alt="Profile"
+                    className="header-profile"
+                />
+              </div>
+              <button className="icon-button" onClick={handleNotificationsClick}>
+                <FaEnvelope/>
+              </button>
+              <button className="icon-button" onClick={() => setActiveModal("newProject")}>
+                <FaPlus/>
+              </button>
+              <button className="icon-button" onClick={() => setActiveModal("calendar")}>
+                <FaCalendarAlt/>
+              </button>
+              <button className="icon-button" onClick={() => setActiveModal("settings")}>
+                <FaCog/>
+              </button>
+            </div>
           </header>
           {/* ✅ 프로젝트 개수 통계 추가 */}
 
@@ -221,7 +247,10 @@ const Dashboard = () => {
                 </>
             ) : (
                 <>
-                  <h3>All Projects</h3>
+                  <div className="Search">
+                    <h3>All Projects</h3>
+                    <input type="text" placeholder="Search"/>
+                  </div>
                   <table>
                     <thead>
                     <tr>
@@ -238,7 +267,8 @@ const Dashboard = () => {
                       const statusColor = getStatusColor(completion);
 
                       return (
-                          <tr key={project.projectId} onClick={() => handleProjectClick(project.projectId)} className="clickable-row">
+                          <tr key={project.projectId} onClick={() => handleProjectClick(project.projectId)}
+                              className="clickable-row">
                             <td>{project.projectName}</td>
                             <td>{project.projectManager}</td>
                             <td>{new Date(project.startdate).toLocaleDateString()}</td>
@@ -246,7 +276,8 @@ const Dashboard = () => {
                             <td>
                               <div className="progress-bar-container">
                                 <span className="progress-text">{completion.toFixed(0)}%</span>
-                                <div className="progress-bar" style={{ width: `${completion}%`, backgroundColor: statusColor }} />
+                                <div className="progress-bar"
+                                     style={{width: `${completion}%`, backgroundColor: statusColor}}/>
                               </div>
                             </td>
                           </tr>

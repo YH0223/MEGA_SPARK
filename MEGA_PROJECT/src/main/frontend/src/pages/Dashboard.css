@@ -158,6 +158,10 @@
   margin-bottom: 1rem;
 }
 
+.back-button {
+  font-size: 1.4rem;
+}
+
 .Search {
   display: flex; /* 플렉스박스를 사용하여 정렬 */
   justify-content: space-between; /* 양쪽 끝에 요소 배치 */
@@ -286,6 +290,47 @@ table th {
 /* 📌 테이블 스타일 유지 */
 .table-container {
   margin-top: 20px;
+}
+
+/* ✅ 헤더 오른쪽 영역 */
+.header-right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  position: absolute;
+  right: 20px;
+}
+
+.header-profile {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  object-fit: cover;
+  transition: transform 0.2s ease-in-out;
+}
+
+.profile-section {
+  cursor: pointer;
+}
+
+.header-profile:hover {
+  transform: scale(1.1);
+}
+
+/* ✅ 아이콘 버튼 */
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+  transition: transform 0.2s ease-in-out;
+}
+
+.icon-button:hover {
+  transform: scale(1.2);
+  color: #007bff;
 }
 
 table {
@@ -423,8 +468,8 @@ th {
 .modal-image {
   display: block;
   margin: auto;
-  max-width: 500px;
-  max-height: 500px;
+  max-width: 800px;
+  max-height: 800px;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
 }
