@@ -65,3 +65,61 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #0069d9;
 }
+/* ✅ 다크모드: 프로필 컨테이너 */
+.dark-mode .profile-container {
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+    border: 1px solid #444;
+}
+
+/* ✅ 다크모드: 제목 */
+.dark-mode .profile-container h1 {
+    color: #ffffff;
+}
+
+/* ✅ 다크모드: 입력 필드 */
+.dark-mode .form-group input[type="text"],
+.dark-mode .form-group input[type="email"],
+.dark-mode .form-group textarea {
+    background-color: #444;
+    color: #ffffff;
+    border: 1px solid #777;
+}
+
+/* ✅ 다크모드: 입력 필드 placeholder */
+.dark-mode .form-group input[type="text"]::placeholder,
+.dark-mode .form-group input[type="email"]::placeholder,
+.dark-mode .form-group textarea::placeholder {
+    color: #aaa;
+}
+
+/* ✅ 다크모드: 입력 필드 포커스 */
+.dark-mode .form-group input[type="text"]:focus,
+.dark-mode .form-group input[type="email"]:focus,
+.dark-mode .form-group textarea:focus {
+    border-color: #007bff;
+    background: #555;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+}
+
+/* ✅ 다크모드: 파일 업로드 버튼 */
+.dark-mode .form-group input[type="file"] {
+    color: #f5f5f5;
+}
+
+/* ✅ 다크모드: 버튼 스타일 */
+.dark-mode button[type="submit"] {
+    background-color: #007bff;
+    color: #ffffff;
+    border: 1px solid #444;
+}
+
+.dark-mode button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ 다크모드: 프로필 이미지 테두리 */
+.dark-mode .profile-preview {
+    border: 2px solid #777;
+}

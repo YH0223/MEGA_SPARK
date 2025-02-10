@@ -1,3 +1,4 @@
+/* 📝 할 일 목록 컨테이너 */
 .task-container {
     max-width: 600px;
     margin: 20px auto;
@@ -5,8 +6,16 @@
     background-color: #f8f9fa;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드: 컨테이너 배경색 변경 */
+.dark-mode .task-container {
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+}
+
+/* ✅ 제목 스타일 */
 .task-container h2 {
     text-align: center;
     color: #333;
@@ -14,20 +23,36 @@
     margin-bottom: 20px;
 }
 
+/* ✅ 다크모드 제목 색상 */
+.dark-mode .task-container h2 {
+    color: #f5f5f5;
+}
+
+/* 📌 입력창과 버튼 정렬 */
 .task-input {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
 }
 
+/* 📝 입력 필드 스타일 */
 .task-input input {
     flex: 1;
     padding: 10px;
     font-size: 1rem;
     border-radius: 8px;
     border: 1px solid #ddd;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 입력 필드 */
+.dark-mode .task-input input {
+    background: #444;
+    color: #fff;
+    border: 1px solid #666;
+}
+
+/* 🔵 추가 버튼 */
 .task-input button {
     padding: 10px 20px;
     background-color: #007bff;
@@ -35,13 +60,31 @@
     border-radius: 8px;
     border: none;
     cursor: pointer;
+    transition: background 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 추가 버튼 */
+.dark-mode .task-input button {
+    background-color: #1a73e8;
+}
+
+/* ✅ 버튼 hover 효과 */
+.task-input button:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ 다크모드 버튼 hover 효과 */
+.dark-mode .task-input button:hover {
+    background-color: #0d47a1;
+}
+
+/* 📌 할 일 목록 스타일 */
 .task-list {
     list-style: none;
     padding: 0;
 }
 
+/* 📝 개별 할 일 아이템 */
 .task-list li {
     display: flex;
     align-items: center;
@@ -51,13 +94,27 @@
     background: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
-    transition: background 0.3s;
+    transition: background 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드: 개별 할 일 아이템 */
+.dark-mode .task-list li {
+    background: #333;
+    color: #f5f5f5;
+    border: 1px solid #444;
+}
+
+/* ✅ hover 효과 */
 .task-list li:hover {
     background: #f1f1f1;
 }
 
+/* ✅ 다크모드 hover 효과 */
+.dark-mode .task-list li:hover {
+    background: #444;
+}
+
+/* ✅ 체크박스 스타일 */
 .task-list input[type="checkbox"] {
     width: 18px;
     height: 18px;
@@ -65,17 +122,30 @@
     cursor: pointer;
 }
 
+/* ✅ 다크모드 체크박스 */
+.dark-mode .task-list input[type="checkbox"] {
+    accent-color: #bb86fc;
+}
+
+/* 📌 할 일 제목 */
 .task-list span {
     flex: 1;
     font-size: 1rem;
     color: #333;
 }
 
+/* ✅ 다크모드: 할 일 제목 */
+.dark-mode .task-list span {
+    color: #f5f5f5;
+}
+
+/* ✅ 완료된 할 일 스타일 */
 .task-list .completed span {
     text-decoration: line-through;
     color: #6c757d;
 }
 
+/* 🗑️ 삭제 버튼 */
 .task-list button {
     background-color: #dc3545;
     color: white;
@@ -83,8 +153,20 @@
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
+    transition: background 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 삭제 버튼 */
+.dark-mode .task-list button {
+    background-color: #e53935;
+}
+
+/* ✅ 삭제 버튼 hover 효과 */
 .task-list button:hover {
     background-color: #c82333;
+}
+
+/* ✅ 다크모드 삭제 버튼 hover 효과 */
+.dark-mode .task-list button:hover {
+    background-color: #b71c1c;
 }

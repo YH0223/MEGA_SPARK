@@ -1,15 +1,26 @@
+/* ✅ 기본 설정 */
 body {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
   background-color: #f4f4f4;
+  color: #333; /* 기본 글씨 색 */
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* ✅ 부드러운 전환 효과 */
 }
 
+/* ✅ 다크모드 지원 */
+.dark-mode body {
+  background-color: #121212 !important; /* 🌙 다크모드 배경 변경 */
+  color: #f5f5f5 !important; /* 🌙 다크모드 글자색 변경 */
+}
+
+/* ✅ 로그인/회원가입 컨테이너 */
 .auth-container {
   display: flex;
   height: 100vh;
 }
 
+/* ✅ 다크모드 왼쪽 배경 */
 .auth-left {
   flex: 1;
   background: linear-gradient(135deg, #1e3a8a, #2563eb);
@@ -19,11 +30,13 @@ body {
   color: white;
 }
 
+/* ✅ 헤더 스타일 */
 .auth-left h1 {
   font-size: 4rem;
   font-weight: bold;
 }
 
+/* ✅ 오른쪽 컨테이너 */
 .auth-right {
   flex: 1;
   display: flex;
@@ -33,33 +46,64 @@ body {
   background: white;
   padding: 2rem;
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 스타일 추가 */
+.dark-mode .auth-right {
+  background: #1e1e1e;
+  color: #f5f5f5;
+  box-shadow: -5px 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* ✅ 제목 스타일 */
 .auth-right h2 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
   color: #1e293b;
 }
 
+/* ✅ 다크모드 제목 */
+.dark-mode .auth-right h2 {
+  color: #f5f5f5;
+}
+
+/* ✅ 설명 문구 스타일 */
 .auth-right p {
   color: #64748b;
   margin-bottom: 2rem;
 }
 
+/* ✅ 다크모드 설명 문구 */
+.dark-mode .auth-right p {
+  color: #bbbbbb;
+}
+
+/* ✅ 입력 폼 */
 .auth-right form {
   display: flex;
   flex-direction: column;
   width: 80%;
 }
 
+/* ✅ 입력 필드 */
 .auth-right form input {
   margin-bottom: 1rem;
   padding: 0.8rem;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   font-size: 1rem;
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 입력 필드 */
+.dark-mode .auth-right form input {
+  background-color: #333;
+  color: #f5f5f5;
+  border: 1px solid #555;
+}
+
+/* ✅ 버튼 */
 .auth-right form button {
   background-color: #2563eb;
   color: white;
@@ -68,15 +112,33 @@ body {
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 버튼 */
+.dark-mode .auth-right form button {
+  background-color: #4a90e2;
+}
+
+/* ✅ 버튼 호버 효과 */
 .auth-right form button:hover {
   background-color: #1e3a8a;
 }
 
+/* ✅ 다크모드 버튼 호버 */
+.dark-mode .auth-right form button:hover {
+  background-color: #2563eb;
+}
+
+/* ✅ 링크 */
 .auth-right a {
   margin-top: 1rem;
   text-decoration: none;
   color: #2563eb;
   font-size: 0.9rem;
+}
+
+/* ✅ 다크모드 링크 색상 */
+.dark-mode .auth-right a {
+  color: #4a90e2;
 }

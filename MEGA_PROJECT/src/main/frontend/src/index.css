@@ -1,23 +1,32 @@
+/* 🌟 기본 스타일 */
 .auth-container {
   display: flex;
   height: 100vh;
-  background: linear-gradient(to right, #e0f7fa, #e0f4fc); /* 부드러운 배경 */
+  background: linear-gradient(to right, #e0f7fa, #e0f4fc); /* 기본 라이트모드 배경 */
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 배경 */
+.dark-mode .auth-container {
+  background: linear-gradient(to right, #0f0f0f, #1a1a1a); /* 다크모드용 어두운 배경 */
+}
+
+/* ✅ 왼쪽 패널 (그라데이션 유지) */
 .auth-left {
   flex: 1 1 50%;
-  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); /* 시원한 느낌의 다크 그라데이션 */
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   font-size: 4rem;
-  font-family: "Poppins", sans-serif; /* 현대적이고 세련된 폰트 */
+  font-family: "Poppins", sans-serif;
   font-weight: bold;
   letter-spacing: 1.5px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+/* ✅ 오른쪽 컨테이너 */
 .auth-right {
   flex: 1 1 50%;
   display: flex;
@@ -25,11 +34,20 @@
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  background: white; /* 깨끗한 흰색 배경 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 */
+  background: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 적용 */
+.dark-mode .auth-right {
+  background: #1e1e1e;
+  color: #f5f5f5;
+  box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+/* ✅ 제목 */
 .auth-right h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -37,12 +55,24 @@
   font-family: "Poppins", sans-serif;
 }
 
+/* ✅ 다크모드 제목 */
+.dark-mode .auth-right h2 {
+  color: #f5f5f5;
+}
+
+/* ✅ 설명문 */
 .auth-right p {
   margin-bottom: 2rem;
   color: #555;
-  font-family: "Roboto", sans-serif; /* 직관적인 서체 */
+  font-family: "Roboto", sans-serif;
 }
 
+/* ✅ 다크모드 설명문 */
+.dark-mode .auth-right p {
+  color: #bbbbbb;
+}
+
+/* ✅ 입력 필드 */
 form {
   display: flex;
   flex-direction: column;
@@ -58,12 +88,27 @@ form input {
   transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* ✅ 다크모드 입력 필드 */
+.dark-mode form input {
+  background-color: #333;
+  color: #f5f5f5;
+  border: 1px solid #555;
+}
+
+/* ✅ 입력 필드 포커스 */
 form input:focus {
   border: 1px solid #2a9d8f;
   box-shadow: 0 0 5px rgba(42, 157, 143, 0.5);
   outline: none;
 }
 
+/* ✅ 다크모드 입력 필드 포커스 */
+.dark-mode form input:focus {
+  border: 1px solid #2a9d8f;
+  box-shadow: 0 0 5px rgba(42, 157, 143, 0.8);
+}
+
+/* ✅ 버튼 */
 form button {
   padding: 0.8rem;
   font-size: 1rem;
@@ -75,11 +120,23 @@ form button {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-form button:hover {
-  background-color: #264653;
-  transform: translateY(-2px); /* 버튼 클릭 시 약간 떠오르는 효과 */
+/* ✅ 다크모드 버튼 */
+.dark-mode form button {
+  background-color: #4a90e2;
 }
 
+/* ✅ 버튼 hover 효과 */
+form button:hover {
+  background-color: #264653;
+  transform: translateY(-2px);
+}
+
+/* ✅ 다크모드 버튼 hover */
+.dark-mode form button:hover {
+  background-color: #2a9d8f;
+}
+
+/* ✅ 링크 스타일 */
 a {
   margin-top: 1rem;
   color: #007bff;
@@ -87,10 +144,12 @@ a {
   transition: color 0.3s ease;
 }
 
-a:hover {
-  color: #0056b3;
+/* ✅ 다크모드 링크 */
+.dark-mode a {
+  color: #4a90e2;
 }
 
+/* ✅ 회원가입 버튼 */
 .register-button {
   background-color: #e76f51;
   color: white;
@@ -104,7 +163,35 @@ a:hover {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+/* ✅ 다크모드 회원가입 버튼 */
+.dark-mode .register-button {
+  background-color: #ff6b6b;
+}
+
+/* ✅ 회원가입 버튼 hover */
 .register-button:hover {
   background-color: #f4a261;
-  transform: scale(1.05); /* 살짝 커지는 애니메이션 */
+  transform: scale(1.05);
+}
+
+/* ✅ 다크모드 회원가입 버튼 hover */
+.dark-mode .register-button:hover {
+  background-color: #e76f51;
+}
+
+/* ✅ 애니메이션 효과 유지 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-right,
+.auth-left {
+  animation: fadeIn 0.5s ease-in-out;
 }

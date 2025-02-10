@@ -165,3 +165,94 @@
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
 }
+/* ✅ 다크모드: 공지사항 컨테이너 */
+.dark-mode .notice-box {
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+    border: 1px solid #444;
+}
+
+/* ✅ 다크모드: 제목 */
+.dark-mode .notice-header h2 {
+    color: #ffffff;
+}
+
+/* ✅ 다크모드: 작성 버튼 */
+.dark-mode .add-notice-btn {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: 1px solid #0056b3;
+}
+
+.dark-mode .add-notice-btn:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ 다크모드: 공지사항 테이블 */
+.dark-mode .notice-table {
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+}
+
+.dark-mode .notice-table th {
+    background-color: #333;
+    color: #bbb;
+}
+
+.dark-mode .notice-table td {
+    background-color: #2a2a2a;
+    border-color: #444;
+}
+
+.dark-mode .notice-table tr:hover {
+    background-color: #444;
+}
+
+/* ✅ 다크모드: 입력 필드 & 텍스트 박스 */
+.dark-mode .notice-input-field,
+.dark-mode .notice-textarea {
+    background-color: #444;
+    color: #ffffff;
+    border: 1px solid #777;
+}
+
+/* ✅ 다크모드: 입력 필드 placeholder */
+.dark-mode .notice-input-field::placeholder,
+.dark-mode .notice-textarea::placeholder {
+    color: #aaa;
+}
+
+/* ✅ 다크모드: 입력 필드 포커스 */
+.dark-mode .notice-input-field:focus,
+.dark-mode .notice-textarea:focus {
+    border-color: #007bff;
+    background: #555;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+}
+
+/* ✅ 다크모드: 등록 버튼 */
+.dark-mode .notice-submit-btn {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: 1px solid #0056b3;
+}
+
+.dark-mode .notice-submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ 다크모드: 모달 창 */
+.dark-mode .modal-content {
+    background: #333;
+    color: #f5f5f5;
+    border: 1px solid #555;
+}
+
+.dark-mode .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}

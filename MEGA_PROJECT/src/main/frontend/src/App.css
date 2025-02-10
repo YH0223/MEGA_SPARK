@@ -1,23 +1,37 @@
-/* Reset 기본 스타일 */
+/* ✅ Reset 기본 스타일 */
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: #f9f9f9; /* 🌞 라이트모드 배경 */
+  color: #333; /* 기본 글자색 */
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* ✅ 부드러운 전환 효과 */
 }
 
+/* ✅ 다크모드 지원 */
+.dark-mode body {
+  background-color: #121212 !important; /* 🌙 다크모드 배경 변경 */
+  color: #f5f5f5 !important; /* 🌙 다크모드 글자색 변경 */
+}
+
+/* ✅ 공통 링크 스타일 */
 a {
   text-decoration: none;
   color: inherit;
 }
 
+/* ✅ 다크모드 링크 색상 변경 */
+.dark-mode a {
+  color: #4a90e2; /* 🔵 다크모드에서 가독성 좋은 링크 색상 */
+}
+
+/* ✅ 리스트 스타일 */
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* 공통 버튼 스타일 */
+/* ✅ 공통 버튼 스타일 */
 button {
   font-family: inherit;
   font-size: 1rem;
@@ -25,6 +39,15 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  background-color: #007bff; /* 🔵 기본 버튼 색 */
+  color: white;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* ✅ 다크모드 버튼 스타일 */
+.dark-mode button {
+  background-color: #4a90e2; /* 🔵 다크모드 버튼 색상 */
+  color: white;
 }
 
 button:hover {
@@ -32,16 +55,36 @@ button:hover {
   color: #ffffff;
 }
 
-/* 공통 입력 필드 스타일 */
+/* ✅ 다크모드 버튼 호버 */
+.dark-mode button:hover {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* ✅ 공통 입력 필드 스타일 */
 input {
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 100%;
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 입력 필드 스타일 */
+.dark-mode input {
+  background-color: #333;
+  color: #f5f5f5;
+  border: 1px solid #555;
+}
+
+/* ✅ 입력 필드 포커스 스타일 */
 input:focus {
   outline: none;
   border-color: #0056d2;
+}
+
+/* ✅ 다크모드에서 입력 필드 포커스 */
+.dark-mode input:focus {
+  border-color: #4a90e2;
 }

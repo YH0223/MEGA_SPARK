@@ -1,38 +1,44 @@
+/* 🔥 기본 사이드바 스타일 */
 .sidebar {
-    width: 200px !important;;
-    background-color: #fdfdfd !important;;
+    width: 200px !important;
+    background-color: #fdfdfd !important;
     color: rgb(0, 0, 0) !important;
     padding: 20px;
     position: fixed; /* 고정 위치 */
     top: 0;
     left: 0;
     z-index: 1; /* sidebar를 header보다 아래로 배치 */
-  }
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
 
-  .sidebar h3 {
-    margin-top: 0; 
-    margin-bottom: 10px;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    margin: 30px 0;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 4px; /* 버튼 모서리 둥글게 */
-  }
-  
-  .sidebar ul li:hover {
-    background-color: #9dcff7;
-    padding: 10px;
-    border-radius: 4px; /* 버튼 모서리 둥글게 */
-  }
+/* 🔥 다크모드에서 사이드바 스타일 */
+.dark-mode .sidebar {
+    background-color: #181818 !important; /* 🌙 어두운 배경으로 변경 */
+    color: #f5f5f5 !important; /* 🌙 내부 글씨를 밝게 변경 */
+}
 
-  .from-spark {
-    font-size: 0.3em;
-    color: gary;
-  }
+/* 🔥 다크모드에서 제목 스타일 */
+.dark-mode .sidebar h3 {
+    color: #ffffff !important;
+}
+
+/* 🔥 다크모드에서 네비게이션 리스트 스타일 */
+.dark-mode .sidebar ul li {
+    color: #cccccc !important; /* 기본 글자색 변경 */
+}
+
+/* 🔥 다크모드에서 hover 효과 */
+.dark-mode .sidebar ul li:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 🔥 다크모드에서 active 상태 */
+.dark-mode .sidebar ul li.active {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+/* 🔥 다크모드에서 "from Spark" 같은 텍스트 스타일 */
+.dark-mode .from-spark {
+    color: #bbbbbb !important; /* 어두운 회색으로 변경 */
+}

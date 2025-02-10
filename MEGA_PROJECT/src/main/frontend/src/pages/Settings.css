@@ -1,4 +1,4 @@
-/* 설정 페이지 컨테이너 */
+/* ⚙️ 설정 페이지 컨테이너 */
 .settings-container {
     max-width: 400px;
     margin: 50px auto;
@@ -6,43 +6,50 @@
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 /* 폼 그룹 스타일 */
 .form-group {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* 왼쪽 정렬 */
+    justify-content: space-between;
     margin-bottom: 15px;
 }
 
+/* ✅ 라벨 스타일 */
 .form-group label {
     font-size: 16px;
     font-weight: bold;
-    margin-right: auto; /* 텍스트를 왼쪽으로 붙이기 */
+    color: #333;
 }
 
-/* 다크 모드 토글 (기본 체크박스 스타일) */
+/* ✅ 다크모드 토글 (체크박스 스타일) */
 .form-group input[type="checkbox"] {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    accent-color: #1f387e; /* 체크박스 색상 */
+    accent-color: #1f387e;
 }
 
-/* 다크 모드 스타일 */
-body.dark-mode {
-    background: #1e1e1e;
-    color: white;
-}
-
-body.dark-mode .settings-container {
-    background: #333;
-    color: white;
+/* 🌙 다크모드 스타일 */
+.dark-mode .settings-container {
+    background: #2a2a2a;
+    color: #f5f5f5;
     box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
 }
 
-/* 로그아웃 버튼 */
+/* ✅ 다크모드: 폼 그룹 텍스트 */
+.dark-mode .form-group label {
+    color: #f5f5f5;
+}
+
+/* ✅ 다크모드: 체크박스 */
+.dark-mode .form-group input[type="checkbox"] {
+    accent-color: #bb86fc; /* ✅ 다크모드 체크박스 색상 */
+}
+
+/* 🚀 로그아웃 버튼 */
 .logout-button {
     width: 100%;
     padding: 10px;
@@ -56,6 +63,19 @@ body.dark-mode .settings-container {
     margin-top: 10px;
 }
 
-.logout-button:hover {
-    background: #b71c1c;
+/* ✅ 다크모드 로그아웃 버튼 */
+.dark-mode .logout-button {
+    background: #ff5252;
+    color: white;
+}
+
+.dark-mode .logout-button:hover {
+    background: #e53935;
+}
+
+/* 🚀 반응형 (모바일 최적화) */
+@media (max-width: 768px) {
+    .settings-container {
+        width: 90%;
+    }
 }

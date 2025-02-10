@@ -163,5 +163,75 @@
     cursor: pointer;
     color: #333;
   }
-
 }
+/* 🌙 다크모드: 프로젝트 전체 컨테이너 */
+.dark-mode .project-container {
+    background: #2a2a2a;
+    color: #f5f5f5;
+    border: 1px solid #444;
+}
+
+/* 🔵 다크모드: 헤더 */
+.dark-mode .header {
+    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
+    color: #ffffff;
+}
+
+/* 📌 다크모드: 프로젝트 게시판 */
+.dark-mode .project-board {
+    background: #333;
+    color: #f5f5f5;
+    border: 1px solid #444;
+}
+
+/* 👥 다크모드: 팀원 관리 */
+.dark-mode .team-management {
+    background: #333;
+    color: #f5f5f5;
+    border: 1px solid #444;
+}
+
+/* 📝 다크모드: 할 일 목록 */
+.dark-mode .task-list {
+    background: #2a2a2a;
+    color: #f5f5f5;
+    border: 1px solid #444;
+}
+
+/* 🎯 다크모드: 프로젝트 수정/삭제 버튼 컨테이너 */
+.dark-mode .project-actions {
+    background: #333;
+    border-radius: 8px;
+}
+
+/* ✅ 수정 버튼 */
+.dark-mode .update-button {
+    background: linear-gradient(135deg, #4a90e2 0%, #003bb3 100%);
+    color: #ffffff;
+}
+
+/* ❌ 삭제 버튼 */
+.dark-mode .delete-button {
+    background: linear-gradient(135deg, #ff758c 0%, #b33951 100%);
+    color: white;
+}
+
+/* 🖥️ 다크모드 반응형 */
+@media (max-width: 768px) {
+    .dark-mode .project-container {
+        background: #2a2a2a;
+    }
+}
+
+/* ✅ 다크모드 모달 스타일 */
+.dark-mode .modal-content {
+    background: #333;
+    color: #f5f5f5;
+    border: 1px solid #444;
+}
+
+/* ✅ 다크모드 닫기 버튼 */
+.dark-mode .close-button {
+    color: #f5f5f5;
+}
+
