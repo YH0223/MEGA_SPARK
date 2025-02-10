@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/MEGA_MINI_PROJECT_1.iml" filepath="$PROJECT_DIR$/.idea/MEGA_MINI_PROJECT_1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MEGA_PROJECT.iml" filepath="$PROJECT_DIR$/.idea/modules/MEGA_PROJECT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MEGA_PROJECT.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MEGA_PROJECT.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MEGA_PROJECT.test.iml" filepath="$PROJECT_DIR$/.idea/modules/MEGA_PROJECT.test.iml" />
     </modules>
   </component>
 </project>
