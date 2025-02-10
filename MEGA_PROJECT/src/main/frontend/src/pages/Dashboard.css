@@ -485,3 +485,28 @@ th {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
 }
+
+.charts-container {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* 전체 컨테이너 너비 확장 */
+}
+
+.chart-box {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-width: 600px; /* 🔥 최소 너비를 320px로 설정 (조정 가능) */
+  flex: 1;
+}
+
+.collapsed {
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 200px; /* 🔥 접힐 때 최소 크기 설정 */
+}
+

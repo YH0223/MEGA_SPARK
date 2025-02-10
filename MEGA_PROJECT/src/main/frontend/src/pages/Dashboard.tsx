@@ -9,6 +9,7 @@ import Calendar from "./Calendar"; // ✅ Calendar 페이지 컴포넌트
 import Settings from "./Settings"; // ✅ Settings 페이지 컴포넌트
 import { FaPlus, FaCalendarAlt, FaCog, FaEnvelope, FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa"; // ✅ 추가
 
 
 // ✅ 프로젝트 데이터 타입 정의
@@ -241,12 +242,12 @@ const Dashboard = () => {
               </button>
             </div>
           </header>
-
           <div className="charts-container">
-            {/* 프로젝트 진행률 차트 */}
-            <div className="chart-box" style={{width: "50%"}}>
+            {/* 📊 프로젝트 진행률 차트 (왼쪽) */}
+            <div className={`chart-box ${showProgressChart ? "expanded" : "collapsed"}`}
+                 style={{flex: showProgressChart ? "1" : "0.05", transition: "flex 0.3s ease-in-out"}}>
               <h3 onClick={() => setShowProgressChart(!showProgressChart)}>
-                📊 프로젝트 진행률 {showProgressChart ? <FaChevronUp/> : <FaChevronDown/>}
+                📊 프로젝트 진행률 {showProgressChart ? <FaChevronLeft/> : <FaChevronRight/>}
               </h3>
               {showProgressChart && (
                   <ResponsiveContainer width="100%" height={300}>
@@ -261,10 +262,11 @@ const Dashboard = () => {
               )}
             </div>
 
-            {/* 도넛 차트 */}
-            <div className="chart-box" style={{width: "50%"}}>
+            {/* 📌 프로젝트 진행 현황 차트 (오른쪽) */}
+            <div className={`chart-box ${showDonutChart ? "expanded" : "collapsed"}`}
+                 style={{flex: showDonutChart ? "1" : "0.05", transition: "flex 0.3s ease-in-out"}}>
               <h3 onClick={() => setShowDonutChart(!showDonutChart)}>
-                📌 프로젝트 진행 현황 {showDonutChart ? <FaChevronUp/> : <FaChevronDown/>}
+                📌 프로젝트 진행 현황 {showDonutChart ? <FaChevronRight/> : <FaChevronLeft/>}
               </h3>
               {showDonutChart && (
                   <ResponsiveContainer width="100%" height={300}>
@@ -281,6 +283,8 @@ const Dashboard = () => {
               )}
             </div>
           </div>
+
+
           {/* ✅ 프로젝트 개수 통계 추가 */}
           <div className="stats-container">
             <div
