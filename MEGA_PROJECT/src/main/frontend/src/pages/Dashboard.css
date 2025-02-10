@@ -1,6 +1,8 @@
-.body {
-  zoom: 0.9 /* 90% 크기로 줄이기 */
+body {
+  transform: scale(0.9);
+  transform-origin: top; /* 화면 좌측 상단 기준 */
 }
+
 .dashboard-container {
   display: flex;
   height: 100vh;

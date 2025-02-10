@@ -7,7 +7,9 @@ import NewProject from "./NewProject"; // ✅ New Project 페이지 컴포넌트
 import Profile from "./Profile"; // ✅ Profile 페이지 컴포넌트
 import Calendar from "./Calendar"; // ✅ Calendar 페이지 컴포넌트
 import Settings from "./Settings"; // ✅ Settings 페이지 컴포넌트
-import { FaPlus, FaCalendarAlt, FaCog, FaEnvelope } from "react-icons/fa"; // ✅ 아이콘 추가
+import { FaPlus, FaCalendarAlt, FaCog, FaEnvelope, FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+
 
 // ✅ 프로젝트 데이터 타입 정의
 interface Project {
@@ -23,6 +25,7 @@ interface ProjectStatus {
   inProgressProjects: number;
 }
 interface TaskProgress {
+  projectId: number;
   percentage: number;
 }
 
@@ -49,6 +52,7 @@ const Dashboard = () => {
   useEffect(() => {
     fetchUserProfile();
     fetchProjects();
+    fetchProjectStatus();
   }, []);
 
   const handleNotificationsClick = () => {
@@ -93,6 +97,32 @@ const Dashboard = () => {
       setTaskProgress(prev => ({ ...prev, [projectId]: 0 }));
     }
   };
+  const fetchProjectStatus = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/projects/status", { withCredentials: true });
+      setStatus(response.data);
+    } catch (error) {
+      console.error("🚨 프로젝트 상태 데이터를 불러오는 중 오류 발생:", error);
+    }
+  };
+
+  /** ✅ 프로젝트 진행률 바 그래프 데이터 */
+  const progressData = projects.map((project) => ({
+    name: project.projectName,
+    progress: taskProgress[project.projectId]?.percentage || 0, // 🔥 객체 접근 방식 수정
+  }));
+
+
+  /** ✅ 도넛 차트 데이터 (전체, 진행 중, 완료) */
+  const donutData = [
+    { name: "진행 중", value: status.inProgressProjects },
+    { name: "완료", value: status.completedProjects },
+    { name: "전체", value: status.totalProjects },
+  ];
+
+  /** ✅ 도넛 차트 색상 */
+  const COLORS = ["#ffcc00", "#00c49f", "#0088fe"];
+
 
   const getStatusColor = (percentage: number) => {
     if (percentage < 33) return "#f44b42";
@@ -148,10 +178,13 @@ const Dashboard = () => {
     setActiveModal(null); // ✅ 모달 닫기
     fetchProjects(); // ✅ 새 프로젝트 추가 후 목록 새로고침
   };
+  const [showProgressChart, setShowProgressChart] = useState(true);
+  const [showDonutChart, setShowDonutChart] = useState(true);
+
 
   return (
       <div className="dashboard-container">
-        {/* ✅ 유저 프로필 추가 */}
+        { /*
         <nav className="sidebar">
           <div className="user-profile">
             {userProfile && (
@@ -182,7 +215,7 @@ const Dashboard = () => {
             </li>
           </ul>
         </nav>
-
+        */}
         <main className="dashboard-main">
           <header className="dashboard-header">
             <h1>Hello {userProfile ? userProfile.userName : "Guest"} 👋</h1>
@@ -208,8 +241,47 @@ const Dashboard = () => {
               </button>
             </div>
           </header>
-          {/* ✅ 프로젝트 개수 통계 추가 */}
 
+          <div className="charts-container">
+            {/* 프로젝트 진행률 차트 */}
+            <div className="chart-box" style={{width: "50%"}}>
+              <h3 onClick={() => setShowProgressChart(!showProgressChart)}>
+                📊 프로젝트 진행률 {showProgressChart ? <FaChevronUp/> : <FaChevronDown/>}
+              </h3>
+              {showProgressChart && (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={progressData} layout="vertical">
+                      <XAxis type="number" domain={[0, 100]}/>
+                      <YAxis dataKey="name" type="category"/>
+                      <Tooltip/>
+                      <Legend/>
+                      <Bar dataKey="progress" fill="#0088fe" barSize={20}/>
+                    </BarChart>
+                  </ResponsiveContainer>
+              )}
+            </div>
+
+            {/* 도넛 차트 */}
+            <div className="chart-box" style={{width: "50%"}}>
+              <h3 onClick={() => setShowDonutChart(!showDonutChart)}>
+                📌 프로젝트 진행 현황 {showDonutChart ? <FaChevronUp/> : <FaChevronDown/>}
+              </h3>
+              {showDonutChart && (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie data={donutData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                        {donutData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index]}/>
+                        ))}
+                      </Pie>
+                      <Tooltip/>
+                      <Legend/>
+                    </PieChart>
+                  </ResponsiveContainer>
+              )}
+            </div>
+          </div>
+          {/* ✅ 프로젝트 개수 통계 추가 */}
           <div className="stats-container">
             <div
                 className={`stats-card total ${activeFilter === "all" ? "active" : ""}`}
@@ -235,7 +307,6 @@ const Dashboard = () => {
               <p>{status.completedProjects} 개</p>
             </div>
           </div>
-
           <section className="table-container">
 
             {selectedProjectId ? (
@@ -243,7 +314,7 @@ const Dashboard = () => {
                   <button className="back-button" onClick={() => setSelectedProjectId(null)}>
                     🔙 Back to Projects
                   </button>
-                  <Project projectId={selectedProjectId} />
+                  <Project projectId={selectedProjectId}/>
                 </>
             ) : (
                 <>
@@ -294,10 +365,10 @@ const Dashboard = () => {
             <div className="modal-overlay" onClick={closeModal}>
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <span className="close-button" onClick={closeModal}>&times;</span>
-                {activeModal === "newProject" && <NewProject onProjectCreated={handleProjectCreated} />} {/* ✅ 함수 전달 */}
-                {activeModal === "profile" && <Profile />}
-                {activeModal === "calendar" && <Calendar onProjectSelect={handleProjectSelectFromCalendar} />}
-                {activeModal === "settings" && <Settings />}
+                {activeModal === "newProject" && <NewProject onProjectCreated={handleProjectCreated}/>} {/* ✅ 함수 전달 */}
+                {activeModal === "profile" && <Profile/>}
+                {activeModal === "calendar" && <Calendar onProjectSelect={handleProjectSelectFromCalendar}/>}
+                {activeModal === "settings" && <Settings/>}
               </div>
             </div>
         )}
