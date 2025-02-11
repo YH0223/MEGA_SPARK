@@ -470,6 +470,7 @@ th {
   justify-content: space-between;
   align-items: center;
   width: 100%; /* 전체 컨테이너 너비 확장 */
+  margin-bottom: 40px;
 }
 
 .chart-box {
@@ -521,63 +522,12 @@ th {
   font-size: 1.2rem;
 }
 
-.site-footer {
-  background-color: #333;
-  color: white;
-  padding: 20px 0;
+.dashboard-footer {
   text-align: center;
-  margin-top: 50px;
-}
-
-.footer-container {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.footer-section {
-  margin: 10px;
-}
-
-.footer-section h3,
-.footer-section h4 {
-  margin-bottom: 10px;
-}
-
-.footer-section ul {
-  list-style: none;
-  padding: 0;
-}
-
-.footer-section ul li {
-  margin: 5px 0;
-}
-
-.footer-section ul li a {
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.footer-section ul li a:hover {
-  color: #ffcc00;
-}
-
-.social-icons a {
-  margin: 0 10px;
-  color: white;
-  font-size: 20px;
-  transition: color 0.3s;
-}
-
-.social-icons a:hover {
-  color: #ffcc00;
-}
-
-.footer-bottom {
-  margin-top: 20px;
-  padding: 10px 0;
-  background-color: #222;
+  padding: 20px;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  font-size: 14px;
+  margin-top: 30px;
+  border-top: 1px solid #ddd;
 }

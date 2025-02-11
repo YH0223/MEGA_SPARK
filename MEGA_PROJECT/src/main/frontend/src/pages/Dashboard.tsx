@@ -234,6 +234,7 @@ const Dashboard = () => {
                     className="header-profile"
                 />
               </div>
+
               <button className="icon-button" onClick={handleNotificationsClick}>
                 <FaEnvelope/>
               </button>
@@ -381,6 +382,10 @@ const Dashboard = () => {
                 </>
             )}
           </section>
+
+          <footer className="dashboard-footer">
+            <p>© 2025 Your Company. All rights reserved. Contact us: support@yourcompany.com</p>
+          </footer>
         </main>
         {activeModal && (
             <div className="modal-overlay" onClick={closeModal}>
