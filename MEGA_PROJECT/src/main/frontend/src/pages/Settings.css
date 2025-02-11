@@ -1,81 +1,143 @@
-/* ⚙️ 설정 페이지 컨테이너 */
+/* ⚙️ 모달 스타일 (정사각형 & 네오모피즘 효과) */
 .settings-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+    width: 420px;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 60px auto;
+    padding: 25px;
+    background: #f8f9fc;
+    border-radius: 16px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1),
+    -8px -8px 15px rgba(255, 255, 255, 1);
+    transition: all 0.3s ease-in-out;
+    text-align: center;
 }
 
-/* 폼 그룹 스타일 */
+/* 🌙 다크모드 적용 */
+.dark-mode .settings-container {
+    background: #2a2a2a;
+    color: #ffffff;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3),
+    -8px -8px 15px rgba(50, 50, 50, 1);
+}
+
+/* ✅ 설정 제목 */
+.settings-container h1 {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:10px;
+    color: #222;
+}
+
+/* 🌙 다크모드 제목 색상 */
+.dark-mode .settings-container h1 {
+    color: #ffffff;
+}
+
+/* 🌟 폼 그룹 스타일 */
 .form-group {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 15px;
+    gap: 20px;  /* 🔥 다크 모드 텍스트와 토글 버튼 사이 간격 추가 */
+    margin: 20px 0;
 }
 
-/* ✅ 라벨 스타일 */
-.form-group label {
+/* ✅ 다크 모드 텍스트 스타일 */
+.dark-mode-label {
     font-size: 16px;
     font-weight: bold;
-    color: #333;
 }
 
-/* ✅ 다크모드 토글 (체크박스 스타일) */
-.form-group input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+/* ✅ 토글 버튼 스타일 */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 56px;
+    height: 28px;
     cursor: pointer;
-    accent-color: #1f387e;
 }
 
-/* 🌙 다크모드 스타일 */
-.dark-mode .settings-container {
-    background: #2a2a2a;
-    color: #f5f5f5;
-    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-}
-
-/* ✅ 다크모드: 폼 그룹 텍스트 */
-.dark-mode .form-group label {
-    color: #f5f5f5;
-}
-
-/* ✅ 다크모드: 체크박스 */
-.dark-mode .form-group input[type="checkbox"] {
-    accent-color: #bb86fc; /* ✅ 다크모드 체크박스 색상 */
-}
-
-/* 🚀 로그아웃 버튼 */
-.logout-button {
+/* 🛠️ ✅ 토글 버튼 클릭 버그 해결 */
+.toggle-switch input {
+    opacity: 0;
     width: 100%;
-    padding: 10px;
-    background: #d32f2f;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+}
+
+/* 토글 버튼 바 */
+.toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, #ddd, #f5f5f5);
+    border-radius: 28px;
+    transition: 0.4s;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+}
+
+/* 토글 버튼 핸들 (이동하는 원) */
+.toggle-slider:before {
+    content: "☀️";
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    left: 2px;
+    bottom: 2px;
+    background: linear-gradient(to right, #ffffff, #e0e0e0);
+    border-radius: 50%;
+    transition: 0.4s;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2),
+    -2px -2px 5px rgba(255, 255, 255, 1);
+}
+
+/* ✅ 다크모드 토글 시 스타일 변경 */
+input:checked + .toggle-slider {
+    background: linear-gradient(to right, #007bff, #0056b3);
+}
+
+/* ✅ 다크모드 아이콘 변경 */
+input:checked + .toggle-slider:before {
+    transform: translateX(28px);
+    content: "🌙";
+    background: linear-gradient(to right, #4e4e4e, #1e1e1e);
+    color: #fff;
+}
+
+/* 🚀 로그아웃 버튼 (너비 조정) */
+.logout-button {
+    width: 50%;
+    padding: 12px;
+    background: linear-gradient(to right, #ff6b6b, #e74c3c);
     color: white;
     font-size: 16px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: 0.3s;
-    margin-top: 10px;
+    transition: 0.3s ease-in-out;
 }
 
-/* ✅ 다크모드 로그아웃 버튼 */
-.dark-mode .logout-button {
-    background: #ff5252;
-    color: white;
-}
-
-.dark-mode .logout-button:hover {
-    background: #e53935;
-}
-
-/* 🚀 반응형 (모바일 최적화) */
+/* ✅ 반응형 (모바일 최적화) */
 @media (max-width: 768px) {
     .settings-container {
         width: 90%;
+        height: 90vw;
+        max-width: 420px;
+        max-height: 420px;
     }
 }

@@ -1,7 +1,8 @@
 Dashboard.css
 
 .body {
-  zoom: 0.9 /* 90% 크기로 줄이기 */
+  transform: scale(0.9);
+  transform-origin: top; /* 화면 좌측 상단 기준 */
 }
 .dashboard-container {
   display: flex;
@@ -34,6 +35,14 @@ Dashboard.css
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
+.back-button {
+
+  font-size: 1.4rem;
+
+}
+
+
 
 .sidebar ul li.active {
   background-color: #e0f7fa;
@@ -417,22 +426,30 @@ th {
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* ✅ 모달 닫기 버튼 */
 .close-button {
   position: absolute;
   top: 10px;
   right: 15px;
-  font-size: 24px;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  color: #333;
 }
+
 
 /* ✅ 모달 내 프로필 사진 */
 .modal-image {
   display: block;
   margin: auto;
-  max-width: 500px;
-  max-height: 500px;
+  max-width: 800px;
+  max-height: 800px;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
 }
@@ -724,4 +741,203 @@ body {
 .invitation-item button:last-child {
   background-color: #f44336;
   color: white;
+}
+/* ✅ 헤더 오른쪽 영역 */
+
+.header-right {
+
+  display: flex;
+
+  gap: 15px;
+
+  align-items: center;
+
+  position: absolute;
+
+  right: 20px;
+
+}
+
+
+
+.header-profile {
+
+  width: 70px;
+
+  height: 70px;
+
+  border-radius: 50%;
+
+  border: 2px solid #ddd;
+
+  object-fit: cover;
+
+  transition: transform 0.2s ease-in-out;
+
+}
+
+
+
+.profile-section {
+
+  cursor: pointer;
+
+}
+
+
+
+.header-profile:hover {
+
+  transform: scale(1.1);
+
+}
+
+
+
+/* ✅ 아이콘 버튼 */
+
+.icon-button {
+
+  background: none;
+
+  border: none;
+
+  cursor: pointer;
+
+  font-size: 20px;
+
+  color: #333;
+
+  transition: transform 0.2s ease-in-out;
+
+}
+
+
+
+.icon-button:hover {
+
+  transform: scale(1.2);
+
+  color: #007bff;
+
+}
+
+.charts-container {
+
+  display: flex;
+
+  gap: 20px;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  width: 100%; /* 전체 컨테이너 너비 확장 */
+
+  margin-bottom: 40px;
+
+}
+
+
+
+.chart-box {
+
+  background: #ffffff;
+
+  padding: 20px;
+
+  border-radius: 8px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  overflow: hidden;
+
+  min-width: 600px; /* 🔥 최소 너비를 320px로 설정 (조정 가능) */
+
+  flex: 1;
+
+}
+
+.collapsed {
+
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  min-width: 220px; /* 🔥 접힐 때 최소 크기 설정 */
+
+}
+
+
+
+.add-project-row {
+
+  background-color: #dddddd;
+
+  text-align: center;
+
+  cursor: pointer;
+
+}
+
+
+
+.add-project-row:hover {
+
+  background-color: #C0C0C0;
+
+}
+
+
+
+.add-project-cell {
+
+  text-align: center;
+
+  padding: 10px;
+
+}
+
+
+
+.new-project-button {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-weight: bold;
+
+}
+
+
+
+.plus-icon {
+
+  font-size: 1.2rem;
+
+}
+
+
+
+.dashboard-footer {
+
+  text-align: center;
+
+  padding: 20px;
+
+  background-color: #f8f9fa;
+
+  color: #6c757d;
+
+  font-size: 14px;
+
+  margin-top: 30px;
+
+  border-top: 1px solid #ddd;
+
 }

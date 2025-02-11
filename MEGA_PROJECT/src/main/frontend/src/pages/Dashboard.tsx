@@ -8,6 +8,12 @@ import Profile from "./Profile"; // ✅ Profile 페이지 컴포넌트
 import Calendar from "./Calendar"; // ✅ Calendar 페이지 컴포넌트
 import Settings from "./Settings"; // ✅ Settings 페이지 컴포넌트
 
+import { FaPlus, FaCalendarAlt, FaCog, FaEnvelope, FaChevronUp, FaChevronDown } from "react-icons/fa";
+
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa"; // ✅ 추가
+
 // ✅ 프로젝트 데이터 타입 정의
 interface Project {
   projectId: number;
@@ -31,6 +37,8 @@ interface ProjectStatus {
 }
 interface TaskProgress {
   percentage: number;
+  projectId: number;
+
 }
 
 interface UserProfile {
@@ -62,7 +70,12 @@ const Dashboard = () => {
     fetchUserProfile();
     fetchProjects();
     fetchInvitations();
+    fetchProjectStatus();
   }, []);
+
+  const handleNotificationsClick = () => {
+    setActiveModal("notifications");
+  };
 
   const fetchInvitations = async () => {
     try {
@@ -145,6 +158,35 @@ const Dashboard = () => {
     }
   };
 
+  const fetchProjectStatus = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/projects/status", { withCredentials: true });
+      setStatus(response.data);
+    } catch (error) {
+      console.error("🚨 프로젝트 상태 데이터를 불러오는 중 오류 발생:", error);
+    }
+  };
+
+
+  /** ✅ 프로젝트 진행률 바 그래프 데이터 */
+  const progressData = projects.map((project) => ({
+    name: project.projectName,
+    progress: taskProgress[project.projectId]?.percentage || 0, // 🔥 객체 접근 방식 수정
+  }));
+
+
+  /** ✅ 도넛 차트 데이터 (전체, 진행 중, 완료) */
+  const donutData = [
+    { name: "진행 중", value: status.inProgressProjects },
+    { name: "완료", value: status.completedProjects },
+    { name: "전체", value: status.totalProjects },
+  ];
+
+  /** ✅ 도넛 차트 색상 */
+  const COLORS = ["#ffcc00", "#00c49f", "#0088fe"];
+
+
+
   const getStatusColor = (percentage: number) => {
     if (percentage < 33) return "#f44b42";
     if (percentage < 66) return "#f6d122";
@@ -200,6 +242,17 @@ const Dashboard = () => {
     fetchProjects(); // ✅ 새 프로젝트 추가 후 목록 새로고침
   };
 
+  const handleAddProject = () => {
+    console.log("새로운 프로젝트 추가");
+    // ✅ 새로운 프로젝트 추가 로직 (예: 모달 열기)
+    setActiveModal("newProject");
+  };
+
+
+
+  const [showProgressChart, setShowProgressChart] = useState(true);
+  const [showDonutChart, setShowDonutChart] = useState(true);
+
   return (
       <div className="dashboard-container">
         {/* ✅ 유저 프로필 추가 */}
@@ -237,33 +290,96 @@ const Dashboard = () => {
         <main className="dashboard-main">
           <header className="dashboard-header">
             <h1>Hello {userProfile ? userProfile.userName : "Guest"} 👋</h1>
-            {/* 🔔 초대 알림 버튼 */}
-            <div className="notification-icon" onClick={() => setShowInvitationDropdown(!showInvitationDropdown)}>
-              🔔 {invitations.length > 0 && <span className="badge">{invitations.length}</span>}
+
+            {/* 📌 Header Right Section */}
+            <div className="header-right">
+              <div className="profile-section" onClick={() => setActiveModal("profile")}>
+                <img src={userProfile?.img_url || "/default_profile.png"} alt="Profile" className="header-profile" />
+              </div>
+              {showInvitationDropdown && (
+                  <div className="invitation-dropdown">
+                    <h3>초대 목록</h3>
+                    <button className="close-button" onClick={() => setShowInvitationDropdown(false)}>×</button> {/* 닫기 버튼 추가 */}
+                    {invitations.length === 0 ? (
+                        <p>현재 초대가 없습니다.</p>
+                    ) : (
+                        <ul>
+                          {invitations.map((invitation) => (
+                              <li key={invitation.invitationId}>
+                                <p>프로젝트 ID: {invitation.projectId}</p>
+                                <p>초대자: {invitation.inviterId}</p>
+                                <button onClick={() => acceptInvitation(invitation.invitationId)}>수락</button>
+                                <button onClick={() => declineInvitation(invitation.invitationId)}>거절</button>
+                              </li>
+                          ))}
+                        </ul>
+                    )}
+                  </div>
+              )}
+              <button className="icon-button" onClick={() => setShowInvitationDropdown(!showInvitationDropdown)}>
+                <FaEnvelope />
+                {invitations.length > 0 && <span className="badge">{invitations.length}</span>}
+              </button>
+              <button className="icon-button" onClick={() => setActiveModal("newProject")}>
+                <FaPlus />
+              </button>
+              <button className="icon-button" onClick={() => setActiveModal("calendar")}>
+                <FaCalendarAlt />
+              </button>
+              <button className="icon-button" onClick={() => setActiveModal("settings")}>
+                <FaCog />
+              </button>
             </div>
-            {/* 초대 드롭다운 메뉴 */}
-            {showInvitationDropdown && (
-                <div className="invitation-dropdown">
-                  <h3>초대 목록</h3>
-                  {invitations.length === 0 ? (
-                      <p>현재 초대가 없습니다.</p>
-                  ) : (
-                      <ul>
-                        {invitations.map((invitation) => (
-                            <li key={invitation.invitationId}>
-                              <p>프로젝트 ID: {invitation.projectId}</p>
-                              <p>초대자: {invitation.inviterId}</p>
-                              <button onClick={() => acceptInvitation(invitation.invitationId)}>수락</button>
-                              <button onClick={() => declineInvitation(invitation.invitationId)}>
-                                거절
-                              </button>
-                            </li>
-                        ))}
-                      </ul>
-                  )}
-                </div>
-            )}
           </header>
+
+          {/* 📊 Charts Section */}
+          <div className="charts-container">
+            {/* 프로젝트 진행률 바 차트 */}
+            <div
+                className={`chart-box ${showProgressChart ? "expanded" : "collapsed"}`}
+                style={{ flex: showProgressChart ? "1" : "0.05", transition: "flex 0.3s ease-in-out" }}
+            >
+              <h3 onClick={() => setShowProgressChart(!showProgressChart)}>
+                📊 프로젝트 진행률 {showProgressChart ? <FaChevronLeft /> : <FaChevronRight />}
+              </h3>
+              {showProgressChart && (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={progressData} layout="vertical">
+                      <XAxis type="number" domain={[0, 100]} />
+                      <YAxis dataKey="name" type="category" />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="progress" fill="#0088fe" barSize={20} />
+                    </BarChart>
+                  </ResponsiveContainer>
+              )}
+            </div>
+
+            {/* 프로젝트 진행 현황 도넛 차트 */}
+            <div
+                className={`chart-box ${showDonutChart ? "expanded" : "collapsed"}`}
+                style={{ flex: showDonutChart ? "1" : "0.05", transition: "flex 0.3s ease-in-out" }}
+            >
+              <h3 onClick={() => setShowDonutChart(!showDonutChart)}>
+                📌 프로젝트 진행현황 {showDonutChart ? <FaChevronRight /> : <FaChevronLeft />}
+              </h3>
+              {showDonutChart && (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie data={donutData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                        {donutData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+              )}
+            </div>
+          </div>
+
+
           {/* ✅ 프로젝트 개수 통계 추가 */}
 
           <div className="stats-container">
