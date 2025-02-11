@@ -563,50 +563,76 @@ th {
     color: #bbbbbb !important; /* ✅ 조금 더 밝은 회색 */
 }
 
-/* 🌙 다크모드에서 비활성화된 메뉴 호버 효과 */
-.dark-mode .sidebar ul li:not(.active):hover {
-    color: #ffffff !important; /* ✅ 호버 시 더 밝게 */
-}
-/* 전체 페이지의 배경색을 다크모드로 강제 적용 */
-body {
-  background-color: #121212 !important; /* 완전 검정 */
-  color: #ffffff !important; /* 텍스트 색상도 변경 */
+/* 🌙 다크모드에서만 검정 배경 적용 */
+.dark-mode body {
+  background-color: #121212;
+  color: #ffffff;
 }
 
-/* 대시보드 전체 영역을 다크모드 적용 */
-.dashboard-container {
+/* ✅ 라이트모드에서는 원래 색상 유지 */
+body {
+  background-color: #f8f9fc;
+  color: #333;
+}
+
+/* ✅ 대시보드 전체 영역 다크모드 적용 (다크모드에서만 적용) */
+.dark-mode .dashboard-container {
   background-color: #121212 !important;
   color: #ffffff !important;
-  min-height: 100vh; /* 내용이 적어도 전체 화면 채우기 */
 }
 
-/* 테이블 컨테이너 다크모드 */
-.table-container {
-  background-color: #1e1e1e !important; /* 어두운 배경 */
+/* ✅ 테이블 컨테이너도 다크모드에서만 다크 테마 적용 */
+.dark-mode .table-container {
+  background-color: #1e1e1e !important;
   color: #ffffff !important;
   border-radius: 8px;
   padding: 16px;
 }
 
-/* 테이블 헤더 스타일 */
-.table-container table thead {
+/* ✅ 테이블 헤더 다크모드 스타일 */
+.dark-mode .table-container table thead {
   background-color: #222222 !important;
   color: #ffffff !important;
 }
 
-/* 테이블 행 스타일 */
-.table-container table tbody tr {
+/* ✅ 테이블 행 다크모드 스타일 */
+.dark-mode .table-container table tbody tr {
   background-color: #2a2a2a !important;
   border-bottom: 1px solid #444;
 }
 
-/* 테이블 행 hover 효과 */
-.table-container table tbody tr:hover {
+/* ✅ 테이블 행 hover 효과 */
+.dark-mode .table-container table tbody tr:hover {
   background-color: #333333 !important;
 }
 
-/* 하단 흰색 영역 (footer 같은 곳) */
-footer {
+/* ✅ 하단 흰색 영역 (footer)도 다크모드에서만 적용 */
+.dark-mode footer {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+/* ✅ 기본 마진 제거 */
+body {
+  margin: 0 !important;
+  padding: 0;
+  background-color: #f8f9fc; /* 기본 라이트모드 색상 */
+  color: #333;
+}
+
+/* ✅ 다크모드 스타일 */
+.dark-mode body {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .dashboard-container {
+  background-color: #121212 !important;
+  min-height: 100vh;  /* 전체 화면 덮기 */
+  height: auto; /* 스크롤이 있을 경우 높이 조정 */
+}
+
+/* ✅ 하단 여백 문제 해결 */
+.dark-mode footer {
   background-color: #121212 !important;
   color: #ffffff !important;
 }
