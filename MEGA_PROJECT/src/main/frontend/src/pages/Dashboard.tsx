@@ -256,36 +256,7 @@ const Dashboard = () => {
   return (
       <div className="dashboard-container">
         {/* ✅ 유저 프로필 추가 */}
-        <nav className="sidebar">
-          <div className="user-profile">
-            {userProfile && (
-                <>
-                  <img
-                      src={userProfile?.img_url || "/default_profile.png"}
-                      alt="Profile"
-                      className="user-avatar"
-                      onClick={() => setActiveModal("profile")}
-                  />
-                  <span className="user-name">{userProfile.userName}</span>
-                </>
-            )}
-          </div>
-          <h2>from Spark</h2>
-          <ul>
-            <li className={activeTab === "dashboard" ? "active" : ""} onClick={() => setActiveTab("dashboard")}>
-              Dashboard
-            </li>
-            <li className={activeTab === "newProject" ? "active" : ""} onClick={() => setActiveModal("newProject")}>
-              New Project
-            </li>
-            <li className={activeTab === "calendar" ? "active" : ""} onClick={() => setActiveModal("calendar")}>
-              Calendar
-            </li>
-            <li className={activeTab === "settings" ? "active" : ""} onClick={() => setActiveModal("settings")}>
-              Settings
-            </li>
-          </ul>
-        </nav>
+
 
         <main className="dashboard-main">
           <header className="dashboard-header">
@@ -419,7 +390,10 @@ const Dashboard = () => {
                 </>
             ) : (
                 <>
-                  <h3>All Projects</h3>
+                  <div className="Search">
+                    <h3>All Projects</h3>
+                    <input type="text" placeholder="Search"/>
+                  </div>
                   <table>
                     <thead>
                     <tr>
@@ -450,11 +424,22 @@ const Dashboard = () => {
                           </tr>
                       );
                     })}
+                    <tr className="add-project-row" onClick={handleAddProject}>
+                      <td colSpan="5" className="add-project-cell">
+                        <div className="new-project-button">
+                          <span className="plus-icon">➕</span>
+                          <span className="center-text">New Project</span>
+                        </div>
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
                 </>
             )}
           </section>
+          <footer className="dashboard-footer">
+            <p>© 2025 Your Company. All rights reserved. Contact us: support@yourcompany.com</p>
+          </footer>
         </main>
 
         {activeModal && (
