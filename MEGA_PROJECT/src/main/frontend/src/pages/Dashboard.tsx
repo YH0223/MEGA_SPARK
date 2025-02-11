@@ -7,6 +7,10 @@ import NewProject from "./NewProject"; // ✅ New Project 페이지 컴포넌트
 import Profile from "./Profile"; // ✅ Profile 페이지 컴포넌트
 import Calendar from "./Calendar"; // ✅ Calendar 페이지 컴포넌트
 import Settings from "./Settings"; // ✅ Settings 페이지 컴포넌트
+import { FaPlus, FaCalendarAlt, FaCog, FaEnvelope, FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa"; // ✅ 추가
+
 
 // ✅ 프로젝트 데이터 타입 정의
 interface Project {
@@ -22,6 +26,7 @@ interface ProjectStatus {
   inProgressProjects: number;
 }
 interface TaskProgress {
+  projectId: number;
   percentage: number;
 }
 
@@ -48,7 +53,12 @@ const Dashboard = () => {
   useEffect(() => {
     fetchUserProfile();
     fetchProjects();
+    fetchProjectStatus();
   }, []);
+
+  const handleNotificationsClick = () => {
+    setActiveModal("notifications");
+  };
 
   const fetchUserProfile = async () => {
     try {
@@ -88,6 +98,32 @@ const Dashboard = () => {
       setTaskProgress(prev => ({ ...prev, [projectId]: 0 }));
     }
   };
+  const fetchProjectStatus = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/projects/status", { withCredentials: true });
+      setStatus(response.data);
+    } catch (error) {
+      console.error("🚨 프로젝트 상태 데이터를 불러오는 중 오류 발생:", error);
+    }
+  };
+
+  /** ✅ 프로젝트 진행률 바 그래프 데이터 */
+  const progressData = projects.map((project) => ({
+    name: project.projectName,
+    progress: taskProgress[project.projectId]?.percentage || 0, // 🔥 객체 접근 방식 수정
+  }));
+
+
+  /** ✅ 도넛 차트 데이터 (전체, 진행 중, 완료) */
+  const donutData = [
+    { name: "진행 중", value: status.inProgressProjects },
+    { name: "완료", value: status.completedProjects },
+    { name: "전체", value: status.totalProjects },
+  ];
+
+  /** ✅ 도넛 차트 색상 */
+  const COLORS = ["#ffcc00", "#00c49f", "#0088fe"];
+
 
   const getStatusColor = (percentage: number) => {
     if (percentage < 33) return "#f44b42";
@@ -143,10 +179,19 @@ const Dashboard = () => {
     setActiveModal(null); // ✅ 모달 닫기
     fetchProjects(); // ✅ 새 프로젝트 추가 후 목록 새로고침
   };
+  const handleAddProject = () => {
+    console.log("새로운 프로젝트 추가");
+    // ✅ 새로운 프로젝트 추가 로직 (예: 모달 열기)
+    setActiveModal("newProject");
+  };
+
+  const [showProgressChart, setShowProgressChart] = useState(true);
+  const [showDonutChart, setShowDonutChart] = useState(true);
+
 
   return (
-      <div className="dashboard-container">
-        {/* ✅ 유저 프로필 추가 */}
+      <div className="dzashboard-container">
+        { /*
         <nav className="sidebar">
           <div className="user-profile">
             {userProfile && (
@@ -177,13 +222,77 @@ const Dashboard = () => {
             </li>
           </ul>
         </nav>
-
+        */}
         <main className="dashboard-main">
           <header className="dashboard-header">
             <h1>Hello {userProfile ? userProfile.userName : "Guest"} 👋</h1>
-          </header>
-          {/* ✅ 프로젝트 개수 통계 추가 */}
+            <div className="header-right">
+              <div className="profile-section" onClick={() => setActiveModal("profile")}>
+                <img
+                    src={userProfile?.img_url || "/default_profile.png"}
+                    alt="Profile"
+                    className="header-profile"
+                />
+              </div>
 
+              <button className="icon-button" onClick={handleNotificationsClick}>
+                <FaEnvelope/>
+              </button>
+              <button className="icon-button" onClick={() => setActiveModal("newProject")}>
+                <FaPlus/>
+              </button>
+              <button className="icon-button" onClick={() => setActiveModal("calendar")}>
+                <FaCalendarAlt/>
+              </button>
+              <button className="icon-button" onClick={() => setActiveModal("settings")}>
+                <FaCog/>
+              </button>
+            </div>
+          </header>
+          <div className="charts-container">
+            {/* 📊 프로젝트 진행률 차트 (왼쪽) */}
+            <div className={`chart-box ${showProgressChart ? "expanded" : "collapsed"}`}
+                 style={{flex: showProgressChart ? "1" : "0.05", transition: "flex 0.3s ease-in-out"}}>
+              <h3 onClick={() => setShowProgressChart(!showProgressChart)}>
+                📊 프로젝트 진행률 {showProgressChart ? <FaChevronLeft/> : <FaChevronRight/>}
+              </h3>
+              {showProgressChart && (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={progressData} layout="vertical">
+                      <XAxis type="number" domain={[0, 100]}/>
+                      <YAxis dataKey="name" type="category"/>
+                      <Tooltip/>
+                      <Legend/>
+                      <Bar dataKey="progress" fill="#0088fe" barSize={20}/>
+                    </BarChart>
+                  </ResponsiveContainer>
+              )}
+            </div>
+
+            {/* 📌 프로젝트 진행 현황 차트 (오른쪽) */}
+            <div className={`chart-box ${showDonutChart ? "expanded" : "collapsed"}`}
+                 style={{flex: showDonutChart ? "1" : "0.05", transition: "flex 0.3s ease-in-out"}}>
+              <h3 onClick={() => setShowDonutChart(!showDonutChart)}>
+                📌 프로젝트 진행현황 {showDonutChart ? <FaChevronRight/> : <FaChevronLeft/>}
+              </h3>
+              {showDonutChart && (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie data={donutData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                        {donutData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index]}/>
+                        ))}
+                      </Pie>
+                      <Tooltip/>
+                      <Legend/>
+                    </PieChart>
+                  </ResponsiveContainer>
+              )}
+            </div>
+          </div>
+
+
+          {/* ✅ 프로젝트 개수 통계 추가 */}
           <div className="stats-container">
             <div
                 className={`stats-card total ${activeFilter === "all" ? "active" : ""}`}
@@ -209,19 +318,20 @@ const Dashboard = () => {
               <p>{status.completedProjects} 개</p>
             </div>
           </div>
-
           <section className="table-container">
-
             {selectedProjectId ? (
                 <>
                   <button className="back-button" onClick={() => setSelectedProjectId(null)}>
                     🔙 Back to Projects
                   </button>
-                  <Project projectId={selectedProjectId} />
+                  <Project projectId={selectedProjectId}/>
                 </>
             ) : (
                 <>
-                  <h3>All Projects</h3>
+                  <div className="Search">
+                    <h3>All Projects</h3>
+                    <input type="text" placeholder="Search"/>
+                  </div>
                   <table>
                     <thead>
                     <tr>
@@ -238,7 +348,11 @@ const Dashboard = () => {
                       const statusColor = getStatusColor(completion);
 
                       return (
-                          <tr key={project.projectId} onClick={() => handleProjectClick(project.projectId)} className="clickable-row">
+                          <tr
+                              key={project.projectId}
+                              onClick={() => handleProjectClick(project.projectId)}
+                              className="clickable-row"
+                          >
                             <td>{project.projectName}</td>
                             <td>{project.projectManager}</td>
                             <td>{new Date(project.startdate).toLocaleDateString()}</td>
@@ -246,27 +360,41 @@ const Dashboard = () => {
                             <td>
                               <div className="progress-bar-container">
                                 <span className="progress-text">{completion.toFixed(0)}%</span>
-                                <div className="progress-bar" style={{ width: `${completion}%`, backgroundColor: statusColor }} />
+                                <div
+                                    className="progress-bar"
+                                    style={{width: `${completion}%`, backgroundColor: statusColor}}
+                                />
                               </div>
                             </td>
                           </tr>
                       );
                     })}
+                    <tr className="add-project-row" onClick={handleAddProject}>
+                      <td colSpan="5" className="add-project-cell">
+                        <div className="new-project-button">
+                          <span className="plus-icon">➕</span>
+                          <span className="center-text">New Project</span>
+                        </div>
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
                 </>
             )}
           </section>
-        </main>
 
+          <footer className="dashboard-footer">
+            <p>© 2025 Your Company. All rights reserved. Contact us: support@yourcompany.com</p>
+          </footer>
+        </main>
         {activeModal && (
             <div className="modal-overlay" onClick={closeModal}>
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <span className="close-button" onClick={closeModal}>&times;</span>
-                {activeModal === "newProject" && <NewProject onProjectCreated={handleProjectCreated} />} {/* ✅ 함수 전달 */}
-                {activeModal === "profile" && <Profile />}
-                {activeModal === "calendar" && <Calendar onProjectSelect={handleProjectSelectFromCalendar} />}
-                {activeModal === "settings" && <Settings />}
+                {activeModal === "newProject" && <NewProject onProjectCreated={handleProjectCreated}/>} {/* ✅ 함수 전달 */}
+                {activeModal === "profile" && <Profile/>}
+                {activeModal === "calendar" && <Calendar onProjectSelect={handleProjectSelectFromCalendar}/>}
+                {activeModal === "settings" && <Settings/>}
               </div>
             </div>
         )}
