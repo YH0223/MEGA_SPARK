@@ -73,9 +73,7 @@ const Profile = () => {
                 <div className="form-group">
                     <label>프로필 이미지:</label>
                     <input type="file" accept="image/*" onChange={handleImageChange}/>
-                </div>
 
-                <div className="image">
                     {/* ✅ 이미지 미리보기: 파일 업로드 아래 배치 & 최대 크기 설정 */}
                     {profileImageUrl && (
                         <div className="profile-preview-container">

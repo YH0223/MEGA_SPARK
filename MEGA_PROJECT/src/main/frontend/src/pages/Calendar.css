@@ -19,19 +19,18 @@
 }
 
 .calendar-header button {
-  background: linear-gradient(135deg, #000000, #333333); /* 검정색 */
+  background: #005eff;
   color: white;
   border: none;
-  padding: 8px 15px;
+  padding: 5px 15px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 18px;
-  transition: 0.3s ease-in-out;
+  transition: 0.3s;
 }
 
 .calendar-header button:hover {
-  background: linear-gradient(135deg, #ffffff, #555555); /* 흰색으로 변경 */
-  transform: scale(1.1);
+  background: #003bb3;
 }
 
 /* 요일 헤더 */
@@ -49,15 +48,20 @@
   gap: 5px;
 }
 
-.calendar-day:hover {
-  transform: scale(1.1);
-  background: rgba(0, 0, 255, 0.1);
+/* 날짜 스타일 */
+.calendar-day {
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: 0.2s;
+  position: relative; /* 줄을 추가할 수 있는 공간 확보 */
 }
 
 /* 현재 달이 아닌 날짜 스타일 */
 .other-month {
-  color: gray;
-  opacity: 0.6;
+  color: #aaa;
 }
 
 /* 선택된 날짜 스타일 */
@@ -105,6 +109,19 @@
   font-family: Arial, sans-serif;
 }
 
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
 .calendar-day-header {
   text-align: center;
   font-weight: bold;
@@ -148,17 +165,61 @@
   align-items: center; /* ✅ 세로 중앙 정렬 */
   justify-content: center; /* ✅ 가로 중앙 정렬 */
 }
-
-/* ✅ 일요일과 공휴일을 빨간색으로 표시 */
-.holiday {
-  color: red;
-  font-weight: bold;
+/* ✅ 다크모드: 전체 달력 컨테이너 */
+.dark-mode .calendar-container {
+  background: #2a2a2a;
+  color: #f5f5f5;
+  border: 1px solid #444;
 }
 
-/* ✅ 공휴일 이름 스타일 */
-.holiday-name {
-  display: block;
-  font-size: 12px;
-  color: red;
-  margin-top: 2px;
+/* ✅ 다크모드: 헤더 스타일 */
+.dark-mode .calendar-header button {
+  background: #007bff;
+  color: white;
+}
+
+.dark-mode .calendar-header button:hover {
+  background: #0056b3;
+}
+
+/* ✅ 다크모드: 요일 헤더 */
+.dark-mode .calendar-day-header {
+  background: #444;
+  color: #bbb;
+}
+
+/* ✅ 다크모드: 달력 날짜 */
+.dark-mode .calendar-day {
+  background: #333;
+  border: 1px solid #555;
+  color: #f5f5f5;
+}
+
+/* ✅ 다크모드: 현재 달이 아닌 날짜 */
+.dark-mode .other-month {
+  color: #777;
+}
+
+/* ✅ 다크모드: 선택된 날짜 */
+.dark-mode .selected {
+  background: #007bff;
+  color: white;
+}
+
+/* ✅ 다크모드: 프로젝트 진행 바 */
+.dark-mode .calendar-project-bar {
+  background: #007bff;
+}
+
+/* ✅ 다크모드: 프로젝트 바(여러 개 적용) */
+.dark-mode .bar-1 {
+  background-color: #4caf50;
+}
+
+.dark-mode .bar-2 {
+  background-color: #ff9800;
+}
+
+.dark-mode .bar-3 {
+  background-color: #ff5722;
 }

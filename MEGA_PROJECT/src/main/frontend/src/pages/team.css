@@ -1,4 +1,4 @@
-/* 기본 컨테이너 스타일 */
+/* 🌟 기본 컨테이너 스타일 */
 .team-container {
     max-width: 600px;
     margin: 20px auto;
@@ -6,25 +6,51 @@
     background: #ffffff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-/* 검색 박스 스타일 */
+/* ✅ 다크모드 컨테이너 */
+.dark-mode .team-container {
+    background: #2a2a2a;
+    color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+/* 🔎 검색 박스 스타일 */
 .search-box {
     display: flex;
     align-items: center;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 8px;
+    background: #fff;
+    transition: background 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 검색 박스 */
+.dark-mode .search-box {
+    background: #444;
+    border-color: #666;
+}
+
+/* 🔍 검색 입력창 */
 .search-box input {
     width: 100%;
     border: none;
     outline: none;
     padding: 5px;
     font-size: 16px;
+    background: transparent;
+    color: #333;
+    transition: color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 검색 입력창 */
+.dark-mode .search-box input {
+    color: #f5f5f5;
+}
+
+/* 🔽 검색 결과 드롭다운 */
 .search-results {
     position: absolute;
     width: 100%;
@@ -33,79 +59,76 @@
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
+    transition: background 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
+/* ✅ 다크모드 검색 결과 */
+.dark-mode .search-results {
+    background: #333;
+    border-color: #666;
+}
+
+/* 📌 검색 결과 개별 항목 */
 .search-results li {
     padding: 10px;
     cursor: pointer;
+    transition: background 0.3s ease-in-out;
 }
 
-.search-results li:hover {
-    background: #f0f0f0;
+/* ✅ 다크모드 검색 결과 hover */
+.dark-mode .search-results li:hover {
+    background: #555;
 }
 
-
-/* 팀원 추가 버튼 */
+/* 🔵 팀원 추가 버튼 */
 button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* ✅ 팀원 추가 / 팀원 목록 간격 줄이기 */
-.add-member {
-    display: flex;
-    flex-direction: column; /* ✅ 버튼을 아래로 배치 */
-    align-items: center;
-}
-
-/* ✅ 팀원 추가 버튼 정렬 */
-.add-button {
-    flex-shrink: 0;
     background: #007bff;
     color: white;
     border: none;
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
-    white-space: nowrap; /* ✅ 버튼이 줄 바꿈되지 않도록 */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.3s ease-in-out;
 }
 
-.add-button:hover {
+/* ✅ 다크모드 버튼 */
+.dark-mode button {
+    background: #1a73e8;
+}
+
+/* ✅ 버튼 hover 효과 */
+button:hover {
     background: #0056b3;
 }
 
-/* ✅ 팀원 목록 스타일 */
-.team-list {
-    margin-top: 5px; /* ✅ 간격 줄이기 */
+/* ✅ 다크모드 버튼 hover 효과 */
+.dark-mode button:hover {
+    background: #0d47a1;
 }
 
-/* ✅ 팀원 목록 내 개별 팀원 정렬 */
-.team-member {
-    display: flex;
-    justify-content: space-between; /* ✅ 이름과 삭제 버튼을 좌우 배치 */
-    align-items: center;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
+.invitation-list {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
 }
 
-/* ✅ 삭제 버튼 정렬 */
-.remove-button {
-    background: #ff4d4d;
+.invitation-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.accept-button {
+    background-color: #4caf50;
     color: white;
+    padding: 10px 15px;
     border: none;
-    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
-    white-space: nowrap; /* ✅ 버튼이 줄 바꿈되지 않도록 */
 }
 
-.remove-button:hover {
-    background: #d9534f;
-}
