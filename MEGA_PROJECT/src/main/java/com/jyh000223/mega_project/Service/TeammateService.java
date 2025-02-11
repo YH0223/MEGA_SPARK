@@ -1,5 +1,6 @@
 package com.jyh000223.mega_project.Service;
 
+import com.jyh000223.mega_project.DTO.TeammateDTO;
 import com.jyh000223.mega_project.Entities.Project;
 import com.jyh000223.mega_project.Entities.Teammate;
 import com.jyh000223.mega_project.Repository.ProjectRepository;
@@ -8,6 +9,7 @@ import com.jyh000223.mega_project.Repository.UserRepository; // ✅ 추가
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TeammateService {
@@ -30,9 +32,16 @@ public class TeammateService {
         return teammateRepository.existsByUserIdAndProjectId(userId, projectId);
     }
 
-    /** ✅ 특정 프로젝트의 팀원 목록 조회 */
-    public List<Teammate> getTeammatesByProject(int projectId) {
-        return teammateRepository.findAllByProjectId(projectId);
+    public List<TeammateDTO> getTeammatesByProject(int projectId) {
+        List<Teammate> teammates = teammateRepository.findAllByProjectId(projectId);
+
+        return teammates.stream()
+                .map(teammate -> {
+                    String userName = userRepository.findUserNameByUserId(teammate.getUserId())
+                            .orElse("이름 없음"); // ✅ 기본값 처리
+                    return new TeammateDTO(teammate.getUserId(), userName);
+                })
+                .collect(Collectors.toList());
     }
 
     public String addTeammate(String userId, int projectId) {
