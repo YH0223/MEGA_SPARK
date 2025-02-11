@@ -178,8 +178,7 @@ const Dashboard = () => {
   /** ✅ 도넛 차트 데이터 (전체, 진행 중, 완료) */
   const donutData = [
     { name: "진행 중", value: status.inProgressProjects },
-    { name: "완료", value: status.completedProjects },
-    { name: "전체", value: status.totalProjects },
+    { name: "완료", value: status.completedProjects }
   ];
 
   /** ✅ 도넛 차트 색상 */
@@ -269,18 +268,28 @@ const Dashboard = () => {
               </div>
               {showInvitationDropdown && (
                   <div className="invitation-dropdown">
-                    <h3>초대 목록</h3>
-                    <button className="close-button" onClick={() => setShowInvitationDropdown(false)}>×</button> {/* 닫기 버튼 추가 */}
+                    <div className="dropdown-header">
+                      <h3>초대 목록</h3>
+                      <button className="close-button" onClick={() => setShowInvitationDropdown(false)}>×</button>
+                    </div>
                     {invitations.length === 0 ? (
-                        <p>현재 초대가 없습니다.</p>
+                        <p className="empty-message">현재 초대가 없습니다.</p>
                     ) : (
-                        <ul>
+                        <ul className="invitation-list">
                           {invitations.map((invitation) => (
-                              <li key={invitation.invitationId}>
-                                <p>프로젝트 ID: {invitation.projectId}</p>
-                                <p>초대자: {invitation.inviterId}</p>
-                                <button onClick={() => acceptInvitation(invitation.invitationId)}>수락</button>
-                                <button onClick={() => declineInvitation(invitation.invitationId)}>거절</button>
+                              <li key={invitation.invitationId} className="invitation-item">
+                                <div className="invitation-details">
+                                  <p><strong>프로젝트 ID:</strong> {invitation.projectId}</p>
+                                  <p><strong>초대자:</strong> {invitation.inviterId}</p>
+                                </div>
+                                <div className="invitation-actions">
+                                  <button className="accept-button" onClick={() => acceptInvitation(invitation.invitationId)}>
+                                    수락
+                                  </button>
+                                  <button className="decline-button" onClick={() => declineInvitation(invitation.invitationId)}>
+                                    거절
+                                  </button>
+                                </div>
                               </li>
                           ))}
                         </ul>
@@ -313,16 +322,58 @@ const Dashboard = () => {
               <h3 onClick={() => setShowProgressChart(!showProgressChart)}>
                 📊 프로젝트 진행률 {showProgressChart ? <FaChevronLeft /> : <FaChevronRight />}
               </h3>
+              {/* ✅ Progress Chart (막대 그래프) */}
+
               {showProgressChart && (
+
                   <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={progressData} layout="vertical">
-                      <XAxis type="number" domain={[0, 100]} />
-                      <YAxis dataKey="name" type="category" />
-                      <Tooltip />
+
+                    <BarChart
+
+                        data={filteredProjects.map((project) => ({
+
+                          name: project.projectName,
+
+                          progress: taskProgress[project.projectId] ?? 0, // 진행률 가져오기
+
+                        }))}
+
+                        layout="vertical"
+
+                    >
+
+                      <XAxis
+
+                          type="number"
+
+                          domain={[0, 100]}
+
+                          tickFormatter={(tick) => `${tick}%`}
+
+                      />
+
+                      <YAxis dataKey="name" type="category" width={120} />
+
+                      <Tooltip formatter={(value) => `${value}%`} />
+
                       <Legend />
-                      <Bar dataKey="progress" fill="#0088fe" barSize={20} />
+
+                      <Bar
+
+                          dataKey="progress"
+
+                          fill="#0088fe"
+
+                          barSize={20}
+
+                          label={{ position: "right", formatter: (value) => `${value}%` }}
+
+                      />
+
                     </BarChart>
+
                   </ResponsiveContainer>
+
               )}
             </div>
 
@@ -337,7 +388,23 @@ const Dashboard = () => {
               {showDonutChart && (
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
-                      <Pie data={donutData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                      <Pie
+
+                          data={donutData}
+
+                          dataKey="value"
+
+                          nameKey="name"
+
+                          cx="50%"
+
+                          cy="50%"
+
+                          outerRadius={80}
+
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+
+                      >
                         {donutData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index]} />
                         ))}
@@ -392,7 +459,10 @@ const Dashboard = () => {
                 <>
                   <div className="Search">
                     <h3>All Projects</h3>
-                    <input type="text" placeholder="Search"/>
+                    <input type="text" placeholder="Search"
+                           value={searchTerm}
+                           onChange={(e) => setSearchTerm(e.target.value)} // 🔥 입력값으로 searchTerm 상태 업데이트
+                    />
                   </div>
                   <table>
                     <thead>

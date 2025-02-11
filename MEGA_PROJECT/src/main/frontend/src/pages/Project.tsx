@@ -5,9 +5,9 @@ import { AuthContext } from "../App";
 import NoticeComponent from "./NoticeComponent";
 import TaskComponent from "./Task";
 import TeamManagement from "./Team";
+import "./Project.css";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
-import "./Project.css";
 import TaskCalendar from "./TaskCalendar";
 
 interface ProjectProps {
@@ -26,6 +26,11 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
     const navigate = useNavigate();
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!;
     const [project, setProject] = useState<ProjectData | null>(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [editProjectName, setEditProjectName] = useState("");
+    const [editStartDate, setEditStartDate] = useState("");
+    const [editDeadline, setEditDeadline] = useState("");
     const [activeTab, setActiveTab] = useState("main"); // ✅ 탭 관리
     const [taskStats, setTaskStats] = useState({
         completed: 0,
@@ -33,10 +38,15 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
         issue: 0,
         hazard: 0,
     });
-    const [editProjectName, setEditProjectName] = useState("");
-    const [editStartDate, setEditStartDate] = useState("");
-    const [editDeadline, setEditDeadline] = useState("");
-    const [isEditing, setIsEditing] = useState(false);
+
+
+    /** ✅ Task 진행 상태 불러오기 */
+    useEffect(() => {
+        axios.get(`http://localhost:8080/task/task-stats/${projectId}`, { withCredentials: true })
+            .then(response => setTaskStats(response.data))
+            .catch(() => alert("🚨 Task 진행 상태를 불러오는 중 오류 발생"));
+    }, [projectId]);
+
     /** ✅ 세션 유지 확인 */
     useEffect(() => {
         axios.get("http://localhost:8080/api/session", { withCredentials: true })
@@ -50,17 +60,43 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
     /** ✅ 프로젝트 데이터 불러오기 */
     useEffect(() => {
         if (!projectId) return;
+
         axios.get(`http://localhost:8080/api/project/${projectId}`, { withCredentials: true })
-            .then(response => setProject(response.data))
+            .then(response => {
+                setProject(response.data);
+                setEditProjectName(response.data.projectName);
+                setEditStartDate(response.data.startdate);
+                setEditDeadline(response.data.deadline);
+            })
             .catch(() => alert("🚨 프로젝트 데이터를 불러오는 중 오류 발생"));
     }, [projectId]);
 
-    /** ✅ Task 진행 상태 불러오기 */
-    useEffect(() => {
-        axios.get(`http://localhost:8080/task/task-stats/${projectId}`, { withCredentials: true })
-            .then(response => setTaskStats(response.data))
-            .catch(() => alert("🚨 Task 진행 상태를 불러오는 중 오류 발생"));
-    }, [projectId]);
+    /** ✅ 프로젝트 수정 */
+    const updateProject = async () => {
+        try {
+            await axios.put(
+                `http://localhost:8080/api/updateproject/${projectId}`,
+                {
+                    projectName: editProjectName,
+                    startdate: editStartDate,
+                    deadline: editDeadline
+                },
+                { withCredentials: true }
+            );
+
+            alert("✅ 프로젝트가 수정되었습니다.");
+            setProject({
+                ...project!,
+                projectName: editProjectName,
+                startdate: editStartDate,
+                deadline: editDeadline
+            });
+            setIsEditing(false); // ✅ 수정 후 모달 닫기
+        } catch (error) {
+            alert("❌ 프로젝트 수정 권한이 없습니다.");
+        }
+    };
+
     /** ✅ Task 개수 확인 후 프로젝트 삭제 */
     const deleteProject = async () => {
         try {
@@ -82,38 +118,15 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
             navigate("/dashboard");
             window.location.reload();
         } catch (error) {
-            alert("❌ 프로젝트 삭제 중 오류가 발생했습니다.");
+            alert("❌ 프로젝트 삭제 권한이 없습니다.");
         }
     };
-    /** ✅ 프로젝트 수정 */
-    const updateProject = async () => {
-        try {
-            await axios.put(
-                `http://localhost:8080/api/updateproject/${projectId}`,
-                {
-                    projectName: editProjectName,
-                    startdate: editStartDate,
-                    deadline: editDeadline
-                },
-                { withCredentials: true }
-            );
 
-            alert("✅ 프로젝트가 수정되었습니다.");
-            setIsEditing(false);
-            setProject({
-                ...project!,
-                projectName: editProjectName,
-                startDate: editStartDate,
-                deadline: editDeadline
-            });
-        } catch (error) {
-            alert("❌ 프로젝트 업데이트 오류");
-        }
-    };
     if (!isAuthenticated) return <p>⏳ 세션 확인 중...</p>;
     if (!project) return <p>⏳ 데이터를 불러오는 중...</p>;
 
     /** ✅ 도넛형 그래프 데이터 */
+
     const taskChartData = {
         labels: ["완료됨", "ToDo", "Issue", "Hazard"],
         datasets: [
@@ -125,76 +138,101 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
     };
 
     return (
+        <div className="project-container">
 
-            <div className="project-container">
-                {/* ✅ 프로젝트 정보 */}
-                <div className="header">
-                    {isEditing ? (
-                        <>
+            {/* ✅ 프로젝트 정보 */}
+
+            <div className="header">
+
+                {isEditing ? (
+
+                    <>
+
+                        <input
+
+                            type="text"
+
+                            value={editProjectName}
+
+                            onChange={(e) => setEditProjectName(e.target.value)}
+
+                            className="edit-title-input"
+
+                        />
+
+                        <div className="edit-date">
+
+                            <label>시작 날짜</label>
+
                             <input
-                                type="text"
-                                value={editProjectName}
-                                onChange={(e) => setEditProjectName(e.target.value)}
-                                className="edit-title-input"
+
+                                type="date"
+
+                                value={editStartDate}
+
+                                onChange={(e) => setEditStartDate(e.target.value)}
+
                             />
-                            <div className="edit-date">
-                                <label>시작 날짜</label>
-                                <input
-                                    type="date"
-                                    value={editStartDate}
-                                    onChange={(e) => setEditStartDate(e.target.value)}
-                                />
-                                <label>마감 날짜</label>
-                                <input
-                                    type="date"
-                                    value={editDeadline}
-                                    onChange={(e) => setEditDeadline(e.target.value)}
-                                />
-                            </div>
-                            <div className="button-group">
-                                <button className="update-button" onClick={updateProject}>수정 완료</button>
-                                <button className="cancel-button" onClick={() => setIsEditing(false)}>취소</button>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <h1 className="title">{project.projectName}</h1>
-                            <div className="project-info">
-                                <p>👤 Project Manager: {project.projectManager}</p>
-                                <p>📅 진행 기간: {project.startDate} ~ {project.deadline}</p>
-                            </div>
-                            <div className="button-group">
-                                <button className="edit-button" onClick={() => setIsEditing(true)}>수정</button>
-                                <button className="delete-button" onClick={deleteProject}>삭제</button>
-                            </div>
-                        </>
-                    )}
-                </div>
+
+                            <label>마감 날짜</label>
+
+                            <input
+
+                                type="date"
+
+                                value={editDeadline}
+
+                                onChange={(e) => setEditDeadline(e.target.value)}
+
+                            />
+
+                        </div>
+
+                        <div className="button-group">
+                            <button className="update-button" onClick={updateProject}>수정 완료</button>
+                            <button className="cancel-button" onClick={() => setIsEditing(false)}>취소</button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <h1 className="title">{project.projectName}</h1>
+                        <div className="project-info">
+                            <p>👤 Project Manager: {project.projectManager}</p>
+                            <p>📅 진행 기간: {project.startDate} ~ {project.deadline}</p>
+                        </div>
+                        <div className="button-group">
+                            <button className="edit-button" onClick={() => setIsEditing(true)}>수정</button>
+                            <button className="delete-button" onClick={deleteProject}>삭제</button>
+                        </div>
+                    </>
+                )}
+            </div>
+
 
             {/* ✅ 탭 네비게이션 */}
-                <div className="tab-navigation">
-                    <button className={activeTab === "main" ? "active" : ""} onClick={() => setActiveTab("main")}>
-                        메인
-                    </button>
-                    <button className={activeTab === "tasks" ? "active" : ""} onClick={() => setActiveTab("tasks")}>
-                        Task List
-                    </button>
-                    <button className={activeTab === "calendar" ? "active" : ""}
-                            onClick={() => setActiveTab("calendar")}>
-                        Task Calendar
-                    </button>
-                    <button className={activeTab === "team" ? "active" : ""} onClick={() => setActiveTab("team")}>
-                        팀원 관리
-                    </button>
-                    <button className={activeTab === "team" ? "active" : ""} onClick={() => setActiveTab("notice")}>
-                        📢 공지사항
-                    </button>
-                </div>
+            <div className="tab-navigation">
+                <button className={activeTab === "main" ? "active" : ""} onClick={() => setActiveTab("main")}>
+                    메인
+                </button>
+                <button className={activeTab === "tasks" ? "active" : ""} onClick={() => setActiveTab("tasks")}>
+                    Task List
+                </button>
+                <button className={activeTab === "calendar" ? "active" : ""}
+                        onClick={() => setActiveTab("calendar")}>
+                    Task Calendar
+                </button>
+                <button className={activeTab === "team" ? "active" : ""} onClick={() => setActiveTab("team")}>
+                    팀원 관리
+                </button>
+                <button className={activeTab === "team" ? "active" : ""} onClick={() => setActiveTab("notice")}>
+                    📢 공지사항
+                </button>
+            </div>
 
-                {/* ✅ 각 탭별 화면 */}
-                {activeTab === "main" && (
-                    <div className="main-tab">
-                        <div className="chart-container">
+            {/* ✅ 각 탭별 화면 */}
+            {activeTab === "main" && (
+                <div className="main-tab">
+                    <div className="chart-container">
                         <h2>📊 진행 상태</h2>
                         <Doughnut data={taskChartData} />
                     </div>
@@ -225,12 +263,13 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                     <TeamManagement projectId={projectId} />
                 </div>
             )}
-                {activeTab === "notice" && (
-                    <div className="section">
-                        <h2>📢공지사항</h2>
-                        <NoticeComponent projectId={projectId} />
-                    </div>
-                )}
+
+            {activeTab === "notice" && (
+                <div className="section">
+                    <h2>📢공지사항</h2>
+                    <NoticeComponent projectId={projectId} />
+                </div>
+            )}
         </div>
     );
 };

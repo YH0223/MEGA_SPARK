@@ -114,7 +114,7 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
             }
         } catch (error) {
             console.error("❌ 팀원 삭제 오류:", error);
-            alert("팀원 삭제 중 오류가 발생했습니다.");
+            alert("팀원 삭제 권한이 없습니다.");
         }
     };
 

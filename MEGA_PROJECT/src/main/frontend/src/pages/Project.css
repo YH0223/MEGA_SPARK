@@ -75,15 +75,16 @@
 
 /* ✅ 버튼 스타일 유지 */
 .update-button, .delete-button {
-  padding: 12px 20px;
-  font-size: 1rem;
+  padding: 15px 30px;
+  font-size: 1.1rem;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   font-weight: 600;
-  min-width: 140px;
+  width: 160px; /* ✅ 동일한 크기로 설정 */
   text-align: center;
-  display: inline-block; /* ✅ 버튼이 가로 정렬되도록 */
+  display: inline-block;
+  transition: transform 0.3s ease-in-out;
 }
 
 /* ✅ 수정 버튼 스타일 */
@@ -96,7 +97,6 @@
 .delete-button {
   background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
   color: white;
-  transition: transform 0.3s ease-in-out;
 }
 
 .delete-button:hover {
