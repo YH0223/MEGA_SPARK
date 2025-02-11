@@ -131,7 +131,7 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
 
     return (
         <div className="team-container">
-            <h1 className="team-title">팀원 관리</h1>
+            <h3 className="team-title">팀원 추가</h3>
 
             {/* ✅ 팀원 추가 - ID 입력 */}
             <div className="add-member">

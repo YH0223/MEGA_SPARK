@@ -1,12 +1,15 @@
-.body {
-  zoom: 0.9 /* 90% 크기로 줄이기 */
+body {
+  transform: scale(0.9);
+  transform-origin: top; /* 화면 좌측 상단 기준 */
 }
+
 .dashboard-container {
   display: flex;
   height: 100vh;
   background-color: #f8f9fc;
 }
 
+/*
 .sidebar {
   width: 200px;
   background-color: #f4f4f4;
@@ -47,23 +50,7 @@
   margin-top: auto;
   text-align: center;
 }
-
-.upgrade-button {
-  padding: 0.6rem 1rem;
-  color: #fff;
-  background-color: #6200ea;
-  border: none;
-  border-radius: 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-bottom: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.upgrade-button:hover {
-  background-color: #3700b3;
-}
-
+*/
 .dashboard-main {
   flex: 1;
   padding: 2rem;
@@ -158,6 +145,10 @@
   margin-bottom: 1rem;
 }
 
+.back-button {
+  font-size: 1.4rem;
+}
+
 .Search {
   display: flex; /* 플렉스박스를 사용하여 정렬 */
   justify-content: space-between; /* 양쪽 끝에 요소 배치 */
@@ -194,16 +185,7 @@ table th {
   color: #adadad;
 }
 
-.status-active {
-  color: #388e3c;
-  font-weight: bold;
-}
-
-.status-inactive {
-  color: #d32f2f;
-  font-weight: bold;
-}
-
+/*
 .pagination {
   display: flex;
   justify-content: center;
@@ -224,6 +206,8 @@ table th {
   background-color: #6200ea;
   color: #fff;
 }
+
+*/
 
 .sidebar-footer {
   display: flex;
@@ -286,6 +270,47 @@ table th {
 /* 📌 테이블 스타일 유지 */
 .table-container {
   margin-top: 20px;
+}
+
+/* ✅ 헤더 오른쪽 영역 */
+.header-right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  position: absolute;
+  right: 20px;
+}
+
+.header-profile {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  object-fit: cover;
+  transition: transform 0.2s ease-in-out;
+}
+
+.profile-section {
+  cursor: pointer;
+}
+
+.header-profile:hover {
+  transform: scale(1.1);
+}
+
+/* ✅ 아이콘 버튼 */
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+  transition: transform 0.2s ease-in-out;
+}
+
+.icon-button:hover {
+  transform: scale(1.2);
+  color: #007bff;
 }
 
 table {
@@ -423,8 +448,8 @@ th {
 .modal-image {
   display: block;
   margin: auto;
-  max-width: 500px;
-  max-height: 500px;
+  max-width: 800px;
+  max-height: 800px;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
 }
@@ -437,4 +462,72 @@ th {
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
+}
+
+.charts-container {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* 전체 컨테이너 너비 확장 */
+  margin-bottom: 40px;
+}
+
+.chart-box {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-width: 600px; /* 🔥 최소 너비를 320px로 설정 (조정 가능) */
+  flex: 1;
+}
+
+.collapsed {
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 220px; /* 🔥 접힐 때 최소 크기 설정 */
+}
+
+.add-project-row {
+  background-color: #dddddd;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-project-row:hover {
+  background-color: #C0C0C0;
+}
+
+.add-project-row td {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: hidden;
+}
+
+.add-project-cell {
+  text-align: center;
+  padding: 10px;
+}
+
+.new-project-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.plus-icon {
+  font-size: 1.2rem;
+}
+
+.dashboard-footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  font-size: 14px;
+  margin-top: 30px;
+  border-top: 1px solid #ddd;
 }

@@ -77,11 +77,15 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
         <div className="project-container">
             {/* ✅ 프로젝트 정보 */}
             <div className="header">
-                <h1 className="title">{project.projectName}</h1>
                 <div className="project-info">
                     <p>👤 Project Manager: {project.projectManager}</p>
+
                     <p>📅 진행 기간: {project.startDate} ~ {project.deadline}</p>
+
+                    <p>📅 {project.startdate} ~ {project.deadline}</p>
+
                 </div>
+                <h1 className="title">{project.projectName}</h1>
                 <div className="button-group">
                     <button className="update-button">수정</button>
                     <button className="delete-button">삭제</button>
@@ -117,6 +121,19 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                     </div>
                 </div>
             )}
+
+            {/* ✅ 공지사항 */}
+            <div className="section">
+                <h2>📢 공지사항</h2>
+                <NoticeComponent projectId={projectId}/>
+            </div>
+
+            {/* ✅ Task 관리 */}
+            <div className="section">
+                <h2>📝 할 일 목록</h2>
+                <TaskComponent projectId={projectId}/>
+            </div>
+
 
             {activeTab === "tasks" && (
                 <div className="section">
