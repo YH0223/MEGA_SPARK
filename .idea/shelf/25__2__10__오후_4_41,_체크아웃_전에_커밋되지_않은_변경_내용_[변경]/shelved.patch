@@ -1,0 +1,114 @@
+Index: MEGA_PROJECT/src/main/frontend/src/pages/Dashboard.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.body {\r\n  zoom: 0.9 /* 90% 크기로 줄이기 */\r\n}\r\n.dashboard-container {\r\n  display: flex;\r\n  height: 100vh;\r\n  background-color: #f8f9fc;\r\n}\r\n\r\n.sidebar {\r\n  width: 200px;\r\n  background-color: #f4f4f4;\r\n  padding: 20px;\r\n}\r\n\r\n.sidebar h2 {\r\n  font-size: 1.5rem;\r\n  font-weight: bold;\r\n  margin-bottom: 2rem;\r\n}\r\n\r\n.sidebar ul {\r\n  list-style: none;\r\n  padding: 0;\r\n}\r\n\r\n.sidebar ul li {\r\n  padding: 0.8rem 1rem;\r\n  margin-bottom: 1rem;\r\n  border-radius: 5px;\r\n  color: #333;\r\n  cursor: pointer;\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n.sidebar ul li.active {\r\n  background-color: #e0f7fa;\r\n  color: #00796b;\r\n  font-weight: bold;\r\n}\r\n\r\n.sidebar ul li a:hover {\r\n  color: #28a745;\r\n}\r\n\r\n.sidebar-footer {\r\n  margin-top: auto;\r\n  text-align: center;\r\n}\r\n\r\n.upgrade-button {\r\n  padding: 0.6rem 1rem;\r\n  color: #fff;\r\n  background-color: #6200ea;\r\n  border: none;\r\n  border-radius: 20px;\r\n  font-size: 1rem;\r\n  cursor: pointer;\r\n  margin-bottom: 1rem;\r\n  transition: background-color 0.3s ease;\r\n}\r\n\r\n.upgrade-button:hover {\r\n  background-color: #3700b3;\r\n}\r\n\r\n.dashboard-main {\r\n  flex: 1;\r\n  padding: 2rem;\r\n}\r\n\r\n.dashboard-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  margin-bottom: 2rem;\r\n}\r\n\r\n.dashboard-header h1 {\r\n  font-size: 2rem;\r\n  font-weight: bold;\r\n  color: #333;\r\n}\r\n.stats-container {\r\n  display: flex;\r\n  gap: 1.5rem;\r\n  margin-bottom: 2rem;\r\n  justify-content: center;\r\n  flex-wrap: wrap; /* 반응형 정렬 */\r\n}\r\n\r\n.stats-card {\r\n  flex: 1;\r\n  min-width: 200px;\r\n  max-width: 300px;\r\n  background-color: #fff;\r\n  padding: 1.5rem;\r\n  border-radius: 12px;\r\n  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);\r\n  text-align: center;\r\n  transition: transform 0.2s ease-in-out;\r\n}\r\n\r\n.stats-card h2 {\r\n  font-size: 1.3rem;\r\n  color: #444;\r\n  margin-bottom: 0.5rem;\r\n}\r\n/* ✅ 기본 스타일 */\r\n.stats-card p {\r\n  font-size: 2rem;\r\n  font-weight: bold;\r\n  color: #222; /* \uD83D\uDD06 라이트모드에서는 유지 */\r\n}\r\n\r\n/* ✅ 다크모드에서 숫자(5개, 3개, 2개) 보이게 수정 */\r\n.dark-mode .stats-card p {\r\n  color: #f5f5f5 !important; /* \uD83C\uDF19 다크모드에서는 흰색으로 변경 */\r\n}\r\n\r\n\r\n/* ✅ 프로젝트 상태별 색상 차별화 */\r\n.stats-card.total {\r\n  border-top: 5px solid #007bff; /* 파란색 */\r\n}\r\n\r\n.stats-card.in-progress {\r\n  border-top: 5px solid #ff9800; /* 주황색 */\r\n}\r\n\r\n.stats-card.completed {\r\n  border-top: 5px solid #4caf50; /* 녹색 */\r\n}\r\n\r\n/* ✅ 마우스 호버 효과 */\r\n.stats-card:hover {\r\n  transform: translateY(-5px);\r\n  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);\r\n}\r\n\r\n\r\n.percentage {\r\n  font-size: 0.9rem;\r\n  margin-top: 0.5rem;\r\n}\r\n\r\n.percentage.positive {\r\n  color: #388e3c;\r\n}\r\n\r\n.percentage.negative {\r\n  color: #d32f2f;\r\n}\r\n\r\n.table-container {\r\n  background-color: #fff;\r\n  border-radius: 10px;\r\n  padding: 1.5rem;\r\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n\r\n}\r\n\r\n.table-container h3 {\r\n  margin-bottom: 1rem;\r\n}\r\n\r\n.Search {\r\n  display: flex; /* 플렉스박스를 사용하여 정렬 */\r\n  justify-content: space-between; /* 양쪽 끝에 요소 배치 */\r\n  align-items: center; /* 수직 정렬 */\r\n  margin-bottom: 1rem; /* 테이블과 간격 추가 */\r\n}\r\n\r\n.Search input {\r\n  padding: 0.8rem;\r\n  border: 1px solid #ddd;\r\n  border-radius: 8px;\r\n  width: 250px; /* 입력 필드 너비 설정 */\r\n}\r\n\r\ntable {\r\n  width: 100%;\r\n  border-collapse: collapse;\r\n}\r\n\r\ntable th {\r\n  padding: 1rem;\r\n  text-align: left;\r\n  border-bottom: 1px solid #ddd;\r\n}\r\n\r\ntable td {\r\n  padding: 1rem;\r\n  text-align: left;\r\n  border-bottom: 1px solid #ddd;\r\n  cursor:pointer;\r\n}\r\n\r\ntable th {\r\n  color: #adadad;\r\n}\r\n\r\n.status-active {\r\n  color: #388e3c;\r\n  font-weight: bold;\r\n}\r\n\r\n.status-inactive {\r\n  color: #d32f2f;\r\n  font-weight: bold;\r\n}\r\n\r\n.pagination {\r\n  display: flex;\r\n  justify-content: center;\r\n  gap: 0.5rem;\r\n  margin-top: 1.5rem;\r\n}\r\n\r\n.pagination button {\r\n  padding: 0.5rem 1rem;\r\n  border: none;\r\n  background-color: #f1f1f1;\r\n  border-radius: 5px;\r\n  cursor: pointer;\r\n  transition: background-color 0.3s ease;\r\n}\r\n\r\n.pagination button:hover {\r\n  background-color: #6200ea;\r\n  color: #fff;\r\n}\r\n\r\n.sidebar-footer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  margin-top: auto;\r\n  padding: 1rem;\r\n  background: linear-gradient(135deg, #c27fae, #5656d5); /* 배경 그라데이션 */\r\n  border-radius: 10px;\r\n  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.upgrade-button {\r\n  width: 100%;\r\n  padding: 0.8rem 1.5rem;\r\n  background-color: #fff;\r\n  color: #6c63ff; /* 버튼 글씨 색 */\r\n  font-size: 1rem;\r\n  font-weight: bold;\r\n  border: none;\r\n  border-radius: 30px;\r\n  cursor: pointer;\r\n  margin-bottom: 1rem;\r\n  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n.upgrade-button:hover {\r\n  background-color: #6c63ff;\r\n  color: #fff;\r\n  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n.user-info {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 1rem;\r\n  margin-top: 1rem;\r\n  color: #fff;\r\n}\r\n\r\n.user-info img {\r\n  width: 50px;\r\n  height: 50px;\r\n  border-radius: 50%;\r\n  object-fit: cover;\r\n}\r\n\r\n.user-info p {\r\n  font-size: 1rem;\r\n  font-weight: bold;\r\n  margin: 0;\r\n}\r\n\r\n.user-info span {\r\n  font-size: 0.9rem;\r\n  color: #aaa;\r\n}\r\n\r\n/* \uD83D\uDCCC 테이블 스타일 유지 */\r\n.table-container {\r\n  margin-top: 20px;\r\n}\r\n\r\ntable {\r\n  width: 100%;\r\n  border-collapse: collapse;\r\n  margin-top: 10px;\r\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n}\r\n\r\nth, td {\r\n  padding: 12px;\r\n  text-align: left;\r\n  border-bottom: 1px solid #ddd;\r\n}\r\n\r\nth {\r\n  background-color: #f4f4f4;\r\n}\r\n\r\n/* ❌ 등록된 프로젝트가 없을 때 */\r\n.no-data {\r\n  text-align: center;\r\n  font-size: 1.2rem;\r\n  color: #888;\r\n  padding: 20px;\r\n}\r\n.status-badge {\r\n  color: white;\r\n  padding: 5px 10px;\r\n  border-radius: 5px;\r\n  font-weight: bold;\r\n}\r\n/* ✅ Progress Bar 컨테이너 */\r\n.progress-bar-container {\r\n  width: 100%;\r\n  height: 24px;\r\n  background-color: #e0e0e0;\r\n  border-radius: 12px;\r\n  overflow: hidden;\r\n  position: relative;\r\n}\r\n\r\n/* ✅ Progress Bar (채워지는 부분) */\r\n.progress-bar {\r\n  height: 100%;\r\n  border-radius: 12px;\r\n  transition: width 0.3s ease-in-out;\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n}\r\n\r\n/* ✅ 중앙 정렬된 퍼센트 텍스트 */\r\n.progress-text {\r\n  width: 100%;\r\n\r\n  height: 100%;\r\n  text-align: center;\r\n  font-weight: bold;\r\n  line-height: 24px; /* ✅ 높이와 동일하게 설정해 중앙 정렬 */\r\n  position: absolute;\r\n  color:white;\r\n  z-index: 2;\r\n}\r\n/* ✅ 프로필 컨테이너 (사이드바 내) */\r\n.user-profile {\r\n  display: flex;\r\n  flex-direction: column; /* 유저 이름을 아래로 배치 */\r\n  align-items: center;\r\n  padding: 20px;\r\n  cursor: pointer; /* 클릭 가능하도록 */\r\n}\r\n\r\n/* ✅ 프로필 이미지 (사이드바 90%) */\r\n.user-avatar {\r\n  width: 90%; /* 사이드바 너비의 90% */\r\n  max-width: 150px; /* 최대 크기 제한 */\r\n  aspect-ratio: 1 / 1; /* 정사각형 비율 유지 */\r\n  border-radius: 50%; /* 동그랗게 유지 */\r\n  object-fit: cover; /* 비율 깨짐 방지 */\r\n  transition: transform 0.2s ease-in-out;\r\n}\r\n\r\n/* ✅ 호버 효과 */\r\n.user-avatar:hover {\r\n  transform: scale(1.05);\r\n}\r\n\r\n/* ✅ 유저 이름 스타일 */\r\n.user-name {\r\n  font-size: 1.2rem;\r\n  font-weight: bold;\r\n  color: #333;\r\n  text-align: center;\r\n  margin-top: 10px;\r\n}\r\n\r\n/* ✅ 모달 스타일 */\r\n.modal-overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background: rgba(0, 0, 0, 0.7);\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  z-index: 1000;\r\n}\r\n\r\n.modal-content {\r\n  background: white;\r\n  padding: 20px;\r\n  border-radius: 10px;\r\n  width: 600px;\r\n  max-width: 95%;\r\n  position: relative;\r\n  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);\r\n  text-align: center;\r\n  animation: fadeIn 0.3s ease-in-out;\r\n}\r\n\r\n/* ✅ 모달 닫기 버튼 */\r\n.close-button {\r\n  position: absolute;\r\n  top: 10px;\r\n  right: 15px;\r\n  font-size: 24px;\r\n  cursor: pointer;\r\n  color: #333;\r\n}\r\n\r\n/* ✅ 모달 내 프로필 사진 */\r\n.modal-image {\r\n  display: block;\r\n  margin: auto;\r\n  max-width: 500px;\r\n  max-height: 500px;\r\n  border-radius: 10px;\r\n  transition: transform 0.3s ease-in-out;\r\n}\r\n\r\n.modal-image:hover {\r\n  transform: scale(1.05);\r\n}\r\n\r\n/* ✅ 모달 애니메이션 */\r\n@keyframes fadeIn {\r\n  from { opacity: 0; transform: scale(0.9); }\r\n  to { opacity: 1; transform: scale(1); }\r\n}\r\n/* ✅ 전체 대시보드 다크모드 스타일 */\r\n.dark-mode .dashboard-container {\r\n  background-color: #1e1e1e;\r\n  color: #f5f5f5;\r\n}\r\n\r\n/* ✅ 헤더 스타일 */\r\n.dark-mode .dashboard-header h1 {\r\n  color: #f5f5f5;\r\n}\r\n\r\n/* ✅ 통계 카드 (대시보드 위젯) */\r\n.dark-mode .stats-card {\r\n  background-color: #2a2a2a;\r\n  color: #f5f5f5;\r\n  border: 1px solid #444;\r\n}\r\n\r\n/* ✅ 카드별 상단 테두리 색상 유지 */\r\n.dark-mode .stats-card.total {\r\n  border-top: 5px solid #007bff;\r\n}\r\n\r\n.dark-mode .stats-card.in-progress {\r\n  border-top: 5px solid #ff9800;\r\n}\r\n\r\n.dark-mode .stats-card.completed {\r\n  border-top: 5px solid #4caf50;\r\n}\r\n\r\n/* ✅ 테이블 컨테이너 */\r\n.dark-mode .table-container {\r\n  background-color: #2a2a2a;\r\n  color: #f5f5f5;\r\n  border: 1px solid #444;\r\n}\r\n\r\n/* ✅ 테이블 내부 스타일 */\r\n.dark-mode table {\r\n  color: #f5f5f5;\r\n}\r\n\r\n.dark-mode th {\r\n  background-color: #333;\r\n  color: #bbb;\r\n}\r\n\r\n.dark-mode td {\r\n  background-color: #2a2a2a;\r\n  border-color: #444;\r\n}\r\n\r\n/* ✅ 진행률 바 색상 조정 */\r\n.dark-mode .progress-bar-container {\r\n  background-color: #444;\r\n}\r\n\r\n.dark-mode .progress-bar {\r\n  background-color: #007bff;\r\n}\r\n\r\n/* ✅ 버튼 색상 */\r\n.dark-mode .pagination button {\r\n  background-color: #444;\r\n  color: #fff;\r\n}\r\n\r\n.dark-mode .pagination button:hover {\r\n  background-color: #555;\r\n}\r\n\r\n/* ✅ 검색창 스타일 */\r\n.dark-mode .Search input {\r\n  background-color: #333;\r\n  color: #fff;\r\n  border: 1px solid #666;\r\n}\r\n/* \uD83C\uDF19 다크모드에서 사이드바 스타일 */\r\n.dark-mode .sidebar {\r\n    background-color: #181818 !important; /* \uD83D\uDD25 어두운 배경 */\r\n    color: #ffffff !important; /* \uD83D\uDD25 더 밝은 글씨 */\r\n}\r\n\r\n/* \uD83C\uDF19 다크모드에서 \"from Spark\" 글자 색상 조정 */\r\n.dark-mode .from-spark {\r\n    color: #dddddd !important; /* ✅ 더 밝은 회색 */\r\n    font-weight: bold; /* ✅ 글씨 두껍게 */\r\n}\r\n\r\n/* \uD83C\uDF19 다크모드에서 사이드바 메뉴 항목 */\r\n.dark-mode .sidebar ul li {\r\n    color: #cccccc !important; /* ✅ 기본적으로 밝은 회색 */\r\n    transition: color 0.3s ease;\r\n}\r\n\r\n/* \uD83C\uDF19 다크모드에서 메뉴 항목 호버 시 */\r\n.dark-mode .sidebar ul li:hover {\r\n    color: #ffffff !important; /* ✅ 호버하면 완전 흰색 */\r\n}\r\n\r\n/* \uD83C\uDF19 다크모드에서 활성화된 메뉴 (Dashboard 등) */\r\n.dark-mode .sidebar ul li.active {\r\n    color: #181818 !important; /* ✅ 글씨 색상 대비 조정 */\r\n    background-color: #00c6ff !important; /* \uD83D\uDD25 밝은 하늘색 강조 */\r\n    font-weight: bold;\r\n}\r\n\r\n/* \uD83C\uDF19 다크모드에서 '안녕' 글씨 */\r\n.dark-mode .user-name {\r\n    color: #ffffff !important; /* ✅ 완전 흰색으로 가독성 개선 */\r\n    font-weight: bold; /* ✅ 두껍게 */\r\n}\r\n\r\n/* \uD83C\uDF19 다크모드에서 비활성화된 메뉴 (New Project, Calendar, Settings) */\r\n.dark-mode .sidebar ul li:not(.active) {\r\n    color: #bbbbbb !important; /* ✅ 조금 더 밝은 회색 */\r\n}\r\n\r\n/* \uD83C\uDF19 다크모드에서 비활성화된 메뉴 호버 효과 */\r\n.dark-mode .sidebar ul li:not(.active):hover {\r\n    color: #ffffff !important; /* ✅ 호버 시 더 밝게 */\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/MEGA_PROJECT/src/main/frontend/src/pages/Dashboard.css b/MEGA_PROJECT/src/main/frontend/src/pages/Dashboard.css
+--- a/MEGA_PROJECT/src/main/frontend/src/pages/Dashboard.css	(revision a806998afb4ed1c7523ce204f182378e7b891b2b)
++++ b/MEGA_PROJECT/src/main/frontend/src/pages/Dashboard.css	(date 1739173131565)
+@@ -567,3 +567,46 @@
+ .dark-mode .sidebar ul li:not(.active):hover {
+     color: #ffffff !important; /* ✅ 호버 시 더 밝게 */
+ }
++/* 전체 페이지의 배경색을 다크모드로 강제 적용 */
++body {
++  background-color: #121212 !important; /* 완전 검정 */
++  color: #ffffff !important; /* 텍스트 색상도 변경 */
++}
++
++/* 대시보드 전체 영역을 다크모드 적용 */
++.dashboard-container {
++  background-color: #121212 !important;
++  color: #ffffff !important;
++  min-height: 100vh; /* 내용이 적어도 전체 화면 채우기 */
++}
++
++/* 테이블 컨테이너 다크모드 */
++.table-container {
++  background-color: #1e1e1e !important; /* 어두운 배경 */
++  color: #ffffff !important;
++  border-radius: 8px;
++  padding: 16px;
++}
++
++/* 테이블 헤더 스타일 */
++.table-container table thead {
++  background-color: #222222 !important;
++  color: #ffffff !important;
++}
++
++/* 테이블 행 스타일 */
++.table-container table tbody tr {
++  background-color: #2a2a2a !important;
++  border-bottom: 1px solid #444;
++}
++
++/* 테이블 행 hover 효과 */
++.table-container table tbody tr:hover {
++  background-color: #333333 !important;
++}
++
++/* 하단 흰색 영역 (footer 같은 곳) */
++footer {
++  background-color: #121212 !important;
++  color: #ffffff !important;
++}
+Index: MEGA_PROJECT/src/main/frontend/src/styles/global.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/* ✅ 기본 설정 */\r\nbody {\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: 'Arial', sans-serif;\r\n  background-color: #f4f4f4;\r\n  color: #333; /* 기본 글씨 색 */\r\n  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* ✅ 부드러운 전환 효과 */\r\n}\r\n\r\n/* ✅ 다크모드 지원 */\r\n.dark-mode body {\r\n  background-color: #121212 !important; /* \uD83C\uDF19 다크모드 배경 변경 */\r\n  color: #f5f5f5 !important; /* \uD83C\uDF19 다크모드 글자색 변경 */\r\n}\r\n\r\n/* ✅ 로그인/회원가입 컨테이너 */\r\n.auth-container {\r\n  display: flex;\r\n  height: 100vh;\r\n}\r\n\r\n/* ✅ 다크모드 왼쪽 배경 */\r\n.auth-left {\r\n  flex: 1;\r\n  background: linear-gradient(135deg, #1e3a8a, #2563eb);\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  color: white;\r\n}\r\n\r\n/* ✅ 헤더 스타일 */\r\n.auth-left h1 {\r\n  font-size: 4rem;\r\n  font-weight: bold;\r\n}\r\n\r\n/* ✅ 오른쪽 컨테이너 */\r\n.auth-right {\r\n  flex: 1;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  background: white;\r\n  padding: 2rem;\r\n  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);\r\n  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;\r\n}\r\n\r\n/* ✅ 다크모드 스타일 추가 */\r\n.dark-mode .auth-right {\r\n  background: #1e1e1e;\r\n  color: #f5f5f5;\r\n  box-shadow: -5px 0 15px rgba(255, 255, 255, 0.1);\r\n}\r\n\r\n/* ✅ 제목 스타일 */\r\n.auth-right h2 {\r\n  font-size: 2rem;\r\n  margin-bottom: 0.5rem;\r\n  color: #1e293b;\r\n}\r\n\r\n/* ✅ 다크모드 제목 */\r\n.dark-mode .auth-right h2 {\r\n  color: #f5f5f5;\r\n}\r\n\r\n/* ✅ 설명 문구 스타일 */\r\n.auth-right p {\r\n  color: #64748b;\r\n  margin-bottom: 2rem;\r\n}\r\n\r\n/* ✅ 다크모드 설명 문구 */\r\n.dark-mode .auth-right p {\r\n  color: #bbbbbb;\r\n}\r\n\r\n/* ✅ 입력 폼 */\r\n.auth-right form {\r\n  display: flex;\r\n  flex-direction: column;\r\n  width: 80%;\r\n}\r\n\r\n/* ✅ 입력 필드 */\r\n.auth-right form input {\r\n  margin-bottom: 1rem;\r\n  padding: 0.8rem;\r\n  border: 1px solid #cbd5e1;\r\n  border-radius: 8px;\r\n  font-size: 1rem;\r\n  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;\r\n}\r\n\r\n/* ✅ 다크모드 입력 필드 */\r\n.dark-mode .auth-right form input {\r\n  background-color: #333;\r\n  color: #f5f5f5;\r\n  border: 1px solid #555;\r\n}\r\n\r\n/* ✅ 버튼 */\r\n.auth-right form button {\r\n  background-color: #2563eb;\r\n  color: white;\r\n  border: none;\r\n  padding: 0.8rem;\r\n  border-radius: 8px;\r\n  font-size: 1rem;\r\n  cursor: pointer;\r\n  transition: background-color 0.3s ease-in-out;\r\n}\r\n\r\n/* ✅ 다크모드 버튼 */\r\n.dark-mode .auth-right form button {\r\n  background-color: #4a90e2;\r\n}\r\n\r\n/* ✅ 버튼 호버 효과 */\r\n.auth-right form button:hover {\r\n  background-color: #1e3a8a;\r\n}\r\n\r\n/* ✅ 다크모드 버튼 호버 */\r\n.dark-mode .auth-right form button:hover {\r\n  background-color: #2563eb;\r\n}\r\n\r\n/* ✅ 링크 */\r\n.auth-right a {\r\n  margin-top: 1rem;\r\n  text-decoration: none;\r\n  color: #2563eb;\r\n  font-size: 0.9rem;\r\n}\r\n\r\n/* ✅ 다크모드 링크 색상 */\r\n.dark-mode .auth-right a {\r\n  color: #4a90e2;\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/MEGA_PROJECT/src/main/frontend/src/styles/global.css b/MEGA_PROJECT/src/main/frontend/src/styles/global.css
+--- a/MEGA_PROJECT/src/main/frontend/src/styles/global.css	(revision a806998afb4ed1c7523ce204f182378e7b891b2b)
++++ b/MEGA_PROJECT/src/main/frontend/src/styles/global.css	(date 1739172916304)
+@@ -142,3 +142,46 @@
+ .dark-mode .auth-right a {
+   color: #4a90e2;
+ }
++/* 전체 페이지의 배경색을 다크모드로 강제 적용 */
++body {
++  background-color: #121212 !important; /* 완전 검정 */
++  color: #ffffff !important; /* 텍스트 색상도 변경 */
++}
++
++/* 대시보드 전체 영역을 다크모드 적용 */
++.dashboard-container {
++  background-color: #121212 !important;
++  color: #ffffff !important;
++  min-height: 100vh; /* 내용이 적어도 전체 화면 채우기 */
++}
++
++/* 테이블 컨테이너 다크모드 */
++.table-container {
++  background-color: #1e1e1e !important; /* 어두운 배경 */
++  color: #ffffff !important;
++  border-radius: 8px;
++  padding: 16px;
++}
++
++/* 테이블 헤더 스타일 */
++.table-container table thead {
++  background-color: #222222 !important;
++  color: #ffffff !important;
++}
++
++/* 테이블 행 스타일 */
++.table-container table tbody tr {
++  background-color: #2a2a2a !important;
++  border-bottom: 1px solid #444;
++}
++
++/* 테이블 행 hover 효과 */
++.table-container table tbody tr:hover {
++  background-color: #333333 !important;
++}
++
++/* 하단 흰색 영역 (footer 같은 곳) */
++footer {
++  background-color: #121212 !important;
++  color: #ffffff !important;
++}

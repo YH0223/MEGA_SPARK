@@ -567,3 +567,46 @@ th {
 .dark-mode .sidebar ul li:not(.active):hover {
     color: #ffffff !important; /* ✅ 호버 시 더 밝게 */
 }
+/* 전체 페이지의 배경색을 다크모드로 강제 적용 */
+body {
+  background-color: #121212 !important; /* 완전 검정 */
+  color: #ffffff !important; /* 텍스트 색상도 변경 */
+}
+
+/* 대시보드 전체 영역을 다크모드 적용 */
+.dashboard-container {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  min-height: 100vh; /* 내용이 적어도 전체 화면 채우기 */
+}
+
+/* 테이블 컨테이너 다크모드 */
+.table-container {
+  background-color: #1e1e1e !important; /* 어두운 배경 */
+  color: #ffffff !important;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* 테이블 헤더 스타일 */
+.table-container table thead {
+  background-color: #222222 !important;
+  color: #ffffff !important;
+}
+
+/* 테이블 행 스타일 */
+.table-container table tbody tr {
+  background-color: #2a2a2a !important;
+  border-bottom: 1px solid #444;
+}
+
+/* 테이블 행 hover 효과 */
+.table-container table tbody tr:hover {
+  background-color: #333333 !important;
+}
+
+/* 하단 흰색 영역 (footer 같은 곳) */
+footer {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
