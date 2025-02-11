@@ -382,7 +382,6 @@ const Dashboard = () => {
             )}
           </section>
         </main>
-
         {activeModal && (
             <div className="modal-overlay" onClick={closeModal}>
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
