@@ -179,6 +179,12 @@ const Dashboard = () => {
     setActiveModal(null); // ✅ 모달 닫기
     fetchProjects(); // ✅ 새 프로젝트 추가 후 목록 새로고침
   };
+  const handleAddProject = () => {
+    console.log("새로운 프로젝트 추가");
+    // ✅ 새로운 프로젝트 추가 로직 (예: 모달 열기)
+    setActiveModal("newProject");
+  };
+
   const [showProgressChart, setShowProgressChart] = useState(true);
   const [showDonutChart, setShowDonutChart] = useState(true);
 
@@ -266,7 +272,7 @@ const Dashboard = () => {
             <div className={`chart-box ${showDonutChart ? "expanded" : "collapsed"}`}
                  style={{flex: showDonutChart ? "1" : "0.05", transition: "flex 0.3s ease-in-out"}}>
               <h3 onClick={() => setShowDonutChart(!showDonutChart)}>
-                📌 프로젝트 진행 현황 {showDonutChart ? <FaChevronRight/> : <FaChevronLeft/>}
+                📌 프로젝트 진행현황 {showDonutChart ? <FaChevronRight/> : <FaChevronLeft/>}
               </h3>
               {showDonutChart && (
                   <ResponsiveContainer width="100%" height={300}>
@@ -312,7 +318,6 @@ const Dashboard = () => {
             </div>
           </div>
           <section className="table-container">
-
             {selectedProjectId ? (
                 <>
                   <button className="back-button" onClick={() => setSelectedProjectId(null)}>
@@ -342,8 +347,11 @@ const Dashboard = () => {
                       const statusColor = getStatusColor(completion);
 
                       return (
-                          <tr key={project.projectId} onClick={() => handleProjectClick(project.projectId)}
-                              className="clickable-row">
+                          <tr
+                              key={project.projectId}
+                              onClick={() => handleProjectClick(project.projectId)}
+                              className="clickable-row"
+                          >
                             <td>{project.projectName}</td>
                             <td>{project.projectManager}</td>
                             <td>{new Date(project.startdate).toLocaleDateString()}</td>
@@ -351,13 +359,23 @@ const Dashboard = () => {
                             <td>
                               <div className="progress-bar-container">
                                 <span className="progress-text">{completion.toFixed(0)}%</span>
-                                <div className="progress-bar"
-                                     style={{width: `${completion}%`, backgroundColor: statusColor}}/>
+                                <div
+                                    className="progress-bar"
+                                    style={{width: `${completion}%`, backgroundColor: statusColor}}
+                                />
                               </div>
                             </td>
                           </tr>
                       );
                     })}
+                    <tr className="add-project-row" onClick={handleAddProject}>
+                      <td colSpan="5" className="add-project-cell">
+                        <div className="new-project-button">
+                          <span className="plus-icon">➕</span>
+                          <span className="center-text">New Project</span>
+                        </div>
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
                 </>

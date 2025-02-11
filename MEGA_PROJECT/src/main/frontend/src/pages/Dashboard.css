@@ -9,6 +9,7 @@ body {
   background-color: #f8f9fc;
 }
 
+/*
 .sidebar {
   width: 200px;
   background-color: #f4f4f4;
@@ -49,23 +50,7 @@ body {
   margin-top: auto;
   text-align: center;
 }
-
-.upgrade-button {
-  padding: 0.6rem 1rem;
-  color: #fff;
-  background-color: #6200ea;
-  border: none;
-  border-radius: 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-bottom: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.upgrade-button:hover {
-  background-color: #3700b3;
-}
-
+*/
 .dashboard-main {
   flex: 1;
   padding: 2rem;
@@ -200,16 +185,7 @@ table th {
   color: #adadad;
 }
 
-.status-active {
-  color: #388e3c;
-  font-weight: bold;
-}
-
-.status-inactive {
-  color: #d32f2f;
-  font-weight: bold;
-}
-
+/*
 .pagination {
   display: flex;
   justify-content: center;
@@ -230,6 +206,8 @@ table th {
   background-color: #6200ea;
   color: #fff;
 }
+
+*/
 
 .sidebar-footer {
   display: flex;
@@ -507,6 +485,99 @@ th {
 .collapsed {
   overflow: hidden;
   white-space: nowrap;
-  min-width: 200px; /* 🔥 접힐 때 최소 크기 설정 */
+  min-width: 220px; /* 🔥 접힐 때 최소 크기 설정 */
 }
 
+.add-project-row {
+  background-color: #dddddd;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-project-row:hover {
+  background-color: #C0C0C0;
+}
+
+.add-project-row td {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: hidden;
+}
+
+.add-project-cell {
+  text-align: center;
+  padding: 10px;
+}
+
+.new-project-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.plus-icon {
+  font-size: 1.2rem;
+}
+
+.site-footer {
+  background-color: #333;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  margin: 10px;
+}
+
+.footer-section h3,
+.footer-section h4 {
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 5px 0;
+}
+
+.footer-section ul li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #ffcc00;
+}
+
+.social-icons a {
+  margin: 0 10px;
+  color: white;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #ffcc00;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  padding: 10px 0;
+  background-color: #222;
+}
