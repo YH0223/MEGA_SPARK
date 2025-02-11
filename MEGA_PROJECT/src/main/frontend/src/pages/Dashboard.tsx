@@ -190,7 +190,7 @@ const Dashboard = () => {
 
 
   return (
-      <div className="dashboard-container">
+      <div className="dzashboard-container">
         { /*
         <nav className="sidebar">
           <div className="user-profile">
