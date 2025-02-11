@@ -29,4 +29,8 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     List<Task> findByProject_ProjectIdAndTaskList_TasklistId(int projectId, int tasklistId);
 
     List<Task> findByProject_ProjectIdAndStartDateBetween(int projectId, LocalDate startDate, LocalDate endDate);
+
+    void deleteByTaskList_TasklistId(int tasklistId);
+
+    List<Task> findByTaskList_TasklistId(int tasklistId);
 }

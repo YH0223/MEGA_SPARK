@@ -45,4 +45,14 @@ public class TaskListService {
     public List<Task> getTasksByProjectAndTasklist(int projectId, int tasklistId) {
         return taskRepository.findByProject_ProjectIdAndTaskList_TasklistId(projectId, tasklistId);
     }
+
+    public Optional<TaskList> getTaskListById(int tasklistId) {
+        return taskListRepository.findById(tasklistId);
+    }
+
+    public void deleteTaskList(TaskList taskList) {
+        taskListRepository.delete(taskList);
+    }
+
+
 }

@@ -43,6 +43,8 @@ public class ProjectController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private TaskListRepository taskListRepository;
+    @Autowired
     private TaskRepository taskRepository;
     @Autowired
     private NoticeRepository noticeRepository;
@@ -136,11 +138,13 @@ public class ProjectController {
 
             // ✅ 2. task 테이블에서 해당 프로젝트의 모든 데이터 삭제
             taskRepository.deleteByProjectId(projectId);
+            // 3. tasklist 삭제
+            taskListRepository.deleteByProjectId(projectId);
 
-            // ✅ 3. notice 테이블에서 해당 프로젝트의 모든 데이터 삭제
+            // ✅ 4. notice 테이블에서 해당 프로젝트의 모든 데이터 삭제
             noticeRepository.deleteByProjectId(projectId);
 
-            // ✅ 4. 프로젝트 자체 삭제
+            // ✅ 5. 프로젝트 자체 삭제
             projectRepository.delete(project);
 
             return ResponseEntity.ok("200");

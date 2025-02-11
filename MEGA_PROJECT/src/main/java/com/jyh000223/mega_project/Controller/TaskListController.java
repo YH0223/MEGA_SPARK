@@ -2,8 +2,11 @@ package com.jyh000223.mega_project.Controller;
 
 import com.jyh000223.mega_project.DTO.TasklistDTO;
 import com.jyh000223.mega_project.Entities.Project;
+import com.jyh000223.mega_project.Entities.Task;
 import com.jyh000223.mega_project.Entities.TaskList;
 import com.jyh000223.mega_project.Repository.ProjectRepository;
+import com.jyh000223.mega_project.Repository.TaskListRepository;
+import com.jyh000223.mega_project.Repository.TaskRepository;
 import com.jyh000223.mega_project.Service.TaskListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,10 @@ public class TaskListController {
     private final TaskListService taskListService;
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private TaskRepository taskRepository;
+    @Autowired
+    private TaskListRepository taskListRepository;
 
     public TaskListController(TaskListService taskListService) {
         this.taskListService = taskListService;
@@ -59,4 +66,35 @@ public class TaskListController {
                 savedTaskList.getProject().getProjectId()
         ));
     }
+
+    @DeleteMapping("/delete/{tasklistId}")
+    public ResponseEntity<String> deleteTaskList(@PathVariable int tasklistId) {
+        // TaskList 존재 여부 확인
+        Optional<TaskList> taskListOptional = taskListService.getTaskListById(tasklistId);
+        if (taskListOptional.isEmpty()) {
+            return ResponseEntity.status(404).body("❌ TaskList를 찾을 수 없습니다.");
+        }
+
+        TaskList taskList = taskListOptional.get();
+
+        try {
+            // ✅ TaskList에 연결된 모든 Task 삭제
+            List<Task> tasks = taskRepository.findByTaskList_TasklistId(tasklistId);
+            taskRepository.deleteAll(tasks);
+
+            // ✅ 2. TaskList 삭제
+            taskListRepository.delete(taskList);
+
+            return ResponseEntity.ok("✅ TaskList가 삭제되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("❌ TaskList 삭제 중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
+
+
+
+
+
+
+
 }
