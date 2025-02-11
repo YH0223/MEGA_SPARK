@@ -209,6 +209,14 @@ const Dashboard = () => {
     );
   }, [searchTerm, projects, activeFilter, taskProgress]); // ✅ activeFilter, taskProgress 추가
 
+  useEffect(() => {
+    setFilteredProjects(
+        projects.filter((project) =>
+            project.projectName.toLowerCase().includes(searchTerm.toLowerCase()) // 🔥 대소문자 무시하고 검색
+        )
+    );
+  }, [searchTerm, projects]); // 🔥 searchTerm과 projects가 변경될 때만 실행
+
 
   useEffect(() => {
     fetchUserProfile();
@@ -392,7 +400,10 @@ const Dashboard = () => {
                 <>
                   <div className="Search">
                     <h3>All Projects</h3>
-                    <input type="text" placeholder="Search"/>
+                    <input type="text" placeholder="Search"
+                           value={searchTerm}
+                           onChange={(e) => setSearchTerm(e.target.value)} // 🔥 입력값으로 searchTerm 상태 업데이트
+                    />
                   </div>
                   <table>
                     <thead>
