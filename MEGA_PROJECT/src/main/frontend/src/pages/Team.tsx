@@ -170,7 +170,6 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
                     onChange={(e) => setSearchId(e.target.value)}
                     onFocus={() => setShowResults(true)} // ✅ 검색창 클릭 시 결과 보이게 설정
                 />
-                <button className="add-button" onClick={addTeamMember}>추가</button>
                 <button onClick={() => sendInvitation(searchId)} className="invite-button">
                     초대하기
                 </button>

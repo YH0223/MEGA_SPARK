@@ -99,7 +99,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
             navigate("/dashboard");
             window.location.reload();
         } catch (error) {
-            alert("❌ 프로젝트 삭제 중 오류가 발생했습니다.");
+            alert("❌ 프로젝트 삭제 권한이 없습니다.");
         }
     };
 
