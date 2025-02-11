@@ -80,6 +80,11 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
         }
     };
 
+
+
+
+
+
     const fetchUsers = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/team/${projectId}`);  // ✅ 팀원 목록 가져오기
@@ -158,6 +163,20 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
         }
     };
 
+
+    /** ✅ TaskList 삭제 */
+    const deleteTaskList = async (tasklistId: number) => {
+        if (!window.confirm("⚠️ 해당 TaskList와 모든 Task가 삭제됩니다. 진행하시겠습니까?")) return;
+
+        try {
+            await axios.delete(`http://localhost:8080/tasklist/delete/${tasklistId}`);
+            alert("✅ TaskList가 삭제되었습니다.");
+            fetchTaskLists(); // ✅ 삭제 후 목록 새로고침
+        } catch (error) {
+            console.error("🛑 TaskList 삭제 실패:", error);
+            alert("❌ TaskList 삭제 중 오류가 발생했습니다.");
+        }
+    };
 
 
     /** ✅ Task 추가 */
@@ -266,6 +285,9 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
             {taskLists?.map((taskList) => (
                 <div key={taskList.tasklistId} className="task-group">
                     <h3>TaskList : {taskList.tasklistName}</h3>
+                    <button onClick={() => deleteTaskList(taskList.tasklistId)} className="delete-tasklist-button">
+                        🗑️ TaskList 삭제 -
+                    </button>
                     <button onClick={() => {
                         setSelectedTaskList(taskList.tasklistId);
                         setTaskModalOpen(true);

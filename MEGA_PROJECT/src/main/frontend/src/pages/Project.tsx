@@ -88,7 +88,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
             setProject({
                 ...project!,
                 projectName: editProjectName,
-                startdate: editStartDate,
+                startDate: editStartDate,
                 deadline: editDeadline
             });
             setIsEditing(false); // ✅ 수정 후 모달 닫기
@@ -225,7 +225,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                     팀원 관리
                 </button>
                 <button className={activeTab === "team" ? "active" : ""} onClick={() => setActiveTab("notice")}>
-                    📢 공지사항
+                    📢 게시판
                 </button>
             </div>
 
@@ -266,7 +266,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
 
             {activeTab === "notice" && (
                 <div className="section">
-                    <h2>📢공지사항</h2>
+                    <h2>📢게시판</h2>
                     <NoticeComponent projectId={projectId} />
                 </div>
             )}

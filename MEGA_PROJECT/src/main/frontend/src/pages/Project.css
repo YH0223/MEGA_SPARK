@@ -1,167 +1,316 @@
-/* 🌟 프로젝트 전체 컨테이너 */
-.project-container {
-  max-width: 95%;
+.project-page {
+  max-width: 1200px;
   margin: 40px auto;
-  padding: 30px;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr; /* 1:1:2 비율로 나누기 */
-  gap: 20px;
-  grid-template-areas:
-        "header header header"
-        "project-board team-management task-list"; /* ✅ 왼쪽 | 가운데 | 오른쪽 */
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-}
-
-/* 🔵 헤더 (전체 너비 100%) */
-.header {
-  grid-area: header;
-  width: 100%;
-  height: 120px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: linear-gradient(135deg, #daf0ff 0%, #ffffff 100%);
-  color: #000000;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* 📌 프로젝트 게시판 (왼쪽) */
-.project-board {
-  grid-area: project-board;
-  background: #f1f3f5;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  height: 100%;
-}
-
-/* 👥 팀원 관리 (가운데) */
-.team-management {
-  grid-area: team-management;
-  background: #f1f3f5;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  height: 100%;
-}
-
-/* 📝 할 일 목록 (오른쪽, 가장 큼) */
-.task-list {
-  grid-area: task-list;
   background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  height: 100%;
-  overflow-y: auto; /* ✅ 스크롤 가능하도록 */
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 }
 
-/* 🎯 프로젝트 수정/삭제 버튼 컨테이너 */
-.project-actions {
+body.dark-mode {
+  background: #121212;
+  color: #ffffff;
+}
+body.dark-mode .project-page {
+  background: #1e1e1e;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+}
+
+/* =============================
+   헤더/프로젝트 정보
+============================= */
+.project-header {
+  padding: 20px 30px;
+  border-bottom: 1px solid #ddd;
+}
+body.dark-mode .project-header {
+  border-bottom: 1px solid #444;
+}
+
+/* 편집 중 */
+.edit-mode {
   display: flex;
-  justify-content: flex-end; /* ✅ 버튼을 오른쪽 정렬 */
-  align-items: center; /* ✅ 버튼 높이 맞추기 */
-  flex-direction: row; /* ✅ 가로 정렬 */
+  flex-direction: column;
   gap: 10px;
-  margin-top: 15px;
-  width: 100%; /* ✅ 가로 전체 확장 */
+}
+.edit-mode .edit-title-input {
+  font-size: 1.5rem;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+body.dark-mode .edit-mode .edit-title-input {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
 }
 
-/* ✅ 버튼 스타일 유지 */
-.update-button, .delete-button {
-  padding: 15px 30px;
-  font-size: 1.1rem;
+/* 일반 모드: 프로젝트 정보 표시 */
+.info-mode .project-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.info-mode .manager,
+.info-mode .duration {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #666;
+}
+body.dark-mode .info-mode .manager,
+body.dark-mode .info-mode .duration {
+  color: #ccc;
+}
+
+/* =============================
+   버튼 그룹 + 다크 모드
+============================= */
+.button-group {
+  margin-top: 10px;
+}
+.button-group button {
+  margin-right: 8px;
+  padding: 10px 16px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   font-weight: 600;
-  width: 160px; /* ✅ 동일한 크기로 설정 */
-  text-align: center;
-  display: inline-block;
-  transition: transform 0.3s ease-in-out;
+  transition: background 0.3s, transform 0.2s;
+}
+.button-group button:hover {
+  transform: scale(1.05);
 }
 
-/* ✅ 수정 버튼 스타일 */
-.update-button {
-  background: linear-gradient(135deg, #56ccf2 0%, #2f80ed 100%);
-  color: white;
+/* ── 라이트 모드 버튼 색상 ── */
+.edit-button {
+  background-color: #0ea5e9;  /* 파랑 */
+  color: #fff;
 }
-
-/* ❌ 삭제 버튼 스타일 */
 .delete-button {
-  background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-  color: white;
+  background-color: #ef4444;  /* 빨강 */
+  color: #fff;
+}
+.update-button {
+  background-color: #22c55e;  /* 연두빛 초록 */
+  color: #fff;
+}
+.cancel-button {
+  background-color: #6b7280;  /* 회색 */
+  color: #fff;
 }
 
-.delete-button:hover {
-  transform: scale(1.1);
+/* ── 다크 모드 버튼 색상 재정의 ── */
+body.dark-mode .edit-button {
+  background-color: #0284c7;  /* hover상태였던 진한 파랑 */
+  color: #fff;
 }
-/* 🖥️ 반응형 (화면이 작아지면 세로 정렬) */
+body.dark-mode .delete-button {
+  background-color: #dc2626;  /* hover상태 빨강 */
+  color: #fff;
+}
+body.dark-mode .update-button {
+  background-color: #16a34a;  /* hover상태 초록 */
+  color: #fff;
+}
+body.dark-mode .cancel-button {
+  background-color: #4b5563;  /* hover상태 회색 */
+  color: #fff;
+}
+
+/* 편집 날짜 인풋 */
+.edit-date {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.9rem;
+}
+.edit-date label {
+  min-width: 70px;
+  color: #666;
+}
+.edit-date input[type="date"] {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+body.dark-mode .edit-date label {
+  color: #ccc;
+}
+body.dark-mode .edit-date input[type="date"] {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+/* =============================
+   탭 네비게이션
+============================= */
+.tab-navigation {
+  display: flex;
+  padding: 0 30px;
+  border-bottom: 1px solid #ddd;
+  background: #fafafa;
+}
+body.dark-mode .tab-navigation {
+  background: #2c2c2c;
+  border-bottom: 1px solid #444;
+}
+.tab-navigation button {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+  transition: background 0.2s;
+}
+body.dark-mode .tab-navigation button {
+  color: #ccc;
+}
+.tab-navigation button.active {
+  border-bottom: 3px solid #0ea5e9;  /* 활성 탭 파랑 라인 */
+  color: #0ea5e9;
+}
+.tab-navigation button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+body.dark-mode .tab-navigation button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* =============================
+   본문 컨텐츠 래퍼
+============================= */
+.project-content {
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 공통 섹션(탭 내용) */
+.section {
+  background: #f9f9f9;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+body.dark-mode .section {
+  background: #2c2c2c;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);
+}
+.section h2 {
+  margin-top: 0;
+}
+
+/* =============================
+   메인 탭 (도넛 차트 + 달력)
+============================= */
+.main-tab {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;     /* 화면 작아지면 자동 줄바꿈 */
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* 차트: 3 / 달력: 7 비율 */
+.chart-container {
+  flex: 3;
+  max-width: 20%;
+  min-width: 280px;     /* 너무 좁아지지 않도록 최소 너비 */
+  background: #f9f9f9;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  overflow: hidden;      /* 필요 시 오버플로우 숨김 */
+}
+body.dark-mode .chart-container {
+  background: #2c2c2c;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);
+}
+
+.calendar-container {
+  flex: 7;
+  max-width: 80%;
+  min-width: 400px;      /* 달력이 일정 크기 이하로 줄지 않도록 */
+  background: #f9f9f9;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  overflow: hidden;      /* 오른쪽 삐져나옴 방지 */
+}
+body.dark-mode .calendar-container {
+  background: #2c2c2c;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);
+}
+
+/* =============================
+   Task List / Task Card
+   (다크 모드 미적용 문제 해결)
+============================= */
+.task-list {
+  background: #f9f9f9;
+  color: #333;
+  border-radius: 14px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+body.dark-mode .task-list {
+  background: #2c2c2c;    /* 다크 배경 */
+  color: #ffffff;         /* 다크 텍스트 */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);
+}
+.task-list button {
+  background: #e0e0e0;
+  color: #333;
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+body.dark-mode .task-list button {
+  background: #555;       /* 어두운 버튼 */
+  color: #fff;
+}
+
+/* 개별 Task 카드 */
+.task-card {
+  background: #ffffff;
+  color: #333;
+  padding: 15px;
+  border-radius: 14px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+body.dark-mode .task-card {
+  background: #3a3a3a;
+  color: #ffffff;
+  box-shadow: 0 2px 5px rgba(255,255,255,0.08);
+}
+
+/* =============================
+   반응형 추가 보완
+============================= */
 @media (max-width: 768px) {
-  .project-container {
-    grid-template-columns: 1fr; /* ✅ 세로 정렬 */
-    grid-template-areas:
-          "header"
-          "project-board"
-          "team-management"
-          "task-list"; /* ✅ 순서대로 배치 */
+  .tab-navigation {
+    flex-wrap: wrap;
+  }
+  .tab-navigation button {
+    margin-bottom: 5px;
   }
 
-  .header {
-    height: 100px;
-    font-size: 1.2rem;
+  .main-tab {
+    flex-direction: column; /* 차트와 캘린더 세로 배치 */
   }
-
-  .project-board, .team-management, .task-list {
-    width: 100%;
-    height: auto;
+  .chart-container,
+  .calendar-container {
+    max-width: 100% !important;
+    min-width: auto;
   }
-
-  .project-actions {
-    justify-content: center;
-  }
-
-  .button-group {
-    flex-direction: column;
-    align-items: center;
-  }
-  /* ✅ 모달 스타일 */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 500px;
-    text-align: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease-in-out;
-  }
-
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
-  }
-
 }
