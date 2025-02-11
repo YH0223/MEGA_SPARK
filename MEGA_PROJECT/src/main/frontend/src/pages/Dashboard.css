@@ -1,5 +1,3 @@
-Dashboard.css
-
 .body {
   transform: scale(0.9);
   transform-origin: top; /* 화면 좌측 상단 기준 */
@@ -421,7 +419,7 @@ th {
   width: 600px;
   max-width: 95%;
   position: relative;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -797,20 +795,31 @@ body {
 /* ✅ 아이콘 버튼 */
 
 .icon-button {
-
-  background: none;
-
+  position: relative; /* 🔥 각 버튼마다 독립된 위치 */
+  background: #007bff;
   border: none;
-
   cursor: pointer;
-
   font-size: 20px;
-
-  color: #333;
-
-  transition: transform 0.2s ease-in-out;
-
+  margin: 0 10px;
 }
+
+.icon-button .badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  display: inline-block;
+  z-index: 1; /* 🔥 다른 요소 위에 표시되도록 */
+}
+
+.icon-button svg {
+  pointer-events: none; /* 🔥 아이콘 자체에는 클릭 이벤트가 전달되지 않도록 설정 */
+}
+
 
 
 
@@ -941,3 +950,4 @@ body {
   border-top: 1px solid #ddd;
 
 }
+
