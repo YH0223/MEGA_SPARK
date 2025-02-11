@@ -22,15 +22,10 @@ public class TeammateController {
     }
 
     /** ✅ 프로젝트 ID 기준으로 팀원 목록 검색 */
+    /** ✅ 특정 프로젝트의 팀원 목록 (userId + userName 포함) */
     @GetMapping("/team/{projectId}")
-    public ResponseEntity<List<Teammate>> getTeammatesByProject(@PathVariable int projectId, HttpSession session) {
-        // 세션 확인
-        String currentUser = (String) session.getAttribute("user_id");
-        if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        List<Teammate> teammates = teammateService.getTeammatesByProject(projectId);
+    public ResponseEntity<List<TeammateDTO>> getTeammates(@PathVariable int projectId) {
+        List<TeammateDTO> teammates = teammateService.getTeammatesByProject(projectId);
         return ResponseEntity.ok(teammates);
     }
 

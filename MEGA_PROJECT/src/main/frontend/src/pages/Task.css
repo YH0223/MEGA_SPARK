@@ -88,3 +88,28 @@
 .task-list button:hover {
     background-color: #c82333;
 }
+/* ✅ Task 항목 스타일 */
+
+/* ✅ Task 항목 스타일 */
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.priority-indicator {
+    width: 12px;  /* 고정된 크기 */
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;  /* 인라인 요소지만 크기 유지 */
+    flex-shrink: 0;  /* 부모 요소 크기 변화 영향 방지 */
+    margin-right: 5px;
+}
+/* ✅ 우선순위 텍스트 스타일 */
+.priority-text {
+    font-weight: bold;
+    margin-left: 5px;
+}

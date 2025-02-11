@@ -7,7 +7,13 @@ import NewProject from "./NewProject"; // ✅ New Project 페이지 컴포넌트
 import Profile from "./Profile"; // ✅ Profile 페이지 컴포넌트
 import Calendar from "./Calendar"; // ✅ Calendar 페이지 컴포넌트
 import Settings from "./Settings"; // ✅ Settings 페이지 컴포넌트
-
+interface Invitation {
+  invitationId: number;
+  projectId: number;
+  inviterId: string;
+  inviteeId: string;
+  status: string;
+}
 // ✅ 프로젝트 데이터 타입 정의
 interface Project {
   projectId: number;
@@ -40,6 +46,8 @@ const Dashboard = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("dashboard"); // ✅ 활성화된 탭 관리
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [showInvitationDropdown, setShowInvitationDropdown] = useState(false);
   const [status, setStatus] = useState<ProjectStatus>({
     totalProjects: 0,
     completedProjects: 0,
@@ -48,8 +56,46 @@ const Dashboard = () => {
   useEffect(() => {
     fetchUserProfile();
     fetchProjects();
+    fetchInvitations();
   }, []);
-
+  const fetchInvitations = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/invitations", {
+        withCredentials: true,
+      });
+      setInvitations(response.data);
+    } catch (error) {
+      console.error("🚨 초대 목록 불러오기 오류:", error);
+    }
+  };
+  const declineInvitation = async (invitationId: number) => {
+    try {
+      await axios.put(
+          `http://localhost:8080/api/invite/${invitationId}/decline`,
+          {},
+          { withCredentials: true }
+      );
+      alert("✅ 초대를 거절했습니다!");
+      setInvitations(invitations.filter((inv) => inv.invitationId !== invitationId));
+    } catch (error) {
+      console.error("❌ 초대 거절 오류:", error);
+      alert("초대 거절 중 오류가 발생했습니다.");
+    }
+  };
+  const acceptInvitation = async (invitationId: number) => {
+    try {
+      await axios.put(
+          `http://localhost:8080/api/invite/${invitationId}/accept`,
+          {},
+          { withCredentials: true }
+      );
+      alert("✅ 초대를 수락했습니다!");
+      setInvitations(invitations.filter((inv) => inv.invitationId !== invitationId));
+    } catch (error) {
+      console.error("❌ 초대 수락 오류:", error);
+      alert("초대 수락 중 오류가 발생했습니다.");
+    }
+  };
   const fetchUserProfile = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/user/profile", { withCredentials: true });
