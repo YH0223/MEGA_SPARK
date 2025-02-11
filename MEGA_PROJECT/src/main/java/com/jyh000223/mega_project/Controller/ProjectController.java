@@ -1,10 +1,14 @@
 package com.jyh000223.mega_project.Controller;
 
+import com.jyh000223.mega_project.DTO.InvitationDTO;
 import com.jyh000223.mega_project.DTO.ProjectDTO;
 import com.jyh000223.mega_project.Entities.Project;
 import com.jyh000223.mega_project.Entities.Task;
 import com.jyh000223.mega_project.Entities.User;
+import com.jyh000223.mega_project.Entities.Invitation;
+import com.jyh000223.mega_project.Entities.InvitationStatus;
 import com.jyh000223.mega_project.Repository.*;
+import com.jyh000223.mega_project.Repository.InvitationRepository;
 import com.jyh000223.mega_project.Service.ProjectService;
 import com.jyh000223.mega_project.Service.TaskService;
 import com.jyh000223.mega_project.Service.TeammateService;
@@ -42,6 +46,11 @@ public class ProjectController {
     private TaskRepository taskRepository;
     @Autowired
     private NoticeRepository noticeRepository;
+    @Autowired
+    private InvitationRepository invitationRepository;
+
+
+
 
     @PostMapping("/createproject")
     public ResponseEntity<String> createProject(@RequestBody ProjectDTO projectdto, HttpServletRequest request) {
@@ -297,5 +306,83 @@ public class ProjectController {
         System.out.println("📌 최종 반환 데이터: " + result);
         return ResponseEntity.ok(result);
     }
+
+
+
+
+    @PostMapping("/invite")
+    public ResponseEntity<String> sendInvitation(HttpServletRequest request, @RequestBody InvitationDTO invitationDTO) {
+        String inviterId = (String) request.getSession().getAttribute("user_id");
+        if (inviterId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용하세요.");
+        }
+
+        Invitation invitation = new Invitation();
+        invitation.setInviterId(inviterId);
+        invitation.setInviteeId(invitationDTO.getInviteeId());
+        invitation.setProjectId(invitationDTO.getProjectId());
+        invitationRepository.save(invitation);
+
+        return ResponseEntity.ok("초대가 전송되었습니다.");
+    }
+
+
+
+    @PutMapping("/invite/{invitationId}/accept")
+    public ResponseEntity<String> acceptInvitation(@PathVariable int invitationId) {
+        Invitation invitation = invitationRepository.findById(invitationId).orElse(null);
+        if (invitation == null || invitation.getStatus() != InvitationStatus.PENDING) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("초대를 찾을 수 없습니다.");
+        }
+
+        invitation.setStatus(InvitationStatus.ACCEPTED);
+        teammateService.addTeammate(invitation.getInviteeId(), invitation.getProjectId());
+        invitationRepository.delete(invitation);
+
+        return ResponseEntity.ok("초대를 수락했습니다.");
+    }
+
+
+    @GetMapping("/invitations")
+    public ResponseEntity<List<InvitationDTO>> getPendingInvitations(HttpServletRequest request) {
+        String inviteeId = (String) request.getSession().getAttribute("user_id");
+
+        if (inviteeId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        List<Invitation> invitations = invitationRepository.findByInviteeIdAndStatus(inviteeId, InvitationStatus.PENDING);
+
+        List<InvitationDTO> invitationDTOs = invitations.stream().map(invitation -> new InvitationDTO(
+                invitation.getInvitationId(),
+                invitation.getProjectId(),
+                invitation.getInviterId(),
+                invitation.getInviteeId(),
+                invitation.getStatus().toString()
+        )).toList();
+
+        return ResponseEntity.ok(invitationDTOs);
+    }
+
+    @PutMapping("/invite/{invitationId}/decline")
+    public ResponseEntity<String> declineInvitation(@PathVariable int invitationId) {
+        Invitation invitation = invitationRepository.findById(invitationId).orElse(null);
+
+        if (invitation == null || invitation.getStatus() != InvitationStatus.PENDING) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("초대를 찾을 수 없습니다.");
+        }
+
+        invitation.setStatus(InvitationStatus.DECLINED);  // 상태를 DECLINED로 변경
+        invitationRepository.delete(invitation);
+
+        return ResponseEntity.ok("초대를 거절했습니다.");
+    }
+
+
+
+
+
+
+
 
 }

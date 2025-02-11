@@ -1,3 +1,5 @@
+Dashboard.css
+
 .body {
   zoom: 0.9 /* 90% 크기로 줄이기 */
 }
@@ -524,46 +526,202 @@ th {
 }
 /* 🌙 다크모드에서 사이드바 스타일 */
 .dark-mode .sidebar {
-    background-color: #181818 !important; /* 🔥 어두운 배경 */
-    color: #ffffff !important; /* 🔥 더 밝은 글씨 */
+  background-color: #181818 !important; /* 🔥 어두운 배경 */
+  color: #ffffff !important; /* 🔥 더 밝은 글씨 */
 }
 
 /* 🌙 다크모드에서 "from Spark" 글자 색상 조정 */
 .dark-mode .from-spark {
-    color: #dddddd !important; /* ✅ 더 밝은 회색 */
-    font-weight: bold; /* ✅ 글씨 두껍게 */
+  color: #dddddd !important; /* ✅ 더 밝은 회색 */
+  font-weight: bold; /* ✅ 글씨 두껍게 */
 }
 
 /* 🌙 다크모드에서 사이드바 메뉴 항목 */
 .dark-mode .sidebar ul li {
-    color: #cccccc !important; /* ✅ 기본적으로 밝은 회색 */
-    transition: color 0.3s ease;
+  color: #cccccc !important; /* ✅ 기본적으로 밝은 회색 */
+  transition: color 0.3s ease;
 }
 
 /* 🌙 다크모드에서 메뉴 항목 호버 시 */
 .dark-mode .sidebar ul li:hover {
-    color: #ffffff !important; /* ✅ 호버하면 완전 흰색 */
+  color: #ffffff !important; /* ✅ 호버하면 완전 흰색 */
 }
 
 /* 🌙 다크모드에서 활성화된 메뉴 (Dashboard 등) */
 .dark-mode .sidebar ul li.active {
-    color: #181818 !important; /* ✅ 글씨 색상 대비 조정 */
-    background-color: #00c6ff !important; /* 🔥 밝은 하늘색 강조 */
-    font-weight: bold;
+  color: #181818 !important; /* ✅ 글씨 색상 대비 조정 */
+  background-color: #00c6ff !important; /* 🔥 밝은 하늘색 강조 */
+  font-weight: bold;
 }
 
 /* 🌙 다크모드에서 '안녕' 글씨 */
 .dark-mode .user-name {
-    color: #ffffff !important; /* ✅ 완전 흰색으로 가독성 개선 */
-    font-weight: bold; /* ✅ 두껍게 */
+  color: #ffffff !important; /* ✅ 완전 흰색으로 가독성 개선 */
+  font-weight: bold; /* ✅ 두껍게 */
 }
 
 /* 🌙 다크모드에서 비활성화된 메뉴 (New Project, Calendar, Settings) */
 .dark-mode .sidebar ul li:not(.active) {
-    color: #bbbbbb !important; /* ✅ 조금 더 밝은 회색 */
+  color: #bbbbbb !important; /* ✅ 조금 더 밝은 회색 */
 }
 
-/* 🌙 다크모드에서 비활성화된 메뉴 호버 효과 */
-.dark-mode .sidebar ul li:not(.active):hover {
-    color: #ffffff !important; /* ✅ 호버 시 더 밝게 */
+/* 🌙 다크모드에서만 검정 배경 적용 */
+.dark-mode body {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* ✅ 라이트모드에서는 원래 색상 유지 */
+body {
+  background-color: #f8f9fc;
+  color: #333;
+}
+
+/* ✅ 대시보드 전체 영역 다크모드 적용 (다크모드에서만 적용) */
+.dark-mode .dashboard-container {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+/* ✅ 테이블 컨테이너도 다크모드에서만 다크 테마 적용 */
+.dark-mode .table-container {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* ✅ 테이블 헤더 다크모드 스타일 */
+.dark-mode .table-container table thead {
+  background-color: #222222 !important;
+  color: #ffffff !important;
+}
+
+/* ✅ 테이블 행 다크모드 스타일 */
+.dark-mode .table-container table tbody tr {
+  background-color: #2a2a2a !important;
+  border-bottom: 1px solid #444;
+}
+
+/* ✅ 테이블 행 hover 효과 */
+.dark-mode .table-container table tbody tr:hover {
+  background-color: #333333 !important;
+}
+
+/* ✅ 하단 흰색 영역 (footer)도 다크모드에서만 적용 */
+.dark-mode footer {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+/* ✅ 기본 마진 제거 */
+body {
+  margin: 0 !important;
+  padding: 0;
+  background-color: #f8f9fc; /* 기본 라이트모드 색상 */
+  color: #333;
+}
+
+/* ✅ 다크모드 스타일 */
+.dark-mode body {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .dashboard-container {
+  background-color: #121212 !important;
+  min-height: 100vh;  /* 전체 화면 덮기 */
+  height: auto; /* 스크롤이 있을 경우 높이 조정 */
+}
+
+/* ✅ 하단 여백 문제 해결 */
+.dark-mode footer {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+.notification-icon {
+  position: relative;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 3px 6px;
+  font-size: 0.8rem;
+}
+
+.invitation-dropdown {
+  position: absolute;
+  top: 2.5rem;
+  right: 1rem;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.invitation-dropdown h3 {
+  margin-top: 0;
+}
+
+.invitation-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.invitation-dropdown li {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.invitation-dropdown li p {
+  margin: 0;
+}
+
+.invitation-dropdown li button {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.invitation-dropdown li button:hover {
+  background: #45a049;
+}
+.invitation-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: #f9f9f9;
+}
+
+.invitation-item button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.invitation-item button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.invitation-item button:last-child {
+  background-color: #f44336;
+  color: white;
 }

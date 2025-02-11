@@ -16,6 +16,14 @@ interface Project {
   startdate: string;
   deadline: string;
 }
+
+interface Invitation {
+  invitationId: number;
+  projectId: number;
+  inviterId: string;
+  inviteeId: string;
+  status: string;
+}
 interface ProjectStatus {
   totalProjects: number;
   completedProjects: number;
@@ -40,6 +48,11 @@ const Dashboard = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("dashboard"); // ✅ 활성화된 탭 관리
+
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [showInvitationDropdown, setShowInvitationDropdown] = useState(false);
+
+
   const [status, setStatus] = useState<ProjectStatus>({
     totalProjects: 0,
     completedProjects: 0,
@@ -48,7 +61,50 @@ const Dashboard = () => {
   useEffect(() => {
     fetchUserProfile();
     fetchProjects();
+    fetchInvitations();
   }, []);
+
+  const fetchInvitations = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/invitations", {
+        withCredentials: true,
+      });
+      setInvitations(response.data);
+    } catch (error) {
+      console.error("🚨 초대 목록 불러오기 오류:", error);
+    }
+  };
+
+
+  const declineInvitation = async (invitationId: number) => {
+    try {
+      await axios.put(
+          `http://localhost:8080/api/invite/${invitationId}/decline`,
+          {},
+          { withCredentials: true }
+      );
+      alert("✅ 초대를 거절했습니다!");
+      setInvitations(invitations.filter((inv) => inv.invitationId !== invitationId));
+    } catch (error) {
+      console.error("❌ 초대 거절 오류:", error);
+      alert("초대 거절 중 오류가 발생했습니다.");
+    }
+  };
+
+  const acceptInvitation = async (invitationId: number) => {
+    try {
+      await axios.put(
+          `http://localhost:8080/api/invite/${invitationId}/accept`,
+          {},
+          { withCredentials: true }
+      );
+      alert("✅ 초대를 수락했습니다!");
+      setInvitations(invitations.filter((inv) => inv.invitationId !== invitationId));
+    } catch (error) {
+      console.error("❌ 초대 수락 오류:", error);
+      alert("초대 수락 중 오류가 발생했습니다.");
+    }
+  };
 
   const fetchUserProfile = async () => {
     try {
@@ -181,6 +237,32 @@ const Dashboard = () => {
         <main className="dashboard-main">
           <header className="dashboard-header">
             <h1>Hello {userProfile ? userProfile.userName : "Guest"} 👋</h1>
+            {/* 🔔 초대 알림 버튼 */}
+            <div className="notification-icon" onClick={() => setShowInvitationDropdown(!showInvitationDropdown)}>
+              🔔 {invitations.length > 0 && <span className="badge">{invitations.length}</span>}
+            </div>
+            {/* 초대 드롭다운 메뉴 */}
+            {showInvitationDropdown && (
+                <div className="invitation-dropdown">
+                  <h3>초대 목록</h3>
+                  {invitations.length === 0 ? (
+                      <p>현재 초대가 없습니다.</p>
+                  ) : (
+                      <ul>
+                        {invitations.map((invitation) => (
+                            <li key={invitation.invitationId}>
+                              <p>프로젝트 ID: {invitation.projectId}</p>
+                              <p>초대자: {invitation.inviterId}</p>
+                              <button onClick={() => acceptInvitation(invitation.invitationId)}>수락</button>
+                              <button onClick={() => declineInvitation(invitation.invitationId)}>
+                                거절
+                              </button>
+                            </li>
+                        ))}
+                      </ul>
+                  )}
+                </div>
+            )}
           </header>
           {/* ✅ 프로젝트 개수 통계 추가 */}
 
