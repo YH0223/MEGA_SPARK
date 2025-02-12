@@ -52,12 +52,10 @@
 }
 
 .notice-actions button:first-child {
-    background-color: #ffc107;
     color: #000;
 }
 
 .notice-actions button:first-child:hover {
-    background-color: #e0a800;
 }
 
 .notice-actions button:last-child {
@@ -332,3 +330,11 @@
 
 .notice-actions button:last-child:hover {
 }
+
+
+
+
+.notice-detail-container {
+    z-index: 1000; /* 삭제 확인 모달보다 낮게 설정 */
+}
+

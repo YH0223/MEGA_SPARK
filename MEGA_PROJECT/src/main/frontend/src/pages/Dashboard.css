@@ -683,6 +683,19 @@ body {
   z-index: 1000;
 }
 
+.dark-mode .invitation-dropdown {
+  position: absolute;
+  top: 2.5rem;
+  right: 1rem;
+  background: #333;
+  color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
 .invitation-dropdown h3 {
   margin-top: 0;
 }

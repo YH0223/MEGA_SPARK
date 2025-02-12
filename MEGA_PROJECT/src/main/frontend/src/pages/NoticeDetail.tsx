@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
 import { Edit, Trash2, Save, X } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify"; // ✅ import 추가
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
 import "./NoticeDetail.css";
 
 interface Notice {
@@ -43,9 +45,21 @@ const NoticeDetail = ({ noticeId, closeModal }: { noticeId: number, closeModal: 
                 noticeContext: editContext
             });
 
-            alert("공지사항이 수정되었습니다.");
+            toast.success("✅ 공지가 수정되었습니다!", {
+                position: "top-center",
+                autoClose: 2500,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                icon: false,
+                style: { maxWidth: "230px" }, // ✅ 고정된 가로 크기
+            });
             setNotice({ ...notice!, noticeTitle: editTitle, noticeContext: editContext });
             setIsEditing(false);
+            setTimeout(() => {
+                closeModal(); // ✅ 1.3초 후 모달 닫기
+            }, 1000);
         } catch (error) {
             console.error("공지 수정 오류:", error);
         }
@@ -57,8 +71,19 @@ const NoticeDetail = ({ noticeId, closeModal }: { noticeId: number, closeModal: 
 
         try {
             await axios.delete(`http://localhost:8080/notice/delete/${noticeId}`);
-            alert("공지사항이 삭제되었습니다.");
-            closeModal(); // ✅ 삭제 후 모달 닫기
+            toast.success("✅ 공지가 삭제되었습니다!", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                icon: false,
+                style: { maxWidth: "230px" }, // ✅ 고정된 가로 크기
+            });
+            setTimeout(() => {
+                closeModal(); // ✅ 1.3초 후 모달 닫기
+            }, 1500);
         } catch (error) {
             console.error("공지 삭제 오류:", error);
         }

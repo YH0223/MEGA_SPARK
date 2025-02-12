@@ -31,7 +31,6 @@ const Login: React.FC = () => {
             });
 
             console.log("✅ 로그인 성공:", response.data);
-            alert("로그인 성공!");
 
             setIsAuthenticated(true);  // ✅ 전역 로그인 상태 업데이트
             navigate("/dashboard");  // ✅ 자동 리디렉트

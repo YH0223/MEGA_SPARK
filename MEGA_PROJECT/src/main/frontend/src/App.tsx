@@ -1,6 +1,8 @@
 import React, { useEffect, useState, createContext, useContext } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Routes, Navigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify"; // ✅ import 추가
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -46,6 +48,7 @@ const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // ✅ 로딩 상태 추가
 
+
     useEffect(() => {
         axios.get("http://localhost:8080/api/session")
             .then(response => {
@@ -86,6 +89,7 @@ const App = () => {
                     <Route path="/project/:projectId" element={<PrivateRoute element={<Project />} />} />
 
                 </Routes>
+                <ToastContainer /> {/* ✅ 여기 추가 */}
             </Router>
         </AuthContext.Provider>
     );
