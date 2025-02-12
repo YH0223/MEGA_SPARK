@@ -1,4 +1,6 @@
 import React, { useEffect, useState, createContext, useContext } from "react";
+import { ToastContainer, toast } from "react-toastify"; // ✅ import 추가
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
 import axios from "axios";
 import { BrowserRouter as Router, Route, Routes, Navigate, useParams } from "react-router-dom";
 import Login from "./pages/Login";
@@ -15,6 +17,7 @@ import Team from "./pages/Team"
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import TaskCalendar from "./pages/TaskCalendar";
+import ConfirmModal from "./pages/ConfirmModal";
 import api from "./api";
 // Axios 기본 설정 (세션 유지)
 axios.defaults.withCredentials = true;
@@ -86,6 +89,7 @@ const App = () => {
                     <Route path="/project/:projectId" element={<PrivateRoute element={<Project />} />} />
 
                 </Routes>
+                <ToastContainer />
             </Router>
         </AuthContext.Provider>
     );

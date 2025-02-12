@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify"; // ✅ import 추가
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
+import ConfirmModal from "./ConfirmModal";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../App";
 import NoticeComponent from "./NoticeComponent";
@@ -10,6 +13,7 @@ import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import TaskCalendar from "./TaskCalendar";
 import api from "../api";
+
 interface ProjectProps {
     projectId: number;
 }
@@ -30,6 +34,10 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [editProjectName, setEditProjectName] = useState("");
     const [editStartDate, setEditStartDate] = useState("");
+
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+    const [taskCount, setTaskCount] = useState(0); // Task 수를 저장할 state
+
     const [editDeadline, setEditDeadline] = useState("");
     const [activeTab, setActiveTab] = useState("main"); // ✅ 탭 관리
     const [taskStats, setTaskStats] = useState({
@@ -38,13 +46,17 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
         issue: 0,
         hazard: 0,
     });
+    const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null); //수정 모달
+
+
 
 
     /** ✅ Task 진행 상태 불러오기 */
     useEffect(() => {
         api.get(`/task/task-stats/${projectId}`, { withCredentials: true })
             .then(response => setTaskStats(response.data))
-            .catch(() => alert("🚨 Task 진행 상태를 불러오는 중 오류 발생"));
+            .catch(() => toast.success("🚨 Task 진행 상태를 불러오는 중 오류 발생"));
     }, [projectId]);
 
     /** ✅ 세션 유지 확인 */
@@ -68,7 +80,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                 setEditStartDate(response.data.startdate);
                 setEditDeadline(response.data.deadline);
             })
-            .catch(() => alert("🚨 프로젝트 데이터를 불러오는 중 오류 발생"));
+            .catch(() => toast.success("🚨 프로젝트 데이터를 불러오는 중 오류 발생"));
     }, [projectId]);
 
     /** ✅ 프로젝트 수정 */
@@ -84,7 +96,16 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                 { withCredentials: true }
             );
 
-            alert("✅ 프로젝트가 수정되었습니다.");
+            toast.success("✅ 프로젝트가 수정되었습니다!", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                icon: false,
+                style: { maxWidth: "230px" }, // ✅ 고정된 가로 크기
+            });
             setProject({
                 ...project!,
                 projectName: editProjectName,
@@ -93,32 +114,96 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
             });
             setIsEditing(false); // ✅ 수정 후 모달 닫기
         } catch (error) {
-            alert("❌ 프로젝트 수정 권한이 없습니다.");
+            toast.success("❌ 프로젝트 수정 권한이 없습니다", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                icon: false,
+                style: { maxWidth: "290px" }, // ✅ 고정된 가로 크기
+            });
         }
     };
 
-    /** ✅ Task 개수 확인 후 프로젝트 삭제 */
+    const handleUpdateProject = async () => {
+        if (!selectedProject) return;
+
+        try {
+            await api.put(
+                `/updateproject/${projectId}`,
+                selectedProject,
+                { withCredentials: true }
+            );
+
+            toast.success("✅ 프로젝트가 수정되었습니다!", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                icon: false,
+                style: { maxWidth: "260px" }, // ✅ 고정된 가로 크기
+            });
+            setProject(selectedProject);
+            setEditModalOpen(false);
+        } catch (error) {
+            toast.success("❌ 프로젝트 수정 권한이 없습니다", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                icon: false,
+                style: { maxWidth: "290px" }, // ✅ 고정된 가로 크기
+            });
+        }
+    };
+
+
+
+    const openEditModal = () => {
+        setSelectedProject(project);
+        setEditModalOpen(true);
+    };
+
+
+    /** ✅ Task 개수 확인 후 프로젝트 삭제 모달 표시 */
     const deleteProject = async () => {
         try {
             const response = await api.get(`/task/count/${projectId}`, { withCredentials: true });
-            const taskCount = response.data.taskCount;
+            setTaskCount(response.data.taskCount);
+            setIsConfirmModalOpen(true); // ✅ 모달 열기
+        } catch (error) {
+            toast.error("❌ 프로젝트 삭제 권한이 없습니다", { position: "top-center" });
+        }
+    };
 
-            if (taskCount > 0) {
-                if (!window.confirm(`⚠️ 현재 ${taskCount}개의 Task가 남아 있습니다.\n정말 삭제하시겠습니까?`)) return;
-            } else {
-                if (!window.confirm("정말 프로젝트를 삭제하시겠습니까?")) return;
-            }
-
-            await api.post(`/deleteproject`,
+    /** ✅ 사용자가 모달에서 확인을 누를 때 프로젝트 삭제 */
+    const deleteProjectConfirmed = async () => {
+        try {
+            await api.post(
+                `/deleteproject`,
                 { projectName: project?.projectName },
                 { withCredentials: true }
             );
 
-            alert("✅ 프로젝트가 삭제되었습니다.");
-            navigate("/dashboard");
-            window.location.reload();
+            toast.success("✅ 프로젝트가 삭제되었습니다!", {
+                position: "top-center",
+                autoClose: 1300,
+            });
+
+            setTimeout(() => {
+                navigate("/dashboard");
+                window.location.reload();
+            }, 2000);
         } catch (error) {
-            alert("❌ 프로젝트 삭제 권한이 없습니다.");
+            toast.error("❌ 프로젝트 삭제 중 오류가 발생했습니다", { position: "top-center" });
+        } finally {
+            setIsConfirmModalOpen(false); // ✅ 모달 닫기
         }
     };
 
@@ -139,55 +224,30 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
 
     return (
         <div className="project-container">
-
             {/* ✅ 프로젝트 정보 */}
-
             <div className="header">
-
                 {isEditing ? (
-
                     <>
-
                         <input
-
                             type="text"
-
                             value={editProjectName}
-
                             onChange={(e) => setEditProjectName(e.target.value)}
-
                             className="edit-title-input"
-
                         />
-
                         <div className="edit-date">
-
                             <label>시작 날짜</label>
-
                             <input
-
                                 type="date"
-
                                 value={editStartDate}
-
                                 onChange={(e) => setEditStartDate(e.target.value)}
-
                             />
-
                             <label>마감 날짜</label>
-
                             <input
-
                                 type="date"
-
                                 value={editDeadline}
-
                                 onChange={(e) => setEditDeadline(e.target.value)}
-
                             />
-
                         </div>
-
                         <div className="button-group">
                             <button className="update-button" onClick={updateProject}>수정 완료</button>
                             <button className="cancel-button" onClick={() => setIsEditing(false)}>취소</button>
@@ -201,13 +261,54 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                             <p>📅 진행 기간: {project.startdate} ~ {project.deadline}</p>
                         </div>
                         <div className="button-group">
-                            <button className="edit-button" onClick={() => setIsEditing(true)}>수정</button>
+                            <button className="edit-button" onClick={openEditModal}>수정</button>
                             <button className="delete-button" onClick={deleteProject}>삭제</button>
                         </div>
                     </>
                 )}
             </div>
 
+            {isEditModalOpen && selectedProject && (
+                <div className="modal-overlay" onClick={() => setEditModalOpen(false)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <h2>프로젝트 수정</h2>
+                        <label>프로젝트 이름</label>
+                        <input
+                            type="text"
+                            value={selectedProject.projectName}
+                            onChange={(e) => setSelectedProject({ ...selectedProject, projectName: e.target.value })}
+                        />
+                        <label>시작 날짜</label>
+                        <input
+                            type="date"
+                            value={selectedProject.startdate}
+                            onChange={(e) => setSelectedProject({ ...selectedProject, startdate: e.target.value })}
+                        />
+                        <label>마감 날짜</label>
+                        <input
+                            type="date"
+                            value={selectedProject.deadline}
+                            onChange={(e) => setSelectedProject({ ...selectedProject, deadline: e.target.value })}
+                        />
+                        <div className="button-group">
+                            <button onClick={handleUpdateProject}>수정</button>
+                            <button onClick={() => setEditModalOpen(false)}>취소</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
+            <ConfirmModal
+                isOpen={isConfirmModalOpen}
+                message={
+                    taskCount > 0
+                        ? `⚠️ 현재 ${taskCount}개의 Task가 남아 있습니다. 정말 삭제하시겠습니까?`
+                        : "정말 프로젝트를 삭제하시겠습니까?"
+                }
+                onConfirm={deleteProjectConfirmed}
+                onCancel={() => setIsConfirmModalOpen(false)}
+            />
 
             {/* ✅ 탭 네비게이션 */}
             <div className="tab-navigation">

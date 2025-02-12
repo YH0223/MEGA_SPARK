@@ -17,4 +17,5 @@ public class TaskCalendarDTO {
     private LocalDate startDate;
     private LocalDate deadline;
     private boolean checking;
+    private int priority;
 }

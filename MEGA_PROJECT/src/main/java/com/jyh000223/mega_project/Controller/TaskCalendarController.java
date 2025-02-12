@@ -44,7 +44,8 @@ public class TaskCalendarController {
                         task.getTaskName(),
                         task.getStartDate(),
                         task.getDeadline(),
-                        task.isChecking()
+                        task.isChecking(),
+                        task.getPriority()
                 ))
                 .collect(Collectors.toList());
 

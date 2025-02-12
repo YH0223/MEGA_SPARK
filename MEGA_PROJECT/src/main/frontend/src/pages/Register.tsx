@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // ✅ useNavigate 추가
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify"; // ✅ import 추가
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
 import "./Register.css";
 import api from "../api";
+
+
 interface FormData {
   user_id: string;
   password: string;
@@ -29,22 +33,43 @@ const Register: React.FC = () => {
     e.preventDefault();
 
     try {
-      console.log("Sending data:", formData);
       const response = await api.post("/register", formData);
-      console.log("Success:", response.data);
-      alert("Registration Successful!");
-      navigate("/"); // 회원가입 성공 시 로그인 페이지로 이동
+      toast.success("🎉 회원가입이 완료되었습니다!", {
+        position: "top-center",
+        autoClose: 1300,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      console.log("", response.data);
+      setTimeout(() => {
+        navigate("/"); // 2초 후 로그인 페이지로 이동
+      }, 2000);
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Axios error:", error.response?.data || error.message);
         if (error.response?.status === 409) {
-          alert("User ID already exists! Please choose a different ID.");
+          toast.error("❌ 이미 존재하는 아이디입니다!", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+          });
         } else {
-          alert(error.response?.data?.message || "Registration Failed!");
+          toast.error(`❌ ${error.response?.data?.message || "❌ 회원가입에 실패하셨습니다!"}`, {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+          });
         }
       } else {
         console.error("Unexpected error:", error);
-        alert("An unexpected error occurred!");
+        toast.error("❌ 회원가입에 실패하셨습니다!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
       }
     }
   };
@@ -89,6 +114,7 @@ const Register: React.FC = () => {
             />
             <button type="submit">Register</button>
           </form>
+          <ToastContainer /> {/* ✅ ToastContainer 추가 */}
         </div>
       </div>
   );

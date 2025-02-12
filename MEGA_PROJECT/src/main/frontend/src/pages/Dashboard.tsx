@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Project from "./Project"; // ✅ Project.tsx 가져오기
 import "./Dashboard.css";
 import NewProject from "./NewProject"; // ✅ New Project 페이지 컴포넌트
 import Profile from "./Profile"; // ✅ Profile 페이지 컴포넌트
 import Calendar from "./Calendar"; // ✅ Calendar 페이지 컴포넌트
 import Settings from "./Settings"; // ✅ Settings 페이지 컴포넌트
-import api from "../api";
 import { FaPlus, FaCalendarAlt, FaCog, FaChevronUp, FaChevronDown, FaChevronLeft, FaChevronRight, FaEnvelope, FaChartBar } from "react-icons/fa";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import api from "../api";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
 
 // ✅ 프로젝트 데이터 타입 정의
 interface Project {
@@ -93,11 +94,34 @@ const Dashboard = () => {
           {},
           { withCredentials: true }
       );
-      alert("✅ 초대를 거절했습니다!");
+
+      toast.success("✅ 초대를 거절했습니다!", {
+        position: "top-center",
+        autoClose: 1300,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        icon: false,
+        style: { maxWidth: "230px" }, // ✅ 고정된 가로 크기
+      });
       setInvitations(invitations.filter((inv) => inv.invitationId !== invitationId));
     } catch (error) {
       console.error("❌ 초대 거절 오류:", error);
-      alert("초대 거절 중 오류가 발생했습니다.");
+      if (error && (error as any).response) {
+        toast.error(`❌ 초대 거절 오류: ${(error as any).response.data}`, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      } else {
+        toast.error("❌ 초대 거절 오류", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+
+      }
     }
   };
 
@@ -108,11 +132,34 @@ const Dashboard = () => {
           {},
           { withCredentials: true }
       );
-      alert("✅ 초대를 수락했습니다!");
+
+      toast.success("✅ 초대를 수락했습니다!", {
+        position: "top-center",
+        autoClose: 1300,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        icon: false,
+        style: { maxWidth: "230px" }, // ✅ 고정된 가로 크기
+      });
       setInvitations(invitations.filter((inv) => inv.invitationId !== invitationId));
     } catch (error) {
       console.error("❌ 초대 수락 오류:", error);
-      alert("초대 수락 중 오류가 발생했습니다.");
+      if (error && (error as any).response) {
+        toast.error(`❌ 초대 수락 오류: ${(error as any).response.data}`, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      } else {
+        toast.error("❌ 초대 수락 오류", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+
+      }
     }
   };
 
@@ -354,9 +401,9 @@ const Dashboard = () => {
                           dataKey="progress"
                           fill="#0088fe"
                           barSize={20}
-                          label={{ position: "right", formatter: (value) => `${value}%` }}
-
+                          label={{ position: "right", formatter: (value: number) => `${value.toFixed(1)}%`                           }}
                       />
+
 
                     </BarChart>
 
@@ -390,7 +437,7 @@ const Dashboard = () => {
 
                           outerRadius={80}
 
-                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
 
                       >
                         {donutData.map((entry, index) => (

@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
 import "./Login.css";
 import api from "../api";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
 interface FormData {
     user_id: string;
     password: string;
@@ -31,10 +33,21 @@ const Login: React.FC = () => {
             });
 
             console.log("✅ 로그인 성공:", response.data);
-            alert("로그인 성공!");
+            toast.success("✅ 로그인 성공!", {
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                icon: false,
+                style: { maxWidth: "230px" }, // ✅ 고정된 가로 크기
+            });
+            setTimeout(() => {
+                setIsAuthenticated(true);  // ✅ 전역 로그인 상태 업데이트
+                navigate("/dashboard");  // ✅ 자동 리디렉트
+            }, 1500);
 
-            setIsAuthenticated(true);  // ✅ 전역 로그인 상태 업데이트
-            navigate("/dashboard");  // ✅ 자동 리디렉트
 
         } catch (error) {
             console.error("❌ 로그인 실패:", error);
@@ -78,7 +91,6 @@ const Login: React.FC = () => {
                         <button type="submit">Login</button>
                     </form>
                     {error && <p style={{ color: "red" }}>{error}</p>}
-                    <Link to="/forgot-password">Forgot Password?</Link>
                     <Link to="/register">
                         <button className="register-button">Register</button>
                     </Link>

@@ -951,3 +951,166 @@ body {
 
 }
 
+
+.invitation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.invitation-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.invitation-item:last-child {
+  border-bottom: none;
+}
+
+.invitation-details {
+  margin-bottom: 8px;
+}
+
+.invitation-actions {
+  display: flex;
+  justify-content: space-between; /* ✅ 버튼 사이와 양쪽에 동일한 여백 추가 */
+  gap: 10px;
+  padding: 10px 0; /* ✅ 위아래 여백 유지 */
+
+}
+
+.accept-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px; /* ✅ 버튼 크기 증가 */
+  font-size: 1rem; /* ✅ 폰트 크기 증가 */
+  border-radius: 8px; /* 둥근 모서리 유지 */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  min-width: 50px; /* ✅ 최소 너비 설정 */
+}
+
+.accept-button:hover {
+  background-color: #45a049;
+}
+
+.decline-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px; /* ✅ 버튼 크기 증가 */
+  font-size: 1rem; /* ✅ 폰트 크기 증가 */
+  border-radius: 8px; /* 둥근 모서리 유지 */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  min-width: 50px; /* ✅ 최소 너비 설정 */
+}
+
+.decline-button:hover {
+  background-color: #e53935;
+}
+
+/* 🌙 다크모드 */
+.dark-mode .invitation-dropdown li {
+  background: #333;
+  box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.3), inset -3px -3px 8px rgba(50, 50, 50, 1);
+  color: #ffffff;
+}
+
+/* 📌 버튼 컨테이너 */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 12px;
+}
+
+/* ✅ 수락 버튼 (네온 느낌) */
+.invitation-dropdown button.accept {
+  background: linear-gradient(145deg, #4caf50, #2e7d32);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.invitation-dropdown button.accept:hover {
+  background: linear-gradient(145deg, #2e7d32, #1b5e20);
+  transform: scale(1.08);
+}
+
+/* ✅ 거절 버튼 (네온 느낌) */
+.invitation-dropdown button.decline {
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.invitation-dropdown button.decline:hover {
+  background: linear-gradient(145deg, #c0392b, #a93226);
+  transform: scale(1.08);
+}
+
+/* ✅ 차트 스타일 */
+.dark-mode .chart-box {
+  background: #1e1e1e;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.dark-mode .recharts-cartesian-axis-tick text {
+  fill: #ffffff !important;
+}
+
+.dark-mode .recharts-legend-item text {
+  fill: #ffffff !important;
+}
+
+.dark-mode .recharts-tooltip-wrapper {
+  background-color: #333 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .recharts-surface {
+  background: #1e1e1e !important;
+}
+
+/* ✅ 애니메이션 추가 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📌 모바일 최적화 */
+@media (max-width: 768px) {
+  .invitation-dropdown {
+    width: 90%;
+    max-width: 340px;
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

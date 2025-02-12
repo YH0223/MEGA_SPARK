@@ -53,7 +53,7 @@
 /* 🔽 검색 결과 드롭다운 */
 .search-results {
     position: absolute;
-    width: 100%;
+    width: 27.6%;
     background: white;
     border: 1px solid #ddd;
     max-height: 200px;
@@ -132,3 +132,152 @@ button:hover {
     cursor: pointer;
 }
 
+/* 팀원 목록 */
+
+.team-list {
+
+    margin-top: 20px;
+
+}
+
+.team-list h2 {
+
+    font-size: 1rem;
+
+    margin-bottom: 10px;
+
+    color: #555;
+
+    transition: color 0.3s ease-in-out;
+
+}
+
+.dark-mode .team-list h2 {
+
+    color: #ccc;
+
+}
+
+
+
+.team-member {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid #eee;
+
+    transition: border-color 0.3s ease-in-out;
+
+}
+
+.team-member:last-child {
+
+    border-bottom: none;
+
+}
+
+.dark-mode .team-member {
+
+    border-color: #444;
+
+}
+
+
+
+.remove-button {
+
+    background: #ef4444;
+
+    color: #fff;
+
+    border: none;
+
+    padding: 6px 10px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: background 0.3s, transform 0.2s;
+
+}
+
+.remove-button:hover {
+
+    background: #dc2626;
+
+    transform: translateY(-2px);
+
+}
+
+.remove-button:active {
+
+    transform: scale(0.97);
+}
+/* 📌 팀원 관리 타이틀 스타일 (2% 더 감성) */
+
+.team-title {
+
+    font-size: 1.4rem;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    margin-bottom: 20px;
+
+    color: #333;
+
+    position: relative;
+
+    /* 전환 효과: 다크 모드 전환 대비 */
+
+    transition: color 0.3s ease-in-out;
+
+}
+
+.dark-mode .team-title {
+
+    color: #f5f5f5;
+
+}
+
+
+
+/* 2) 타이틀 아래에 포인트 라인 추가 (작은 디테일) */
+
+.team-title::after {
+
+    content: '';
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: -8px;
+
+    transform: translateX(-50%);
+
+    width: 60px;
+
+    height: 3px;
+
+    background: #007bff; /* 포인트 컬러 */
+
+    border-radius: 2px;
+
+}
+
+.dark-mode .team-title::after {
+
+    background: #1a73e8;
+
+}

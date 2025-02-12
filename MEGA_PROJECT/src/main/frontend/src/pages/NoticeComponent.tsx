@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../App";
+import { ToastContainer, toast } from "react-toastify"; // ✅ import 추가
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
 import { Bell, Plus, X } from "lucide-react";
 import NoticeDetail from "./NoticeDetail"; // ✅ NoticeDetail 추가
 import "./NoticeComponent.css";
@@ -66,7 +68,11 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
     /** ✅ 공지 추가 기능 */
     const addNotice = async () => {
         if (!newTitle.trim() || !newContext.trim()) {
-            alert("제목과 내용을 입력해주세요.");
+            toast.error(`❌ 제목과 내용을 입력해주새요`, {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+            });
             return;
         }
 
@@ -77,7 +83,16 @@ const NoticeComponent = ({ projectId }: { projectId: number }) => {
                 projectId
             });
 
-            alert("✅ 공지사항이 작성되었습니다.");
+            toast.success("✅ 공지가 작성되었습니다!", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                icon: false,
+                style: { maxWidth: "230px" }, // ✅ 고정된 가로 크기
+            });
             setNewTitle("");
             setNewContext("");
             closeModal(); // ✅ 공지 작성 후 모달 닫기

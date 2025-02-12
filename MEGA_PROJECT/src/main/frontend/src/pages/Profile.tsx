@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Profile.css";
 
 const Profile = () => {
@@ -50,16 +52,40 @@ const Profile = () => {
             });
 
             setProfileImageUrl(`${response.data.img_url}`);
-            alert("✅ 프로필이 저장되었습니다.");
+            toast.success("✅ 프로필이 설정되었습니다!", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                icon: false,
+                style: { maxWidth: "250px" }, // ✅ 고정된 가로 크기
+            });
+
             fetchProfile();
         } catch (error) {
             console.error("❌ 프로필 저장 실패:", error);
-            alert("❌ 프로필 저장 중 오류 발생");
+            if (error && (error as any).response) {
+                toast.error(`❌ 프로필 저장 실패: ${(error as any).response.data}`, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                });
+            } else {
+                toast.error("❌ 프로필 저장 실패", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                });
+
+            }
         }
     };
 
     return (
         <div className="profile-container">
+            <ToastContainer /> {/* ✅ 토스트 컨테이너 추가 */}
             <h1>프로필 페이지</h1>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -72,18 +98,19 @@ const Profile = () => {
                 </div>
                 <div className="form-group">
                     <label>프로필 이미지:</label>
-                    <input type="file" accept="image/*" onChange={handleImageChange}/>
+                    <input type="file" accept="image/*" onChange={handleImageChange} />
 
-                    {/* ✅ 이미지 미리보기: 파일 업로드 아래 배치 & 최대 크기 설정 */}
+                    {/* ✅ 이미지 미리보기 */}
                     {profileImageUrl && (
                         <div className="profile-preview-container">
-                            <img src={profileImageUrl} alt="프로필" className="profile-preview"/>
+                            <img src={profileImageUrl} alt="프로필" className="profile-preview" />
                         </div>
                     )}
                 </div>
 
                 <button type="submit">프로필 저장</button>
             </form>
+
         </div>
     );
 };

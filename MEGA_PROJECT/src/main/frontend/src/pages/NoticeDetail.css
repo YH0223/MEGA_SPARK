@@ -52,12 +52,10 @@
 }
 
 .notice-actions button:first-child {
-    background-color: #ffc107;
     color: #000;
 }
 
 .notice-actions button:first-child:hover {
-    background-color: #e0a800;
 }
 
 .notice-actions button:last-child {
@@ -79,7 +77,7 @@
 }
 
 .notice-edit-textarea {
-    width: 100%;
+    width: 95.5%;
     padding: 10px;
     font-size: 1rem;
     border-radius: 8px;
@@ -144,12 +142,12 @@
 }
 
 .dark-mode .notice-actions button:first-child {
-    background-color: #ffcc00;
-    color: black;
+    background-color: #4caf50;
+    color: white;
 }
 
 .dark-mode .notice-actions button:first-child:hover {
-    background-color: #d4a800;
+    background-color: #4caf49;
 }
 
 .dark-mode .notice-actions button:last-child {
@@ -161,4 +159,182 @@
     background-color: #c82333;
 }
 
+
+.notice-edit-input{
+    width: 100%;
+    height: 70px; /* 🔥 높이를 키워 가독성 증가 */
+    padding: 16px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease-in-out;
+}
+
+
+.notice-edit-textarea {
+    width: 93%;
+    height: 250px; /* ✅ 정사각형 비율 */
+    resize: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease-in-out;
+
+}
+
+.notice-edit-input:focus,
+.notice-edit-textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    outline: none;
+}
+
+.notice-edit-textarea {
+    height: 120px;
+    resize: none;
+}
+
+
+.notice-actions button {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 140px; /* ✅ 버튼 크기 동일하게 */
+
+}
+
+.notice-actions .save-button {
+    background-color: #4caf50;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(100, 255, 100, 0.4); /* 밝은 초록색 그림자 */
+}
+
+.notice-actions.center { /* 🔥 중앙 정렬 */
+    justify-content: center;
+}
+
+.notice-actions .save-button:hover {
+    color: white;
+}
+
+.notice-actions .cancel-button {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(220, 53, 69, 0.4);
+}
+
+.notice-actions .cancel-button:hover {
+
+    color: white;
+}
+
+/* 다크 모드 스타일 */
+.dark-mode .notice-edit-input,
+.dark-mode .notice-edit-textarea {
+    background-color: #444;
+    color: white;
+    border: 1px solid #777;
+}
+
+.dark-mode .notice-edit-input:focus,
+.dark-mode .notice-edit-textarea:focus {
+    border-color: #4da3ff;
+    background-color: #555;
+    box-shadow: 0 0 8px rgba(77, 163, 255, 0.3);
+}
+
+.dark-mode .notice-actions .save-button {
+    background-color: #4caf50;
+    color: white;
+}
+
+.dark-mode .notice-actions .save-button:hover {
+}
+
+.dark-mode .notice-actions .cancel-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.dark-mode .notice-actions .cancel-button:hover {
+}
+.notice-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.notice-separator {
+    height: 2px; /* ✅ 높이를 명확히 지정 */
+    background-color: #ddd; /* ✅ 색상 추가 */
+    margin: 20px 0; /* ✅ 상하 여백 조정 */
+    border-radius: 1px; /* ✅ 둥근 구분선 효과 */
+}
+
+.notice-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    white-space: pre-line;
+    margin-bottom: 20px;
+}
+
+.dark-mode .notice-separator {
+    background-color: #444;
+}
+
+.notice-actions button {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 140px;
+}
+
+.notice-actions button:hover {
+    opacity: 0.9;
+}
+
+.notice-actions button:first-child { /* 수정 버튼 */
+    background-color: #4caf50; /* 초록색 배경 */
+    color: white; /* 흰색 글씨 */
+}
+
+.notice-actions button:first-child:hover {
+}
+
+.notice-actions button:last-child { /* 삭제 버튼 */
+    background-color: #dc3545; /* 빨간색 배경 */
+    color: white; /* 흰색 글씨 */
+}
+
+.notice-actions button:last-child:hover {
+}
+
+
+
+
+.notice-detail-container {
+    z-index: 1000; /* 삭제 확인 모달보다 낮게 설정 */
+}
 

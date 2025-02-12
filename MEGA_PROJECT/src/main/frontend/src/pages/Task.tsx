@@ -4,7 +4,9 @@ import axios from "axios";
 import { AuthContext } from "../App";
 import "./Task.css";
 import api from "../api";
-
+import { ToastContainer, toast } from "react-toastify"; // ✅ import 추가
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
+import ConfirmModal from "./ConfirmModal"; // ✅ 추가
 axios.defaults.withCredentials = true;
 
 interface Task {
@@ -31,8 +33,17 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
     const [isTaskListModalOpen, setTaskListModalOpen] = useState(false);
     const [isTaskModalOpen, setTaskModalOpen] = useState(false);
     const [selectedTaskList, setSelectedTaskList] = useState<number | null>(null);
-    const [newTask, setNewTask] = useState({ taskName: "", userId: "", priority: 0, startDate: "", deadline: "" });
+    const [newTask, setNewTask] = useState({
+        taskName: "",
+        userId: "",
+        priority: 0,
+        startDate: "",
+        deadline: "",
+        checking: false, // ✅ checking 상태 추가
+    });
     const [users, setUsers] = useState<string[]>([]);
+    const [isConfirmOpen, setConfirmOpen] = useState(false);
+    const [deleteTaskListId, setDeleteTaskListId] = useState<number | null>(null);
 
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!;
     const navigate = useNavigate();
@@ -136,7 +147,15 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
     /** ✅ TaskList 추가 */
     const addTaskList = async () => {
         if (!newTaskListName.trim()) {
-            alert("❌ TaskList 이름을 입력하세요.");
+            toast.error("❌ TaskList의 이름을 입력해주세요.", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+
+            });
             return;
         }
 
@@ -154,29 +173,64 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
             const response = await api.post(`/tasklist/create`, requestBody);
             console.log("🟢 [서버 응답] TaskList 추가 성공:", response.data);
 
-            alert("✅ TaskList 추가 성공!");
-            fetchTaskLists();
-            setNewTaskListName(""); // ✅ 입력 초기화
-            setTaskListModalOpen(false); // ✅ 모달 닫기
+
+            toast.success("✅ TaskList 추가 성공!", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            setTimeout(() => {
+                fetchTaskLists();
+                setNewTaskListName(""); // ✅ 입력 초기화
+                setTaskListModalOpen(false); // ✅ 모달 닫기 // 약간 지연
+            }, 1500);
+
         } catch (error: any) {
             console.error("🛑 TaskList 추가 중 오류 발생:", error);
-            alert(`❌ 오류 발생: ${error.response?.data || "알 수 없는 오류"}`);
+            if (error && (error as any).response) {
+                toast.error(`❌ TaskList 추가 중 오류 발생: ${(error as any).response.data}`, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                });
+            } else {
+                toast.error("❌ TaskList 추가 중 오류 발생", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                });
+            }
+
         }
     };
 
 
     /** ✅ TaskList 삭제 */
-    const deleteTaskList = async (tasklistId: number) => {
-        if (!window.confirm("⚠️ 해당 TaskList와 모든 Task가 삭제됩니다. 진행하시겠습니까?")) return;
+    const deleteTaskList = async () => {
+        if (!deleteTaskListId) return;
 
         try {
-            await api.delete(`/tasklist/delete/${tasklistId}`);
-            alert("✅ TaskList가 삭제되었습니다.");
-            fetchTaskLists(); // ✅ 삭제 후 목록 새로고침
+            await api.delete(`/tasklist/delete/${deleteTaskListId}`);
+            toast.success("✅ TaskList가 삭제되었습니다.", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+            });
+
+            setConfirmOpen(false); // ✅ 모달 닫기
+            setTimeout(fetchTaskLists, 1000); // ✅ 삭제 후 목록 새로고침
         } catch (error) {
             console.error("🛑 TaskList 삭제 실패:", error);
-            alert("❌ TaskList 삭제 중 오류가 발생했습니다.");
+            toast.error("❌ TaskList 삭제 중 오류가 발생했습니다.", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+            });
         }
+
     };
 
 
@@ -184,9 +238,9 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
     const addTask = async () => {
         if (!newTask.taskName.trim() || !selectedTaskList) return;
         try {
-            await api.post(`/task/create`, {
+            const response = await api.post(`/task/create`, {
                 taskName: newTask.taskName,
-                checking: false,
+                checking: newTask.checking, // ✅ newTask의 checking 값을 사용
                 priority: newTask.priority,
                 startDate: newTask.startDate,
                 deadline: newTask.deadline,
@@ -194,7 +248,12 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
                 tasklistId: selectedTaskList,
                 projectId
             });
-
+            const createdTask = response.data;
+            // ✅ UI를 먼저 업데이트하여 즉시 반영
+            setTasks(prevTasks => ({
+                ...prevTasks,
+                [selectedTaskList]: [...(prevTasks[selectedTaskList] || []), createdTask] // ✅ 기존 Task 목록에 추가
+            }));
             setNewTask({ taskName: "", userId: "", priority: 0, startDate: "", deadline: "" });
             setTaskModalOpen(false);
 
@@ -204,25 +263,7 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
             console.error("🛑 Task 추가 실패:", error);
         }
     };
-    /** ✅ Task 진행률 불러오기 */
-    const fetchTaskProgress = async () => {
-        try {
-            const response = await api.get(`/task/progress/${projectId}`);
-            setTaskProgress(response.data.percentage);
-        } catch (error) {
-            console.error("🛑 Task 진행률 불러오기 실패:", error);
-        }
-    };
 
-    /** ✅ Task 개수 불러오기 */
-    const fetchTaskCount = async () => {
-        try {
-            const response = await api.get(`/task/count/${projectId}`);
-            setTaskCount(response.data.taskCount);
-        } catch (error) {
-            console.error("🛑 Task 개수 불러오기 실패:", error);
-        }
-    };
 
     const openEditModal = (task: Task) => {
         console.log("🔍 [클릭한 Task]:", task); // ✅ Task가 잘 넘어오는지 확인
@@ -265,18 +306,6 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
             console.error("🛑 Task 삭제 실패:", error);
         }
     };
-    /** ✅ Task 체크 상태 토글 API 호출 */
-    const toggleTaskChecking = async () => {
-        if (!selectedTask) return;
-
-        try {
-            await api.put(`/task/toggle/${selectedTask.taskId}`);
-            fetchTaskLists();
-            setEditModalOpen(false);
-        } catch (error) {
-            console.error("🛑 Task 체크 상태 변경 실패:", error);
-        }
-    };
 
     return (
         <div className="task-container">
@@ -286,7 +315,14 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
             {taskLists?.map((taskList) => (
                 <div key={taskList.tasklistId} className="task-group">
                     <h3>TaskList : {taskList.tasklistName}</h3>
-                    <button onClick={() => deleteTaskList(taskList.tasklistId)} className="delete-tasklist-button">
+                    <button
+                        className="delete-tasklist-button"
+                        onClick={() => {
+                            setDeleteTaskListId(taskList.tasklistId);
+                            setConfirmOpen(true); // ✅ 모달 열기
+
+                        }}
+                    >
                         🗑️ TaskList 삭제 -
                     </button>
                     <button onClick={() => {
@@ -305,7 +341,9 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
                                 const priorityText = task.checking ? "Solved" : priorityLabels[task.priority];
 
                                 return (
-                                    <li key={task.taskId} className="task-item" onClick={() => openEditModal(task)}>
+                                    <li key={task.taskId}
+                                        className={`task-item ${task.checking ? "solved" : priorityLabels[task.priority].toLowerCase()}`}
+                                        onClick={() => openEditModal(task)}>
                             <span className="priority-indicator"
                                   style={{backgroundColor: circleColor}}
                                   onClick={(e) => e.stopPropagation()}></span>
@@ -421,10 +459,12 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
                                 🔴 Hazard
                             </label>
                         </div>
-                        {/* ✅ 수정/삭제 버튼 */}
-                        <button onClick={updateTask}>수정</button>
-                        <button onClick={deleteTask} style={{ backgroundColor: "#FF3D00" }}>삭제</button>
-                        <button onClick={() => setEditModalOpen(false)}>취소</button>
+                        <div className="button-group">
+                            {/* ✅ 수정/삭제 버튼 */}
+                            <button onClick={updateTask}>수정</button>
+                            <button onClick={deleteTask} style={{ backgroundColor: "#FF3D00" }}>삭제</button>
+                            <button onClick={() => setEditModalOpen(false)}>취소</button>
+                        </div>
                     </div>
                 </div>
             )}
@@ -441,52 +481,148 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
                             onChange={(e) => setNewTaskListName(e.target.value)}
                             placeholder="TaskList 이름"
                         />
-                        <button onClick={addTaskList}>추가</button>
-                        <button onClick={() => setTaskListModalOpen(false)}>취소</button>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', marginTop: '20px' }}>
+                            <button
+                                onClick={addTaskList}
+                                style={{
+                                    flex: 1,
+                                    padding: '12px 20px',
+                                    fontSize: '1rem',
+                                    borderRadius: '12px',
+                                    backgroundColor: '#4da3ff',
+                                    color: 'white',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease-in-out'
+                                }}
+                            >
+                                추가
+                            </button>
+                            <button
+                                onClick={() => setTaskListModalOpen(false)}
+                                style={{
+                                    flex: 1,
+                                    padding: '12px 20px',
+                                    fontSize: '1rem',
+                                    borderRadius: '12px',
+                                    backgroundColor: '#f44336',
+                                    color: 'white',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease-in-out'
+                                }}
+                            >
+                                취소
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
+            <ConfirmModal
+                isOpen={isConfirmOpen}
+                message="⚠️ 해당 TaskList와 모든 Task가 삭제됩니다. 진행하시겠습니까?"
+                onConfirm={deleteTaskList}  // 🛑 여기서 함수가 실행되지 않을 가능성 있음
+                onCancel={() => setConfirmOpen(false)}
+            />
 
             {/* Task 추가 모달 */}
             {isTaskModalOpen && (
                 <div className="modal-overlay" onClick={() => setTaskModalOpen(false)}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <h2>Task 추가</h2>
+
+                        <label>Task 이름</label>
                         <input
                             type="text"
                             value={newTask.taskName}
-                            onChange={(e) => setNewTask({...newTask, taskName: e.target.value})}
+                            onChange={(e) => setNewTask({ ...newTask, taskName: e.target.value })}
                             placeholder="Task 이름"
                         />
+
                         <label>담당자</label>
-                        <select value={newTask.userId}
-                                onChange={(e) => setNewTask({...newTask, userId: e.target.value})}>
+                        <select
+                            value={newTask.userId}
+                            onChange={(e) => setNewTask({ ...newTask, userId: e.target.value })}
+                        >
                             <option value="">선택</option>
                             {users.map((user) => (
                                 <option key={user.userId} value={user.userId}>
-                                    {user.userName} {/* ✅ 유저 이름 표시 */}
+                                    {user.userName}
                                 </option>
                             ))}
                         </select>
 
-
                         <label>시작 날짜</label>
-                        <input type="date" value={newTask.startDate}
-                               onChange={(e) => setNewTask({...newTask, startDate: e.target.value})}/>
+                        <input
+                            type="date"
+                            value={newTask.startDate}
+                            onChange={(e) => setNewTask({ ...newTask, startDate: e.target.value })}
+                        />
+
                         <label>마감 날짜</label>
-                        <input type="date" value={newTask.deadline}
-                               onChange={(e) => setNewTask({...newTask, deadline: e.target.value})}/>
+                        <input
+                            type="date"
+                            value={newTask.deadline}
+                            onChange={(e) => setNewTask({ ...newTask, deadline: e.target.value })}
+                        />
+
+                        <label>상태</label>
+                        <button
+                            onClick={() =>
+                                setNewTask((prev) => ({ ...prev, checking: !prev.checking }))
+                            }
+                            style={{
+                                backgroundColor: newTask.checking ? "#4CAF50" : "#FF3D00",
+                                color: "white",
+                                padding: "8px",
+                                border: "none",
+                                borderRadius: "5px",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {newTask.checking ? "완료됨 (✔)" : "미완료 (❌)"}
+                        </button>
+
                         <label>우선순위</label>
-                        <div>
-                            <label><input type="radio" name="priority" value="0"
-                                          onChange={() => setNewTask({...newTask, priority: 0})}/> ToDo</label>
-                            <label><input type="radio" name="priority" value="1"
-                                          onChange={() => setNewTask({...newTask, priority: 1})}/> Issue</label>
-                            <label><input type="radio" name="priority" value="2"
-                                          onChange={() => setNewTask({...newTask, priority: 2})}/> Hazard</label>
+                        <div style={{ display: "flex", gap: "10px" }}>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="priority"
+                                    value="0"
+                                    checked={newTask.priority === 0}
+                                    onChange={() => setNewTask((prev) => ({ ...prev, priority: 0 }))}
+                                />
+                                ⚪ ToDo
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="priority"
+                                    value="1"
+                                    checked={newTask.priority === 1}
+                                    onChange={() => setNewTask((prev) => ({ ...prev, priority: 1 }))}
+                                />
+                                🟡 Issue
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="priority"
+                                    value="2"
+                                    checked={newTask.priority === 2}
+                                    onChange={() => setNewTask((prev) => ({ ...prev, priority: 2 }))}
+                                />
+                                🔴 Hazard
+                            </label>
                         </div>
-                        <button onClick={addTask}>추가</button>
-                        <button onClick={() => setTaskModalOpen(false)}>취소</button>
+
+                        <div className="button-group">
+                            <button onClick={addTask}>추가</button>
+                            <button onClick={() => setTaskModalOpen(false)}>취소</button>
+                        </div>
                     </div>
                 </div>
             )}

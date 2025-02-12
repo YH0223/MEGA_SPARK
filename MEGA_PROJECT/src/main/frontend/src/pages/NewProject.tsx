@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import api from "../api"; // ✅ api.tsx에서 설정한 axios 인스턴스를 가져옴
+import { ToastContainer, toast } from "react-toastify"; // ✅ import 추가
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
 import "./NewProject.css";
 
 interface NewProjectProps {
@@ -22,14 +24,32 @@ const NewProject: React.FC<NewProjectProps> = ({ onProjectCreated }) => {
 
     try {
       await api.post("/createproject", newProject);
-      alert("✅ 프로젝트가 생성되었습니다!");
+      console.log("Request successful"); // 요청 성공 여부 확인
+      toast.success("✅ 프로젝트가 생성되었습니다!", {
+        position: "top-center",
+        autoClose: 1300,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
 
-      onProjectCreated(); // ✅ 프로젝트 생성 후 모달 닫기 + 프로젝트 목록 갱신
+      setTimeout(() => {
+        onProjectCreated(); // 약간 지연
+      }, 1500);
     } catch (error) {
       if (error && (error as any).response) {
-        alert(`❌ 프로젝트 생성 실패: ${(error as any).response.data}`);
+        toast.error(`❌ 프로젝트 생성 실패: ${(error as any).response.data}`, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
       } else {
-        alert("❌ 프로젝트 생성 중 오류가 발생했습니다.");
+        toast.error("❌ 프로젝트 생성 실패", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
       }
     }
   };
@@ -55,6 +75,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onProjectCreated }) => {
 
           <button type="submit" className="create-button">프로젝트 생성</button>
         </form>
+        <ToastContainer /> {/* ✅ ToastContainer 추가 */}
       </div>
   );
 };

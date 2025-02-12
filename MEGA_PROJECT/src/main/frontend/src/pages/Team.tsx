@@ -3,6 +3,8 @@ import axios from "axios";
 import { AuthContext } from "../App";
 import "./team.css";
 import api from "../api";
+import { ToastContainer, toast } from "react-toastify"; // ✅ import 추가
+import "react-toastify/dist/ReactToastify.css"; // ✅ CSS 추가
 
 
 
@@ -42,10 +44,20 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
 
     /** ✅ 초대 메서드 */
     const sendInvitation = async (inviteeId: string) => {
+
         if (!inviteeId.trim()) {
-            alert("초대할 팀원의 ID를 입력해주세요.");
+            toast.error("❌ 초대할 팀원의 ID를 입력해주세요.", {
+                position: "top-center",
+                autoClose: 1300,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+
+            });
             return;
         }
+
 
         try {
             const response = await api.post(
@@ -55,48 +67,37 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
             );
 
             if (response.status === 200) {
-                alert("✅ 초대가 전송되었습니다.");
+                toast.success("✅ 초대가 전송되었습니다!", {
+                    position: "top-center",
+                    autoClose: 1300,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
+
                 setSearchId(""); // 입력창 초기화
             }
         } catch (error) {
             console.error("❌ 초대 전송 오류:", error);
-            alert("초대 전송 중 오류가 발생했습니다.");
-        }
-    };
-
-
-
-    const addTeamMember = async () => {
-        if (!searchId.trim()) {
-            alert("추가할 팀원의 ID를 입력해주세요.");
-            return;
-        }
-
-        if (teamMembers.includes(searchId)) {
-            alert("🚨 이미 추가된 팀원입니다!");
-            return;
-        }
-
-        try {
-            const response = await api.post(`/addteammate`,
-                { userId: searchId, projectId },
-                { withCredentials: true }
-            );
-
-            if (response.status === 200) {
-                alert("✅ 팀원이 추가되었습니다.");
-                setSearchId("");
-                fetchTeamMembers();
-            }
-        } catch (error: any) {
-            if (error.response?.status === 404) {
-                alert("🚨 존재하지 않는 유저입니다!");
+            if (error && (error as any).response) {
+                toast.error(`❌ 초대 전송 실패: ${(error as any).response.data}`, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                });
             } else {
-                alert("❌ 팀원 추가 중 오류가 발생했습니다.");
+                toast.error("❌ 초대 전송 실패", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                });
             }
-            console.error("❌ 팀원 추가 오류:", error);
+
         }
     };
+
+
 
 
     const removeTeamMember = async (userId: string) => {
@@ -109,12 +110,33 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
             });
 
             if (response.status === 200) {
-                alert("✅ 팀원이 삭제되었습니다.");
+                toast.success("✅ 팀원이 삭제되었습니다!", {
+                    position: "top-center",
+                    autoClose: 1300,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
+
                 fetchTeamMembers();
             }
         } catch (error) {
             console.error("❌ 팀원 삭제 오류:", error);
-            alert("팀원 삭제 중 오류가 발생했습니다.");
+            if (error && (error as any).response) {
+                toast.error(`❌ 팀원 삭제 오류: ${(error as any).response.data}`, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                });
+            } else {
+                toast.error("❌ 팀원 삭제 오류", {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                });
+            }
+
         }
     };
 
@@ -158,6 +180,8 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
 
     return (
         <div className="team-container">
+            <ToastContainer /> {/* ✅ ToastContainer 추가 */}
+
             <h1 className="team-title">팀원 관리</h1>
 
             {/* ✅ 팀원 추가 - ID 입력 */}
