@@ -8,7 +8,7 @@
 - [SPARK DEMO 0.0.2](http://3.104.207.231:3000/)
 - **해당 사이트는 데모 사이트 이므로 개인정보와 관련이 있는 정보로 회원가입 하지 마시길 권고드립니다**
 
-## 3조 팀원 임건호, 정영훈, 강종호, 박경빈
+## 3팀 : 임건호, 정영훈, 강종호, 박경빈
 - 임건호(팀장/BackEnd) : 백엔드 개발 / 버전 통합 및 관리 [Github](https://github.com/dlarjsghho)
 - 정영훈(BackEnd) : 백엔드 개발 / DB,EC2 배포 및 관리 [Github](https://github.com/YH0223)
 - 강종호(FrontEnd) : 프론트엔드 / 디자인 총괄 [Github](https://github.com/imhypeboy)
