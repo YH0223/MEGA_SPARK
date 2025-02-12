@@ -144,12 +144,12 @@
 }
 
 .dark-mode .notice-actions button:first-child {
-    background-color: #ffcc00;
-    color: black;
+    background-color: #4caf50;
+    color: white;
 }
 
 .dark-mode .notice-actions button:first-child:hover {
-    background-color: #d4a800;
+    background-color: #4caf49;
 }
 
 .dark-mode .notice-actions button:last-child {
@@ -217,9 +217,9 @@
 }
 
     .notice-actions .save-button {
-    background-color: #218838;
+        background-color: #4caf50;
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(40, 167, 69, 0.4);
+        box-shadow: 0 6px 12px rgba(100, 255, 100, 0.4); /* 밝은 초록색 그림자 */
 }
 
 .notice-actions.center { /* 🔥 중앙 정렬 */
@@ -227,7 +227,6 @@
 }
 
 .notice-actions .save-button:hover {
-    background-color: #28a745;
     color: white;
 }
 
@@ -239,7 +238,6 @@
 
 .notice-actions .cancel-button:hover {
 
-    background-color: #dc3545;
     color: white;
 }
 
@@ -260,11 +258,10 @@
 
 .dark-mode .notice-actions .save-button {
     background-color: #4caf50;
-    color: black;
+    color: white;
 }
 
 .dark-mode .notice-actions .save-button:hover {
-    background-color: #45a049;
 }
 
 .dark-mode .notice-actions .cancel-button {
@@ -273,7 +270,6 @@
 }
 
 .dark-mode .notice-actions .cancel-button:hover {
-    background-color: #c82333;
 }
 .notice-title {
     font-size: 1.8rem;
@@ -327,7 +323,6 @@
 }
 
 .notice-actions button:first-child:hover {
-    background-color: #4caf50; /* 좀 더 짙은 초록색 */
 }
 
 .notice-actions button:last-child { /* 삭제 버튼 */
@@ -336,5 +331,4 @@
 }
 
 .notice-actions button:last-child:hover {
-    background-color: #c82333; /* 좀 더 짙은 빨간색 */
 }
