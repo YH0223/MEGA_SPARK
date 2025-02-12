@@ -19,18 +19,19 @@
 }
 
 .calendar-header button {
-  background: #005eff;
+  background: linear-gradient(135deg, #000000, #333333);
   color: white;
   border: none;
-  padding: 5px 15px;
+  padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 18px;
-  transition: 0.3s;
+  transition: 0.3s ease-in-out;
 }
 
 .calendar-header button:hover {
-  background: #003bb3;
+  background: linear-gradient(135deg, #ffffff, #555555);
+  transform: scale(1.1);
 }
 
 /* 요일 헤더 */
@@ -61,7 +62,8 @@
 
 /* 현재 달이 아닌 날짜 스타일 */
 .other-month {
-  color: #aaa;
+  color: gray;
+  opacity: 0.6;
 }
 
 /* 선택된 날짜 스타일 */
@@ -222,4 +224,18 @@
 
 .dark-mode .bar-3 {
   background-color: #ff5722;
+}
+
+/* ✅ 일요일과 공휴일을 빨간색으로 표시 */
+.holiday {
+  color: red;
+  font-weight: bold;
+}
+
+/* ✅ 공휴일 이름 스타일 */
+.holiday-name {
+  display: block;
+  font-size: 12px;
+  color: red;
+  margin-top: 2px;
 }

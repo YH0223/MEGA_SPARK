@@ -18,7 +18,7 @@ interface ProjectData {
     projectId: number;
     projectName: string;
     projectManager: string;
-    startDate: string;
+    startdate: string;
     deadline: string;
 }
 
@@ -88,7 +88,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
             setProject({
                 ...project!,
                 projectName: editProjectName,
-                startDate: editStartDate,
+                startdate: editStartDate,
                 deadline: editDeadline
             });
             setIsEditing(false); // ✅ 수정 후 모달 닫기
@@ -198,7 +198,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                         <h1 className="title">{project.projectName}</h1>
                         <div className="project-info">
                             <p>👤 Project Manager: {project.projectManager}</p>
-                            <p>📅 진행 기간: {project.startDate} ~ {project.deadline}</p>
+                            <p>📅 진행 기간: {project.startdate} ~ {project.deadline}</p>
                         </div>
                         <div className="button-group">
                             <button className="edit-button" onClick={() => setIsEditing(true)}>수정</button>

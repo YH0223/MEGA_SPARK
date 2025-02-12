@@ -7,12 +7,8 @@ import NewProject from "./NewProject"; // ✅ New Project 페이지 컴포넌트
 import Profile from "./Profile"; // ✅ Profile 페이지 컴포넌트
 import Calendar from "./Calendar"; // ✅ Calendar 페이지 컴포넌트
 import Settings from "./Settings"; // ✅ Settings 페이지 컴포넌트
-
-import { FaPlus, FaCalendarAlt, FaCog, FaEnvelope, FaChevronUp, FaChevronDown } from "react-icons/fa";
-
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa"; // ✅ 추가
+import { FaPlus, FaCalendarAlt, FaCog, FaChevronUp, FaChevronDown, FaChevronLeft, FaChevronRight, FaEnvelope, FaChartBar } from "react-icons/fa";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 // ✅ 프로젝트 데이터 타입 정의
 interface Project {
@@ -193,6 +189,8 @@ const Dashboard = () => {
     return "#5395f3";
   };
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
   useEffect(() => {
     setFilteredProjects(
         projects.filter((project) => {
@@ -207,6 +205,14 @@ const Dashboard = () => {
         })
     );
   }, [searchTerm, projects, activeFilter, taskProgress]); // ✅ activeFilter, taskProgress 추가
+
+  useEffect(() => {
+    setFilteredProjects(
+        projects.filter((project) =>
+            project.projectName.toLowerCase().includes(searchTerm.toLowerCase()) // 🔥 대소문자 무시하고 검색
+        )
+    );
+  }, [searchTerm, projects]); // 🔥 searchTerm과 projects가 변경될 때만 실행
 
 
   useEffect(() => {
@@ -260,7 +266,6 @@ const Dashboard = () => {
         <main className="dashboard-main">
           <header className="dashboard-header">
             <h1>Hello {userProfile ? userProfile.userName : "Guest"} 👋</h1>
-
             {/* 📌 Header Right Section */}
             <div className="header-right">
               <div className="profile-section" onClick={() => setActiveModal("profile")}>
@@ -322,50 +327,32 @@ const Dashboard = () => {
               <h3 onClick={() => setShowProgressChart(!showProgressChart)}>
                 📊 프로젝트 진행률 {showProgressChart ? <FaChevronLeft /> : <FaChevronRight />}
               </h3>
+
+
+
               {/* ✅ Progress Chart (막대 그래프) */}
 
               {showProgressChart && (
-
                   <ResponsiveContainer width="100%" height={300}>
-
                     <BarChart
-
                         data={filteredProjects.map((project) => ({
-
                           name: project.projectName,
-
                           progress: taskProgress[project.projectId] ?? 0, // 진행률 가져오기
-
                         }))}
-
                         layout="vertical"
-
                     >
-
                       <XAxis
-
                           type="number"
-
                           domain={[0, 100]}
-
                           tickFormatter={(tick) => `${tick}%`}
-
                       />
-
                       <YAxis dataKey="name" type="category" width={120} />
-
                       <Tooltip formatter={(value) => `${value}%`} />
-
                       <Legend />
-
                       <Bar
-
                           dataKey="progress"
-
                           fill="#0088fe"
-
                           barSize={20}
-
                           label={{ position: "right", formatter: (value) => `${value}%` }}
 
                       />
