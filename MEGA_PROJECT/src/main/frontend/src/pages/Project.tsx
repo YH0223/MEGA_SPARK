@@ -30,6 +30,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [editProjectName, setEditProjectName] = useState("");
     const [editStartDate, setEditStartDate] = useState("");
+    
     const [editDeadline, setEditDeadline] = useState("");
     const [activeTab, setActiveTab] = useState("main"); // ✅ 탭 관리
     const [taskStats, setTaskStats] = useState({
@@ -38,7 +39,11 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
         issue: 0,
         hazard: 0,
     });
+    const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null); //수정 모달
 
+    
+    
 
     /** ✅ Task 진행 상태 불러오기 */
     useEffect(() => {
@@ -97,6 +102,32 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
         }
     };
 
+    const handleUpdateProject = async () => {
+        if (!selectedProject) return;
+
+        try {
+            await axios.put(
+                `http://localhost:8080/api/updateproject/${projectId}`,
+                selectedProject,
+                { withCredentials: true }
+            );
+
+            alert("✅ 프로젝트가 수정되었습니다.");
+            setProject(selectedProject);
+            setEditModalOpen(false);
+        } catch (error) {
+            alert("❌ 프로젝트 수정 중 오류가 발생했습니다.");
+        }
+    };
+
+
+
+    const openEditModal = () => {
+        setSelectedProject(project);
+        setEditModalOpen(true);
+    };
+
+
     /** ✅ Task 개수 확인 후 프로젝트 삭제 */
     const deleteProject = async () => {
         try {
@@ -139,55 +170,30 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
 
     return (
         <div className="project-container">
-
             {/* ✅ 프로젝트 정보 */}
-
             <div className="header">
-
                 {isEditing ? (
-
                     <>
-
                         <input
-
                             type="text"
-
                             value={editProjectName}
-
                             onChange={(e) => setEditProjectName(e.target.value)}
-
                             className="edit-title-input"
-
                         />
-
                         <div className="edit-date">
-
                             <label>시작 날짜</label>
-
                             <input
-
                                 type="date"
-
                                 value={editStartDate}
-
                                 onChange={(e) => setEditStartDate(e.target.value)}
-
                             />
-
                             <label>마감 날짜</label>
-
                             <input
-
                                 type="date"
-
                                 value={editDeadline}
-
                                 onChange={(e) => setEditDeadline(e.target.value)}
-
                             />
-
                         </div>
-
                         <div className="button-group">
                             <button className="update-button" onClick={updateProject}>수정 완료</button>
                             <button className="cancel-button" onClick={() => setIsEditing(false)}>취소</button>
@@ -201,12 +207,44 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                             <p>📅 진행 기간: {project.startdate} ~ {project.deadline}</p>
                         </div>
                         <div className="button-group">
-                            <button className="edit-button" onClick={() => setIsEditing(true)}>수정</button>
+                            <button className="edit-button" onClick={openEditModal}>수정</button>
                             <button className="delete-button" onClick={deleteProject}>삭제</button>
                         </div>
                     </>
                 )}
             </div>
+
+            {isEditModalOpen && selectedProject && (
+                <div className="modal-overlay" onClick={() => setEditModalOpen(false)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <h2>프로젝트 수정</h2>
+                        <label>프로젝트 이름</label>
+                        <input
+                            type="text"
+                            value={selectedProject.projectName}
+                            onChange={(e) => setSelectedProject({ ...selectedProject, projectName: e.target.value })}
+                        />
+                        <label>시작 날짜</label>
+                        <input
+                            type="date"
+                            value={selectedProject.startdate}
+                            onChange={(e) => setSelectedProject({ ...selectedProject, startdate: e.target.value })}
+                        />
+                        <label>마감 날짜</label>
+                        <input
+                            type="date"
+                            value={selectedProject.deadline}
+                            onChange={(e) => setSelectedProject({ ...selectedProject, deadline: e.target.value })}
+                        />
+                        <div className="button-group">
+                            <button onClick={handleUpdateProject}>수정</button>
+                            <button onClick={() => setEditModalOpen(false)}>취소</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
 
 
             {/* ✅ 탭 네비게이션 */}

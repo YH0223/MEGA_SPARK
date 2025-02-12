@@ -30,7 +30,14 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
     const [isTaskListModalOpen, setTaskListModalOpen] = useState(false);
     const [isTaskModalOpen, setTaskModalOpen] = useState(false);
     const [selectedTaskList, setSelectedTaskList] = useState<number | null>(null);
-    const [newTask, setNewTask] = useState({ taskName: "", userId: "", priority: 0, startDate: "", deadline: "" });
+    const [newTask, setNewTask] = useState({
+        taskName: "",
+        userId: "",
+        priority: 0,
+        startDate: "",
+        deadline: "",
+        checking: false, // ✅ checking 상태 추가
+    });
     const [users, setUsers] = useState<string[]>([]);
 
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!;
@@ -185,7 +192,7 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
         try {
             await axios.post(`http://localhost:8080/task/create`, {
                 taskName: newTask.taskName,
-                checking: false,
+                checking: newTask.checking, // ✅ newTask의 checking 값을 사용
                 priority: newTask.priority,
                 startDate: newTask.startDate,
                 deadline: newTask.deadline,
@@ -453,41 +460,99 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
                 <div className="modal-overlay" onClick={() => setTaskModalOpen(false)}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <h2>Task 추가</h2>
+
+                        <label>Task 이름</label>
                         <input
                             type="text"
                             value={newTask.taskName}
-                            onChange={(e) => setNewTask({...newTask, taskName: e.target.value})}
+                            onChange={(e) => setNewTask({ ...newTask, taskName: e.target.value })}
                             placeholder="Task 이름"
                         />
+
                         <label>담당자</label>
-                        <select value={newTask.userId}
-                                onChange={(e) => setNewTask({...newTask, userId: e.target.value})}>
+                        <select
+                            value={newTask.userId}
+                            onChange={(e) => setNewTask({ ...newTask, userId: e.target.value })}
+                        >
                             <option value="">선택</option>
                             {users.map((user) => (
                                 <option key={user.userId} value={user.userId}>
-                                {user.userName} {/* ✅ 유저 이름 표시 */}
+                                    {user.userName}
                                 </option>
                             ))}
                         </select>
 
-
                         <label>시작 날짜</label>
-                        <input type="date" value={newTask.startDate}
-                               onChange={(e) => setNewTask({...newTask, startDate: e.target.value})}/>
+                        <input
+                            type="date"
+                            value={newTask.startDate}
+                            onChange={(e) => setNewTask({ ...newTask, startDate: e.target.value })}
+                        />
+
                         <label>마감 날짜</label>
-                        <input type="date" value={newTask.deadline}
-                               onChange={(e) => setNewTask({...newTask, deadline: e.target.value})}/>
+                        <input
+                            type="date"
+                            value={newTask.deadline}
+                            onChange={(e) => setNewTask({ ...newTask, deadline: e.target.value })}
+                        />
+
+                        <label>상태</label>
+                        <button
+                            onClick={() =>
+                                setNewTask((prev) => ({ ...prev, checking: !prev.checking }))
+                            }
+                            style={{
+                                backgroundColor: newTask.checking ? "#4CAF50" : "#FF3D00",
+                                color: "white",
+                                padding: "8px",
+                                border: "none",
+                                borderRadius: "5px",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {newTask.checking ? "완료됨 (✔)" : "미완료 (❌)"}
+                        </button>
+
                         <label>우선순위</label>
-                        <div>
-                            <label><input type="radio" name="priority" value="0"
-                                          onChange={() => setNewTask({...newTask, priority: 0})}/> ToDo</label>
-                            <label><input type="radio" name="priority" value="1"
-                                          onChange={() => setNewTask({...newTask, priority: 1})}/> Issue</label>
-                            <label><input type="radio" name="priority" value="2"
-                                          onChange={() => setNewTask({...newTask, priority: 2})}/> Hazard</label>
+                        <div style={{ display: "flex", gap: "10px" }}>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="priority"
+                                    value="0"
+                                    checked={newTask.priority === 0}
+                                    onChange={() => setNewTask((prev) => ({ ...prev, priority: 0 }))}
+                                />
+                                ⚪ ToDo
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="priority"
+                                    value="1"
+                                    checked={newTask.priority === 1}
+                                    onChange={() => setNewTask((prev) => ({ ...prev, priority: 1 }))}
+                                />
+                                🟡 Issue
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="priority"
+                                    value="2"
+                                    checked={newTask.priority === 2}
+                                    onChange={() => setNewTask((prev) => ({ ...prev, priority: 2 }))}
+                                />
+                                🔴 Hazard
+                            </label>
                         </div>
-                        <button onClick={addTask}>추가</button>
-                        <button onClick={() => setTaskModalOpen(false)}>취소</button>
+
+                        <div className="button-group">
+                            <button onClick={addTask}>추가</button>
+                            <button onClick={() => setTaskModalOpen(false)}>취소</button>
+                        </div>
                     </div>
                 </div>
             )}

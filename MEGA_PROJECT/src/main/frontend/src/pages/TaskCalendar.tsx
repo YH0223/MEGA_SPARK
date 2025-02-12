@@ -83,7 +83,15 @@ const TaskCalendar: React.FC<CalendarProps> = ({ projectId }) => {
     const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
 
     // ✅ Task 완료 여부에 따라 색상 적용
-    const getTaskColor = (checking: boolean) => checking ? "#4CAF50" : "#007BFF"; // ✅ 완료: 초록색, 미완료: 파란색
+    const getTaskColor = (checking: boolean) => checking ? "#4CAF50" : "#42A5F5"; // ✅ 완료: 초록색, 미완료: 파란색
+
+// ✅ Task 완료 여부에 따라 스타일 적용
+    const getTaskStyle = (checking: boolean) => {
+        return checking
+            ? { backgroundColor: "#4CAF50" } // ✅ 완료: 초록색
+            : { background: "linear-gradient(to right, #2196F3, #4d5beb)" }; // ✅ 미완료: 파스텔 블루 그라데이션
+    };
+
 
     return (
         <div className="calendar-container">
@@ -100,29 +108,34 @@ const TaskCalendar: React.FC<CalendarProps> = ({ projectId }) => {
                     const formattedDate = `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
                     const isHoliday = holidays[formattedDate] !== undefined;
                     const tasksForDay = tasks.filter(task => {
-                        return currentDay >= task.startDate && currentDay <= task.deadline;
+                        return currentDay >= task.startDate && currentDay <= task.deadline && !task.checking;
                     });
+
 
                     return (
                         <div key={index} className={`calendar-day ${isOtherMonth ? "other-month" : ""} ${isHoliday ? "holiday" : ""}`}>
                             {date.getDate()}
                             {isHoliday && <span className="holiday-name">{holidays[formattedDate]}</span>}
 
-                            {/* ✅ Task 일정 표시 */}
                             {tasksForDay.map((task) => (
-                                <div key={task.taskId} className="calendar-task"
-                                     style={{
-                                         backgroundColor: getTaskColor(task.checking),
-                                         minWidth: "80px",
-                                         padding: "4px",
-                                         borderRadius: "5px",
-                                         fontSize: "12px",
-                                         textAlign: "center",
-                                         marginTop: "4px"
-                                     }}>
+                                <div
+                                    key={task.taskId}
+                                    className="calendar-task"
+                                    style={{
+                                        ...getTaskStyle(task.checking),
+                                        minWidth: "80px",
+                                        padding: "4px",
+                                        borderRadius: "5px",
+                                        fontSize: "12px",
+                                        textAlign: "center",
+                                        marginTop: "4px",
+                                        color: "#fff"
+                                    }}
+                                >
                                     {task.taskName}
                                 </div>
                             ))}
+
                         </div>
                     );
                 })}
