@@ -256,3 +256,24 @@
     justify-content: space-between;
     margin-top: 10px;
 }
+
+
+/* ✅ 등록 버튼 */
+.notice-actions button.save-btn {
+    background-color: #4caf50;
+    color: white;
+}
+.notice-actions button.save-btn:hover {
+    background-color: #388e3c;
+    transform: translateY(-3px);
+}
+
+/* ❌ 취소 버튼 */
+.notice-actions button.cancel-btn {
+    background-color: #dc3545;
+    color: white;
+}
+.notice-actions button.cancel-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-3px);
+}
