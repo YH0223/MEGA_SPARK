@@ -70,21 +70,43 @@ const NoticeDetail = ({ noticeId, closeModal }: { noticeId: number, closeModal: 
         <div className="notice-detail-container">
             {isEditing ? (
                 <>
-                    <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
-                    <textarea value={editContext} onChange={(e) => setEditContext(e.target.value)} />
+                    <input
+                        type="text"
+                        className="notice-edit-input"
+                        value={editTitle}
+                        onChange={(e) => setEditTitle(e.target.value)}
+                        placeholder="제목을 입력하세요"
+                    />
+                    <textarea
+                        className="notice-edit-textarea"
+                        value={editContext}
+                        onChange={(e) => setEditContext(e.target.value)}
+                        placeholder="내용을 입력하세요"
+                    />
                     <div className="notice-actions">
-                        <button onClick={updateNotice}><Save size={16} /> 저장</button>
-                        <button onClick={() => setIsEditing(false)}><X size={16} /> 취소</button>
+                        <button className="save-button" onClick={updateNotice}>
+                            <Save size={16} /> 저장
+                        </button>
+                        <button className="cancel-button" onClick={() => setIsEditing(false)}>
+                            <X size={16} /> 취소
+                        </button>
                     </div>
                 </>
             ) : (
                 <>
-                    <h3>{notice.noticeTitle}</h3>
-                    <p>{notice.noticeContext}</p>
+                    <h3 className="notice-title">{notice.noticeTitle}</h3>
+                    <div className="notice-separator" /> {/* 🔥 구분선을 추가합니다 */}
+                    <p className="notice-content">{notice.noticeContext}</p>
                     <div className="notice-actions">
-                        <button onClick={() => setIsEditing(true)}><Edit size={16} /> 수정</button>
-                        <button onClick={deleteNotice}><Trash2 size={16} /> 삭제</button>
-                        <button onClick={closeModal}><X size={16} /> 닫기</button>
+                        <button onClick={() => setIsEditing(true)}>
+                            <Edit size={16} /> 수정
+                        </button>
+                        <button onClick={deleteNotice}>
+                            <Trash2 size={16} /> 삭제
+                        </button>
+                        <button onClick={closeModal}>
+                            <X size={16} /> 닫기
+                        </button>
                     </div>
                 </>
             )}

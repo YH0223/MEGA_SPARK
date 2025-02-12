@@ -389,7 +389,7 @@ const Dashboard = () => {
 
                           outerRadius={80}
 
-                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
 
                       >
                         {donutData.map((entry, index) => (
