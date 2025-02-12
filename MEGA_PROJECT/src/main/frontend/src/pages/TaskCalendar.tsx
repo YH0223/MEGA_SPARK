@@ -41,22 +41,42 @@ const TaskCalendar: React.FC<CalendarProps> = ({ projectId }) => {
             });
     }, [projectId, currentDate]);
 
+    const holidays: { [key: string]: string } = {
+        "01-01": "신정",
+        "03-01": "삼일절",
+        "05-05": "어린이날",
+        "06-06": "현충일",
+        "08-15": "광복절",
+        "10-03": "개천절",
+        "10-09": "한글날",
+        "12-25": "크리스마스"
+    };
+
+    const lunarHolidays = {
+        "2024": { "02-09": "설날 연휴", "02-10": "설날", "02-11": "설날 연휴", "09-16": "추석 연휴", "09-17": "추석", "09-18": "추석 연휴" }
+    };
+
+    const year = currentDate.getFullYear();
+    if (lunarHolidays[year]) {
+        Object.assign(holidays, lunarHolidays[year]);
+    }
+
     // ✅ 날짜별 달력 생성
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
     const prevMonthLastDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
-    const daysArray: Date[] = [];
+    const daysArray: { date: Date; isOtherMonth: boolean }[] = [];
 
     for (let i = prevMonthLastDay.getDay(); i >= 0; i--) {
-        daysArray.push(new Date(prevMonthLastDay.getFullYear(), prevMonthLastDay.getMonth(), prevMonthLastDay.getDate() - i));
+        daysArray.push({ date: new Date(prevMonthLastDay.getFullYear(), prevMonthLastDay.getMonth(), prevMonthLastDay.getDate() - i), isOtherMonth: true });
     }
 
     for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
-        daysArray.push(new Date(currentDate.getFullYear(), currentDate.getMonth(), i));
+        daysArray.push({ date: new Date(currentDate.getFullYear(), currentDate.getMonth(), i), isOtherMonth: false });
     }
 
     for (let i = 1; daysArray.length % 7 !== 0; i++) {
-        daysArray.push(new Date(lastDayOfMonth.getFullYear(), lastDayOfMonth.getMonth() + 1, i));
+        daysArray.push({ date: new Date(lastDayOfMonth.getFullYear(), lastDayOfMonth.getMonth() + 1, i), isOtherMonth: true });
     }
 
     const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
@@ -68,23 +88,25 @@ const TaskCalendar: React.FC<CalendarProps> = ({ projectId }) => {
     return (
         <div className="calendar-container">
             <div className="calendar-header">
-                <button onClick={prevMonth}>&lt;</button>
+                <button onClick={prevMonth} className="calendar-button">&lt;</button>
                 <h2>{currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월</h2>
-                <button onClick={nextMonth}>&gt;</button>
+                <button onClick={nextMonth} className="calendar-button">&gt;</button>
             </div>
 
             <div className="calendar-grid">
-                {daysArray.map((day, index) => {
-                    const currentDay = day.toISOString().split("T")[0];
-
-                    // 🚨 `tasks?.filter(...)`로 변경하여 `tasks`가 `undefined`일 경우 오류 방지
+                {daysArray.map((dayObj, index) => {
+                    const { date, isOtherMonth } = dayObj;
+                    const currentDay = date.toISOString().split("T")[0];
+                    const formattedDate = `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+                    const isHoliday = holidays[formattedDate] !== undefined;
                     const tasksForDay = tasks.filter(task => {
                         return currentDay >= task.startDate && currentDay <= task.deadline;
                     });
 
                     return (
-                        <div key={index} className="calendar-day">
-                            {day.getDate()}
+                        <div key={index} className={`calendar-day ${isOtherMonth ? "other-month" : ""} ${isHoliday ? "holiday" : ""}`}>
+                            {date.getDate()}
+                            {isHoliday && <span className="holiday-name">{holidays[formattedDate]}</span>}
 
                             {/* ✅ Task 일정 표시 */}
                             {tasksForDay.map((task) => (
@@ -109,4 +131,4 @@ const TaskCalendar: React.FC<CalendarProps> = ({ projectId }) => {
     );
 };
 
-export default TaskCalendar;
+export default TaskCalendar

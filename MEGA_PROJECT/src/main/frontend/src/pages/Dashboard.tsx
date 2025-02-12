@@ -353,9 +353,9 @@ const Dashboard = () => {
                           dataKey="progress"
                           fill="#0088fe"
                           barSize={20}
-                          label={{ position: "right", formatter: (value) => `${value}%` }}
-
+                          label={{ position: "right", formatter: (value: number) => `${value.toFixed(1)}%`                           }}
                       />
+
 
                     </BarChart>
 

@@ -75,6 +75,33 @@ body.dark-mode .modal {
     margin-bottom: 20px;
     text-align: center;
 }
+
+.modal-content label {
+    display: block; /* 라벨을 블록 요소로 만들어 전체 너비를 사용 */
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center; /* 필요한 경우 중앙 정렬로 변경 가능 */
+}
+
+.modal-content input {
+    width: 100%; /* 입력 필드의 너비를 100%로 설정 */
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 중앙 정렬 */
+    justify-content: center;
+    width: 300px;
+    text-align: center;
+}
+
+
 .modal input,
 .modal select {
     width: 100%;

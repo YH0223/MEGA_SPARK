@@ -67,6 +67,7 @@ body.dark-mode .info-mode .duration {
 ============================= */
 .button-group {
   margin-top: 10px;
+  display: flex;
 }
 .button-group button {
   margin-right: 8px;

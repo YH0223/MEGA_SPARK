@@ -420,10 +420,12 @@ const TaskComponent = ({ projectId }: { projectId: number }) => {
                                 🔴 Hazard
                             </label>
                         </div>
+                        <div className="button-group">
                         {/* ✅ 수정/삭제 버튼 */}
                         <button onClick={updateTask}>수정</button>
                         <button onClick={deleteTask} style={{ backgroundColor: "#FF3D00" }}>삭제</button>
                         <button onClick={() => setEditModalOpen(false)}>취소</button>
+                        </div>
                     </div>
                 </div>
             )}
