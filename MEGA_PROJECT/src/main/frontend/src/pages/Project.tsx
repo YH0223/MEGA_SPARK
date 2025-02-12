@@ -224,7 +224,7 @@ const Project: React.FC<ProjectProps> = ({ projectId }) => {
                 <button className={activeTab === "team" ? "active" : ""} onClick={() => setActiveTab("team")}>
                     팀원 관리
                 </button>
-                <button className={activeTab === "team" ? "active" : ""} onClick={() => setActiveTab("notice")}>
+                <button className={activeTab === "notice" ? "active" : ""} onClick={() => setActiveTab("notice")}>
                     📢 게시판
                 </button>
             </div>
