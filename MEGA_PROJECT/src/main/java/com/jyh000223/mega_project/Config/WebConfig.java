@@ -15,7 +15,10 @@ public class WebConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); // ✅ 쿠키 및 세션 유지 활성화
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000")); // ✅ React 주소 허용
+        config.setAllowedOrigins(List.of(
+                "http://3.104.207.231:3000",
+                "http://localhost:3000"
+        )); // ✅ React 주소 허용
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         config.setExposedHeaders(List.of("Authorization", "Set-Cookie")); // ✅ 브라우저가 쿠키 접근 가능하도록 설정

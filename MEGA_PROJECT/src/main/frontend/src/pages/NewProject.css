@@ -53,3 +53,45 @@ input, select {
 .create-button:hover {
   background-color: #218838;
 }
+/* ✅ 다크모드: 전체 컨테이너 */
+.dark-mode .new-project-container {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  border: 1px solid #444;
+}
+
+/* ✅ 다크모드: 제목 */
+.dark-mode h2 {
+  color: #ffffff;
+}
+
+/* ✅ 다크모드: 폼 레이블 */
+.dark-mode label {
+  color: #ddd;
+}
+
+/* ✅ 다크모드: 입력 필드 & 선택 박스 */
+.dark-mode input,
+.dark-mode select {
+  background-color: #444;
+  color: #ffffff;
+  border: 1px solid #777;
+}
+
+/* ✅ 다크모드: 입력 필드 placeholder */
+.dark-mode input::placeholder,
+.dark-mode select::placeholder {
+  color: #aaa;
+}
+
+/* ✅ 다크모드: 버튼 */
+.dark-mode .create-button {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  border: 1px solid #1e7e34;
+}
+
+.dark-mode .create-button:hover {
+  background-color: #1e7e34;
+}

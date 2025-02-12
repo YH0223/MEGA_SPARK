@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const api = axios.create({
-    baseURL: "http://localhost:8080/", // ✅ 백엔드 API URL을 명확히 설정
-    headers: { "Content-Type": "application/json" },
-    withCredentials: true, // ✅ 세션 사용 시 필요
-});
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경 변수 사용
 
+const api = axios.create({
+    baseURL: API_BASE_URL,
+    withCredentials: true, // 세션 유지
+});
 
 export default api;

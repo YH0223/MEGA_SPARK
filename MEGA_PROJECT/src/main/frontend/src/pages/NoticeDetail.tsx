@@ -1,8 +1,9 @@
-    import React, { useEffect, useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
+import { Edit, Trash2, Save, X } from "lucide-react";
 import "./NoticeDetail.css";
+import api from "../api";
 
 interface Notice {
     noticeId: number;
@@ -10,46 +11,23 @@ interface Notice {
     noticeContext: string;
     noticeCreatedAt: string;
 }
-// ✅ Axios 기본 설정: 세션 유지
+
 axios.defaults.withCredentials = true;
-const NoticeDetail = () => {
-    const { noticeId } = useParams<{ noticeId: string }>();
-    const navigate = useNavigate();
-    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!; // ✅ 인증 상태 가져오기
+
+const NoticeDetail = ({ noticeId, closeModal }: { noticeId: number, closeModal: () => void }) => {
+    const { isAuthenticated } = useContext(AuthContext)!;
     const [notice, setNotice] = useState<Notice | null>(null);
     const [editTitle, setEditTitle] = useState("");
     const [editContext, setEditContext] = useState("");
     const [isEditing, setIsEditing] = useState(false);
 
-    /** ✅ 세션 유지 확인 */
     useEffect(() => {
-        axios.get("http://localhost:8080/api/session")
-            .then(response => {
-                console.log("✅ 로그인 유지됨. 사용자:", response.data);
-                setIsAuthenticated(true);
-            })
-            .catch(() => {
-                console.log("❌ 로그인 세션 없음");
-                setIsAuthenticated(false);
-                navigate("/"); // 미로그인 시 로그인 페이지로 이동
-            });
-    }, [setIsAuthenticated, navigate]);
-
-    /** ✅ 공지사항 불러오기 */
-    useEffect(() => {
-        if (isAuthenticated) {
-            fetchNotice();
-        }
+        if (isAuthenticated) fetchNotice();
     }, [noticeId, isAuthenticated]);
 
     const fetchNotice = async () => {
         try {
-            console.log(`🔍 요청할 공지사항 ID: ${noticeId}`);
-            const response = await axios.get(`http://localhost:8080/notice/detail/${noticeId}`, {
-                withCredentials: true
-            });
-
-            console.log("✅ 공지사항 불러오기 성공:", response.data);
+            const response = await api.get(`/notice/detail/${noticeId}`);
             setNotice(response.data);
             setEditTitle(response.data.noticeTitle);
             setEditContext(response.data.noticeContext);
@@ -58,17 +36,13 @@ const NoticeDetail = () => {
         }
     };
 
-
-    const goToList = () => {
-        navigate(-1); // 🔥 이전 페이지로 이동
-    };
     /** ✅ 공지 수정 */
     const updateNotice = async () => {
         try {
-            await axios.put(`http://localhost:8080/notice/update/${noticeId}`, {
+            await api.put(`/notice/update/${noticeId}`, {
                 noticeTitle: editTitle,
                 noticeContext: editContext
-            }, { withCredentials: true });
+            });
 
             alert("공지사항이 수정되었습니다.");
             setNotice({ ...notice!, noticeTitle: editTitle, noticeContext: editContext });
@@ -83,15 +57,14 @@ const NoticeDetail = () => {
         if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
         try {
-            await axios.delete(`http://localhost:8080/notice/delete/${noticeId}`, { withCredentials: true });
+            await api.delete(`/notice/delete/${noticeId}`);
             alert("공지사항이 삭제되었습니다.");
-            navigate(-1);
+            closeModal(); // ✅ 삭제 후 모달 닫기
         } catch (error) {
             console.error("공지 삭제 오류:", error);
         }
     };
 
-    if (!isAuthenticated) return <p>세션 확인 중...</p>;
     if (!notice) return <p>공지사항을 불러오는 중...</p>;
 
     return (
@@ -100,17 +73,19 @@ const NoticeDetail = () => {
                 <>
                     <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
                     <textarea value={editContext} onChange={(e) => setEditContext(e.target.value)} />
-                    <button onClick={updateNotice}>저장</button>
-                    <button onClick={() => setIsEditing(false)}>취소</button>
+                    <div className="notice-actions">
+                        <button onClick={updateNotice}><Save size={16} /> 저장</button>
+                        <button onClick={() => setIsEditing(false)}><X size={16} /> 취소</button>
+                    </div>
                 </>
             ) : (
                 <>
                     <h3>{notice.noticeTitle}</h3>
                     <p>{notice.noticeContext}</p>
                     <div className="notice-actions">
-                        <button className="list-button" onClick={goToList}>목록</button>
-                        <button onClick={() => setIsEditing(true)}>수정</button>
-                        <button onClick={deleteNotice}>삭제</button>
+                        <button onClick={() => setIsEditing(true)}><Edit size={16} /> 수정</button>
+                        <button onClick={deleteNotice}><Trash2 size={16} /> 삭제</button>
+                        <button onClick={closeModal}><X size={16} /> 닫기</button>
                     </div>
                 </>
             )}

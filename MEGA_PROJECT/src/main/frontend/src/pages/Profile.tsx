@@ -14,10 +14,10 @@ const Profile = () => {
 
     const fetchProfile = async () => {
         try {
-            const response = await api.get("/api/user/profile");
+            const response = await api.get("/user/profile");
             setUserName(response.data.userName);
             setEmail(response.data.email_address);
-            setProfileImageUrl(`http://localhost:8080${response.data.img_url}`);
+            setProfileImageUrl(`${response.data.img_url}`);
         } catch (error) {
             console.error("🚨 프로필 불러오기 실패:", error);
         }
@@ -45,11 +45,11 @@ const Profile = () => {
         }
 
         try {
-            const response = await api.post("/api/user/saveProfile", formData, {
+            const response = await api.post("/user/saveProfile", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
 
-            setProfileImageUrl(`http://localhost:8080${response.data.img_url}`);
+            setProfileImageUrl(`${response.data.img_url}`);
             alert("✅ 프로필이 저장되었습니다.");
             fetchProfile();
         } catch (error) {

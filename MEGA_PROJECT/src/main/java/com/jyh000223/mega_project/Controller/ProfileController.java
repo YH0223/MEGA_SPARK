@@ -25,7 +25,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ProfileController {
     @Autowired
     private UserRepository userRepository;
@@ -155,4 +154,5 @@ public class ProfileController {
             }
         }
     }
+
 }

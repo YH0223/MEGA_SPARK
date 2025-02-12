@@ -1,21 +1,35 @@
 package com.jyh000223.mega_project.DTO;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDate;
+@Getter
+@Setter
+@Builder
 public class TaskDTO {
-    @JsonProperty("taskName")  // ✅ JSON에서 "taskName"을 받아 "task_name"에 매핑
-    private String task_name;
+    // ✅ taskId 추가
+    private int taskId;
+    @JsonProperty("taskName")
+    private String taskName;
 
     private boolean checking;
 
-    @JsonProperty("projectId")  // ✅ JSON에서 "projectId"를 받아 "project_id"에 매핑
-    private int project_id;
+    @JsonProperty("projectId")
+    private int projectId;
+    private String userName;
+    @JsonProperty("tasklistId") // ✅ 추가: Task가 속한 TaskList의 ID를 JSON과 매핑
+    private int tasklistId;
 
-    public String getTask_name() { return task_name; }
-    public void setTask_name(String task_name) { this.task_name = task_name; }
+    private String userId;
+    private LocalDate startDate;
+    private LocalDate deadline;
+    private int priority;
+    private String tasklistName;
 
-    public boolean isChecking() { return checking; }
-    public void setChecking(boolean checking) { this.checking = checking; }
 
-    public int getProject_id() { return project_id; }
-    public void setProject_id(int project_id) { this.project_id = project_id; }
+
+
 }

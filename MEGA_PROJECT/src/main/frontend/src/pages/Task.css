@@ -1,90 +1,163 @@
+/* =============================
+   ✨ 2025년 트렌드 - 최신 UX/UI 개조
+============================= */
+
+/* 🏢 Task 콘텐츠링 */
 .task-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.task-container h2 {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 35px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     text-align: center;
-    color: #333;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+    transition: all 0.3s ease-in-out;
+}
+body.dark-mode .task-container {
+    background: rgba(48, 48, 48, 0.85);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
 }
 
-.task-input {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.task-input input {
-    flex: 1;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-.task-input button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-}
-
+/* 🏷️ Task 목록 스타일 */
 .task-list {
     list-style: none;
     padding: 0;
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    justify-content: center;
 }
 
 .task-list li {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border-radius: 8px;
+    justify-content: center;
+    min-width: 200px;
+    min-height: 100px;
+    padding: 24px;
+    border-radius: 25px;
     background: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    transition: background 0.3s;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
 }
-
 .task-list li:hover {
-    background: #f1f1f1;
+    background: #f1f3f5;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
 
-.task-list input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
-    cursor: pointer;
+/* ✨ Task 수정 팝업 스타일 */
+.modal {
+    position: fixed;
+    top: 8%; /* 항상 위에서 시작하도록 조정 */
+    left: 50%;
+    transform: translate(-50%, 0%);
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    width: 500px;
+    max-width: 90%;
+}
+body.dark-mode .modal {
+    background: rgba(48, 48, 48, 0.95);
+    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.15);
 }
 
-.task-list span {
-    flex: 1;
+.modal h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.modal input,
+.modal select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 2px solid #ccc;
+    font-size: 1.1rem;
+    transition: border-color 0.3s ease-in-out;
+}
+.modal input:focus,
+.modal select:focus {
+    border-color: #0ea5e9;
+    outline: none;
+    box-shadow: 0 0 8px rgba(14, 165, 233, 0.3);
+}
+
+.modal .status-badge {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-weight: bold;
     font-size: 1rem;
-    color: #333;
-}
-
-.task-list .completed span {
-    text-decoration: line-through;
-    color: #6c757d;
-}
-
-.task-list button {
-    background-color: #dc3545;
     color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
+}
+.status-incomplete {
+    background: linear-gradient(135deg, #ff6b6b, #ff8787);
+}
+.status-complete {
+    background: linear-gradient(135deg, #69db7c, #51cf66);
 }
 
-.task-list button:hover {
-    background-color: #c82333;
+.modal .button-group {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.modal button {
+    padding: 16px 24px;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.modal .btn-save {
+    background: linear-gradient(135deg, #bde0fe, #74c0fc);
+    color: white;
+}
+.modal .btn-delete {
+    background: linear-gradient(135deg, #ffb3c1, #ff6b6b);
+    color: white;
+}
+.modal .btn-cancel {
+    background: linear-gradient(135deg, #d3d3d3, #a6a6a6);
+    color: white;
+}
+.modal button:hover {
+    transform: scale(1.05);
+}
+
+/* =============================
+   📱 반영형 개조
+============================= */
+@media (max-width: 768px) {
+    .modal {
+        top: 10%;
+        width: 90%;
+    }
+    .task-list {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    .task-container {
+        width: 95%;
+    }
+    .task-list li {
+        min-width: 100%;
+        min-height: 250px;
+        padding: 20px;
+    }
+    .task-list button {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
 }

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { AuthContext } from "../App"; // ✅ AuthContext 가져오기
-import "./Login.css"
+import "./Login.css";
+import api from "../api";
 interface FormData {
     user_id: string;
     password: string;
@@ -25,7 +25,7 @@ const Login: React.FC = () => {
         try {
             console.log("📡 로그인 요청 전송:", formData);
 
-            const response = await axios.post("/api/login", formData, {
+            const response = await api.post("/login", formData, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true, // ✅ 세션 유지
             });
@@ -47,7 +47,7 @@ const Login: React.FC = () => {
             {/* 🎥 배경 비디오 추가 */}
             <div className="video-wrapper">
                 <video autoPlay loop muted playsInline className="background-video">
-                    <source src="/videos/Spark_main.mp4" type="video/mp4" />
+                    <source src="/videos/Spark_main_4k.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
             </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Settings.css";
 import axios from "axios";
-
+import api from "../api"
 const Settings: React.FC = () => {
     const [darkMode, setDarkMode] = useState(() => {
         return localStorage.getItem("darkMode") === "enabled";
@@ -29,10 +29,9 @@ const Settings: React.FC = () => {
         }
     }, [darkMode]);
 
-
     const handleLogout = async () => {
         try {
-            await axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true });
+            await api.post("/logout", {}, { withCredentials: true });
             alert("✅ 로그아웃 완료!");
             window.location.href = "/"; // ✅ 홈으로 이동
         } catch (error) {
@@ -44,13 +43,15 @@ const Settings: React.FC = () => {
         <div className="settings-container">
             <h1>설정 페이지</h1>
             <div className="form-group">
-                <label htmlFor="darkMode">다크 모드:</label>
-                <input
-                    type="checkbox"
-                    id="darkMode"
-                    checked={darkMode}
-                    onChange={handleDarkModeToggle}
-                />
+                <span className="dark-mode-label">다크 모드:</span>
+                <label className="toggle-switch">
+                    <input
+                        type="checkbox"
+                        checked={darkMode}
+                        onChange={handleDarkModeToggle}
+                    />
+                    <span className="toggle-slider"></span>
+                </label>
             </div>
             <button className="logout-button" onClick={handleLogout}>
                 로그아웃

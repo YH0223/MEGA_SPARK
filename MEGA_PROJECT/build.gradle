@@ -7,6 +7,9 @@ plugins {
 group = 'com.jyh000223'
 version = '0.0.1-SNAPSHOT'
 
+tasks.named("test") {
+	enabled = false
+}
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(18)

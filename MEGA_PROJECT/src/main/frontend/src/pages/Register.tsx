@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // ✅ useNavigate 추가
 import axios from "axios";
 import "./Register.css";
-
+import api from "../api";
 interface FormData {
   user_id: string;
   password: string;
@@ -30,7 +30,7 @@ const Register: React.FC = () => {
 
     try {
       console.log("Sending data:", formData);
-      const response = await axios.post("/api/register", formData);
+      const response = await api.post("/register", formData);
       console.log("Success:", response.data);
       alert("Registration Successful!");
       navigate("/"); // 회원가입 성공 시 로그인 페이지로 이동

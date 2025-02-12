@@ -2,8 +2,9 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import { AuthContext } from "../App";
 import "./team.css";
+import api from "../api";
 
-const API_BASE_URL = "http://localhost:8080/api";
+
 
 const TeamManagement = ({ projectId }: { projectId: number }) => {
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)!;
@@ -17,7 +18,7 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
 
     /** ✅ 세션 유지 확인 및 팀원 목록 불러오기 */
     useEffect(() => {
-        axios.get(`${API_BASE_URL}/session`, { withCredentials: true })
+        api.get(`/session`, { withCredentials: true })
             .then(response => {
                 console.log("✅ 로그인 유지됨. 사용자:", response.data);
                 setIsAuthenticated(true);
@@ -32,12 +33,38 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
     /** ✅ 팀원 목록 불러오기 */
     const fetchTeamMembers = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/team/${projectId}`, { withCredentials: true });
+            const response = await api.get(`/team/${projectId}`, { withCredentials: true });
             setTeamMembers(response.data.map((member: { userId: string }) => member.userId)); // ✅ userId만 저장
         } catch (error) {
             console.error("❌ 팀원 목록 불러오기 오류:", error);
         }
     };
+
+    /** ✅ 초대 메서드 */
+    const sendInvitation = async (inviteeId: string) => {
+        if (!inviteeId.trim()) {
+            alert("초대할 팀원의 ID를 입력해주세요.");
+            return;
+        }
+
+        try {
+            const response = await api.post(
+                `/invite`,
+                { inviteeId, projectId }, // InvitationDTO 형식에 맞게 데이터 전송
+                { withCredentials: true }
+            );
+
+            if (response.status === 200) {
+                alert("✅ 초대가 전송되었습니다.");
+                setSearchId(""); // 입력창 초기화
+            }
+        } catch (error) {
+            console.error("❌ 초대 전송 오류:", error);
+            alert("초대 전송 중 오류가 발생했습니다.");
+        }
+    };
+
+
 
     const addTeamMember = async () => {
         if (!searchId.trim()) {
@@ -51,7 +78,7 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
         }
 
         try {
-            const response = await axios.post(`${API_BASE_URL}/addteammate`,
+            const response = await api.post(`/addteammate`,
                 { userId: searchId, projectId },
                 { withCredentials: true }
             );
@@ -76,7 +103,7 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
         if (!window.confirm("이 팀원을 삭제하시겠습니까?")) return;
 
         try {
-            const response = await axios.delete(`${API_BASE_URL}/deleteteammate`, {
+            const response = await api.delete(`/deleteteammate`, {
                 params: { userId, projectId },  // ✅ `params`에 userId와 projectId 전달
                 withCredentials: true
             });
@@ -103,7 +130,7 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
         setShowResults(true); // ✅ 검색창 활성화
 
         const delayDebounceFn = setTimeout(() => {
-            axios.get(`${API_BASE_URL}/searchUsers?query=${searchId}`, { withCredentials: true })
+            api.get(`/searchUsers?query=${searchId}`, { withCredentials: true })
                 .then(response => {
                     setSearchResults(response.data.map((user: { userId: string }) => user.userId)); // ✅ userId만 저장
                 })
@@ -143,7 +170,9 @@ const TeamManagement = ({ projectId }: { projectId: number }) => {
                     onChange={(e) => setSearchId(e.target.value)}
                     onFocus={() => setShowResults(true)} // ✅ 검색창 클릭 시 결과 보이게 설정
                 />
-                <button className="add-button" onClick={addTeamMember}>추가</button>
+                <button onClick={() => sendInvitation(searchId)} className="invite-button">
+                    초대하기
+                </button>
             </div>
 
             {/* ✅ 실시간 검색 결과 */}

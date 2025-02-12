@@ -1,156 +1,316 @@
-/* 🌟 프로젝트 전체 컨테이너 확대 */
-.project-container {
-  max-width: 1800px; /* 기존보다 확대 */
-  margin: 40px auto;
-  padding: 50px; /* 내부 패딩 증가 */
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3열 유지 */
-  grid-template-rows: auto auto;
-  gap: 20px;
-  grid-auto-flow: dense;
-  grid-template-areas:
-    "header header header"
-    "notice notice checklist"
-    "upload team actions";
-  justify-content: center;
-  align-items: center;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+.project-page {
+    max-width: 1200px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
 }
 
-/* 🔔 헤더 스타일 */
-.header {
-  grid-area: header;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 25px;
-  background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  font-size: 1.4rem;
+body.dark-mode {
+    background: #121212;
+    color: #ffffff;
+}
+body.dark-mode .project-page {
+    background: #1e1e1e;
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
 }
 
-/* 📝 공지사항 */
-.notice-box { grid-area: notice; }
-.checklist-section { grid-area: checklist; }
-.file-upload-section { grid-area: upload; }
-.team-section { grid-area: team; }
-.project-actions {
-  grid-area: actions;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 15px; /* 버튼 간격 조정 */
+/* =============================
+   헤더/프로젝트 정보
+============================= */
+.project-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid #ddd;
+}
+body.dark-mode .project-header {
+    border-bottom: 1px solid #444;
 }
 
-/* ✅ 체크리스트 버튼 위치 조정 */
-.checklist-input {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.checklist-input input {
-  flex-grow: 1;
-  padding: 14px;
-  font-size: 1.2rem;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-}
-
-.checklist-input button {
-  padding: 12px 18px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  min-width: 90px;
-  height: 100%;
-}
-
-/* 🎯 프로젝트 수정 버튼 정렬 */
-.project-actions {
-  display: flex;
-  flex-direction: column; /* 버튼을 세로 정렬 */
-  align-items: flex-start;
-  gap: 10px; /* 버튼 사이 거리 조정 */
-  position: relative; /* 버튼이 자연스럽게 정렬되도록 */
-}
-
-/* 프로젝트 수정 버튼 크기 조정 */
-.update-button, .delete-button {
-  padding: 14px 22px;
-  font-size: 1.1rem;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  min-width: 160px; /* 버튼 크기 통일 */
-  text-align: center;
-}
-
-/* ✅ 수정 버튼 스타일 */
-.update-button {
-  background: linear-gradient(135deg, #56ccf2 0%, #2f80ed 100%);
-  color: white;
-}
-
-/* ❌ 삭제 버튼 스타일 & 애니메이션 */
-.delete-button {
-  background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-  color: white;
-  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
-}
-
-.delete-button:hover {
-  transform: scale(1.1);
-  background: linear-gradient(135deg, #ff5c7b 0%, #ff6ea5 100%);
-  box-shadow: 0 6px 12px rgba(255, 87, 87, 0.3);
-}
-
-/* 수정/삭제 버튼 컨테이너 */
-.action-buttons {
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-  align-items: center;
-}
-
-/* 🖥️ 반응형 개선 */
-@media (max-width: 992px) {
-  .project-container {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-areas:
-      "header header"
-      "notice checklist"
-      "upload team"
-      "actions actions";
-  }
-}
-
-@media (max-width: 600px) {
-  .project-container {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "header"
-      "notice"
-      "checklist"
-      "upload"
-      "team"
-      "actions";
-  }
-
-  .action-buttons {
+/* 편집 중 */
+.edit-mode {
+    display: flex;
     flex-direction: column;
-    width: 100%;
-  }
-
-  .update-button, .delete-button {
-    width: 100%;
-  }
+    gap: 10px;
+}
+.edit-mode .edit-title-input {
+    font-size: 1.5rem;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+body.dark-mode .edit-mode .edit-title-input {
+    background: #333;
+    color: #fff;
+    border: 1px solid #555;
 }
 
+/* 일반 모드: 프로젝트 정보 표시 */
+.info-mode .project-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: bold;
+}
+.info-mode .manager,
+.info-mode .duration {
+    margin: 6px 0;
+    font-size: 1rem;
+    color: #666;
+}
+body.dark-mode .info-mode .manager,
+body.dark-mode .info-mode .duration {
+    color: #ccc;
+}
+
+/* =============================
+   버튼 그룹 + 다크 모드
+============================= */
+.button-group {
+    margin-top: 10px;
+}
+.button-group button {
+    margin-right: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s, transform 0.2s;
+}
+.button-group button:hover {
+    transform: scale(1.05);
+}
+
+/* ── 라이트 모드 버튼 색상 ── */
+.edit-button {
+    background-color: #0ea5e9;  /* 파랑 */
+    color: #fff;
+}
+.delete-button {
+    background-color: #ef4444;  /* 빨강 */
+    color: #fff;
+}
+.update-button {
+    background-color: #22c55e;  /* 연두빛 초록 */
+    color: #fff;
+}
+.cancel-button {
+    background-color: #6b7280;  /* 회색 */
+    color: #fff;
+}
+
+/* ── 다크 모드 버튼 색상 재정의 ── */
+body.dark-mode .edit-button {
+    background-color: #0284c7;  /* hover상태였던 진한 파랑 */
+    color: #fff;
+}
+body.dark-mode .delete-button {
+    background-color: #dc2626;  /* hover상태 빨강 */
+    color: #fff;
+}
+body.dark-mode .update-button {
+    background-color: #16a34a;  /* hover상태 초록 */
+    color: #fff;
+}
+body.dark-mode .cancel-button {
+    background-color: #4b5563;  /* hover상태 회색 */
+    color: #fff;
+}
+
+/* 편집 날짜 인풋 */
+.edit-date {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.9rem;
+}
+.edit-date label {
+    min-width: 70px;
+    color: #666;
+}
+.edit-date input[type="date"] {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+body.dark-mode .edit-date label {
+    color: #ccc;
+}
+body.dark-mode .edit-date input[type="date"] {
+    background: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+/* =============================
+   탭 네비게이션
+============================= */
+.tab-navigation {
+    display: flex;
+    padding: 0 30px;
+    border-bottom: 1px solid #ddd;
+    background: #fafafa;
+}
+body.dark-mode .tab-navigation {
+    background: #2c2c2c;
+    border-bottom: 1px solid #444;
+}
+.tab-navigation button {
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333;
+    transition: background 0.2s;
+}
+body.dark-mode .tab-navigation button {
+    color: #ccc;
+}
+.tab-navigation button.active {
+    border-bottom: 3px solid #0ea5e9;  /* 활성 탭 파랑 라인 */
+    color: #0ea5e9;
+}
+.tab-navigation button:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+body.dark-mode .tab-navigation button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* =============================
+   본문 컨텐츠 래퍼
+============================= */
+.project-content {
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 공통 섹션(탭 내용) */
+.section {
+    background: #f9f9f9;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+body.dark-mode .section {
+    background: #2c2c2c;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);
+}
+.section h2 {
+    margin-top: 0;
+}
+
+/* =============================
+   메인 탭 (도넛 차트 + 달력)
+============================= */
+.main-tab {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;     /* 화면 작아지면 자동 줄바꿈 */
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* 차트: 3 / 달력: 7 비율 */
+.chart-container {
+    flex: 3;
+    max-width: 20%;
+    min-width: 280px;     /* 너무 좁아지지 않도록 최소 너비 */
+    background: #f9f9f9;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    overflow: hidden;      /* 필요 시 오버플로우 숨김 */
+}
+body.dark-mode .chart-container {
+    background: #2c2c2c;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);
+}
+
+.calendar-container {
+    flex: 7;
+    max-width: 80%;
+    min-width: 400px;      /* 달력이 일정 크기 이하로 줄지 않도록 */
+    background: #f9f9f9;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    overflow: hidden;      /* 오른쪽 삐져나옴 방지 */
+}
+body.dark-mode .calendar-container {
+    background: #2c2c2c;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);
+}
+
+/* =============================
+   Task List / Task Card
+   (다크 모드 미적용 문제 해결)
+============================= */
+.task-list {
+    background: #f9f9f9;
+    color: #333;
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+body.dark-mode .task-list {
+    background: #2c2c2c;    /* 다크 배경 */
+    color: #ffffff;         /* 다크 텍스트 */
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.08);
+}
+.task-list button {
+    background: #e0e0e0;
+    color: #333;
+    margin: 5px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+body.dark-mode .task-list button {
+    background: #555;       /* 어두운 버튼 */
+    color: #fff;
+}
+
+/* 개별 Task 카드 */
+.task-card {
+    background: #ffffff;
+    color: #333;
+    padding: 15px;
+    border-radius: 14px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+body.dark-mode .task-card {
+    background: #3a3a3a;
+    color: #ffffff;
+    box-shadow: 0 2px 5px rgba(255,255,255,0.08);
+}
+
+/* =============================
+   반응형 추가 보완
+============================= */
+@media (max-width: 768px) {
+    .tab-navigation {
+        flex-wrap: wrap;
+    }
+    .tab-navigation button {
+        margin-bottom: 5px;
+    }
+
+    .main-tab {
+        flex-direction: column; /* 차트와 캘린더 세로 배치 */
+    }
+    .chart-container,
+    .calendar-container {
+        max-width: 100% !important;
+        min-width: auto;
+    }
+}

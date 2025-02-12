@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import api from "../api"; // ✅ api.tsx에서 설정한 axios 인스턴스를 가져옴
 import "./NewProject.css";
 
-const NewProject = () => {
+interface NewProjectProps {
+  onProjectCreated: () => void; // ✅ 부모 컴포넌트에서 실행할 함수
+}
+
+const NewProject: React.FC<NewProjectProps> = ({ onProjectCreated }) => {
   const [projectName, setProjectName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [deadline, setDeadline] = useState("");
-
-  const navigate = useNavigate(); // ✅ 리다이렉트 함수
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,16 +21,13 @@ const NewProject = () => {
     };
 
     try {
-      const response = await api.post("/api/createproject", newProject);
+      await api.post("/createproject", newProject);
       alert("✅ 프로젝트가 생성되었습니다!");
 
-      // ✅ 프로젝트 생성 성공 시 대시보드로 이동
-      navigate("/dashboard");
+      onProjectCreated(); // ✅ 프로젝트 생성 후 모달 닫기 + 프로젝트 목록 갱신
     } catch (error) {
-      // @ts-ignore
-      if (error.response) {
-        // @ts-ignore
-        alert(`❌ 프로젝트 생성 실패: ${error.response.data}`);
+      if (error && (error as any).response) {
+        alert(`❌ 프로젝트 생성 실패: ${(error as any).response.data}`);
       } else {
         alert("❌ 프로젝트 생성 중 오류가 발생했습니다.");
       }
