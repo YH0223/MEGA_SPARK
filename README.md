@@ -11,7 +11,7 @@
 ## 3팀 : 임건호, 정영훈, 강종호, 박경빈
 - 임건호(팀장/BackEnd) : 백엔드 개발 / 버전 통합 및 관리 [Github](https://github.com/dlarjsghho)
 - 정영훈(BackEnd) : 백엔드 개발 / DB,EC2 배포 및 관리 [Github](https://github.com/YH0223)
-- 강종호(FrontEnd) : 프론트엔드 / 디자인 총괄 [Github](https://github.com/imhypeboy)
+- 강종호(FrontEnd) : 프론트엔드 / UI/UX 디자인 총괄  [Github](https://github.com/imhypeboy)
 - 박경빈(FrontEnd) : 프론트엔드 / 프론트엔드 환경 구축 [Github](https://github.com/kyungbin22)
 
 ## 개발 환경
